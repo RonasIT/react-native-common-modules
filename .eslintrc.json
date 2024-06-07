@@ -1,7 +1,7 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
   "plugins": ["@nx"],
+  "extends": ["./.eslint.ronasit.js"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

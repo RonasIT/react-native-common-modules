@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "lint": "npx tsc && npx eslint ./",
+    "format": "npx prettier --write . && npm run lint -- --fix",
     "deps:sync": "npx syncpack fix-mismatches",
     "g:library": "npx nx g @nx/expo:lib --skipPackageJson --unitTestRunner=none",
     "g:component": "npx nx g @nx/expo:component component --export --flat --skipTests --directory=lib/${npm_config_name}",
@@ -50,10 +52,13 @@
     "detox": "~20.18.1",
     "eslint": "~8.57.0",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "4.6.0",
+    "eslint-plugin-react-native": "^4.1.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "jest": "^29.4.1",
     "jest-circus": "^29.4.1",
     "jest-environment-jsdom": "^29.4.1",
@@ -64,9 +69,15 @@
     "syncpack": "^12.3.0",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
+    "tsc-files": "^1.1.4",
     "typescript": "~5.3.3"
   },
   "workspaces": [
     "apps/*"
-  ]
+  ],
+  "lint-staged": {
+    "*.{ts,tsx}": "tsc-files --noEmit types.d.ts",
+    "*.{ts,tsx,js,html,json,md}": "prettier --write",
+    "*.{ts,tsx,js}": "eslint --cache --fix"
+  }
 }

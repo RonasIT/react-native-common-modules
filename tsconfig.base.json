@@ -1,6 +1,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "jsx": "react-native",
+    "allowJs": true,
+    "noEmit": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": true,
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
