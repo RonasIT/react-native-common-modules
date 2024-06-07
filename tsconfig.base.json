@@ -22,7 +22,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@react-native-common-modules": ["src/lib/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
