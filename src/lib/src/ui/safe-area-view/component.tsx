@@ -9,7 +9,7 @@ export interface AppSafeAreaViewProps extends ViewProps {
 
 const defaultEdges: Array<Edge> = ['top', 'right', 'bottom', 'left'];
 
-export function AppSafeAreaView({ children, edges = defaultEdges, style = {} }: AppSafeAreaViewProps): ReactElement {
+export function AppSafeAreaView({ children, edges = defaultEdges, style = {}, ...props }: AppSafeAreaViewProps): ReactElement {
   const insets = useSafeAreaInsets();
 
   const containerStyle = useMemo(() => {
@@ -25,5 +25,5 @@ export function AppSafeAreaView({ children, edges = defaultEdges, style = {} }: 
     );
   }, [style, insets, edges]);
 
-  return <View style={containerStyle}>{children}</View>;
+  return <View style={containerStyle} {...props}>{children}</View>;
 }
