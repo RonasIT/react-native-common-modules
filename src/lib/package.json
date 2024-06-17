@@ -1,7 +1,8 @@
 {
-  "name": "@react-native-common-modules",
+  "name": "@ronas-it/react-native-common-modules",
   "version": "0.0.1",
   "main": "src/index.ts",
+  "files": ["src"],
   "peerDependencies": {
     "react": "18.2.0",
     "react-native": "0.74.1",
