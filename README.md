@@ -5,7 +5,7 @@ Common components for Ronas IT projects.
 ## Start the example app
 
 1. Install dependencies: `npm install`
-2. Start app for local development: `npx nx start example`
+2. Start app for local development: `cd apps/example && npx expo start`
    - Use [Expo Go](https://expo.dev/client) to run mobile version
 
 At the moment this library contains the following components:
