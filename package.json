@@ -80,6 +80,7 @@
     "nx": "19.2.1",
     "prettier": "^2.6.2",
     "react-test-renderer": "18.2.0",
+    "reactotron-react-native": "^5.1.7",
     "rollup": "^4.14.0",
     "syncpack": "^12.3.0",
     "ts-jest": "^29.1.0",
