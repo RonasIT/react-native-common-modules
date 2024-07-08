@@ -45,24 +45,25 @@ Is a component for granular control of safe area edges on each screen. The diffe
 </AppSafeAreaView>
 ```
 
-## Store utils
+## Development utils
 
 ### 1. `setupReactotron(projectName: string)`
 
-Configure and initialize Reactotron for development purposes.
+Configures and initializes [Reactotron debugger](https://github.com/infinitered/reactotron) with [redux plugin](https://docs.infinite.red/reactotron/plugins/redux/) for development purposes.
 Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?q=reactotron-app&expanded=true) on your computer for use.
 
 #### Usage
 
 ```ts
 import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
+import { setupReactotron } from '@ronas-it/react-native-common-modules'
 
 const reactotron = setupReactotron('your-app');
-const reactotronEnhancer = reactotron ? [reactotron.createEnhancer()] : [];
+const enhancers = reactotron ? [reactotron.createEnhancer()] : [];
 
 const initStore = createStoreInitializer({
   rootReducer: rootReducer as unknown as Reducer<AppState>,
   middlewares,
-  enhancers: reactotronEnhancer,
+  enhancers,
 });
 ```
