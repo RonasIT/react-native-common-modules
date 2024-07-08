@@ -49,16 +49,20 @@ Is a component for granular control of safe area edges on each screen. The diffe
 
 ### 1. `PushNotificationsService` and `usePushNotifications` hook
 
-`PushNotificationsService` - service for integrating push notifications into the project.
+#### `PushNotificationsService`
 
-#### `PushNotificationsService` public method
+Service for integrating push notifications into the project.
+
+`PushNotificationsService` public method:
 
 - `pushToken` - get an Expo token that can be used to send a push notification to the device using Expo's push notifications service.
 
-`usePushNotifications` - hook, that automatically subscribes the device to receive push notifications when the user is authenticated and unsubscribes when the user is not authenticated. It supports custom subscription and unsubscription logic through provided functions or API configuration. Listens for responses to notifications and executes a callback, if provided, when a notification is interacted with.
+####  `usePushNotifications`
+
+Hook, that automatically subscribes the device to receive push notifications when the user is authenticated and unsubscribes when the user is not authenticated. It supports custom subscription and unsubscription logic through provided functions or API configuration. Listens for responses to notifications and executes a callback, if provided, when a notification is interacted with.
 Used in the root `App` component.
 
-#### `usePushNotifications` hook arguments
+`usePushNotifications` hook arguments:
 
 - `isAuthenticated` (required) - flag, that indicates whether the user is authenticated or not.
 - `onNotificationResponse` (optional) - callback when a notification is interacted with.
