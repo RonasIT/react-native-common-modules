@@ -12,13 +12,13 @@ At the moment this library contains the following components:
 
 ## UI-components
 
-1. `AppPressable` - component can be used in the same way as the built-in `Pressable` component, but it also includes opacity control.
+### 1. `AppPressable` - component can be used in the same way as the built-in `Pressable` component, but it also includes opacity control.
 
-### Props
+#### Props
 
 - `pressedOpacity`: Opacity value. Default is 0.4.
 
-### Usage
+#### Usage
 
 ```jsx
 <AppPressable style={styles.button} pressedOpacity={0.5}>
@@ -26,14 +26,14 @@ At the moment this library contains the following components:
 </AppPressable>
 ```
 
-2. `AppSafeAreaView` - is a component for granular control of safe area edges on each screen. The difference from `SafeAreaView` in [react-native-safe-area-context](https://www.npmjs.com/package/react-native-safe-area-context) is that the container adds padding to the elements inside it, rather than to the entire screen, making it more flexible for use.
+### 2. `AppSafeAreaView` - is a component for granular control of safe area edges on each screen. The difference from `SafeAreaView` in [react-native-safe-area-context](https://www.npmjs.com/package/react-native-safe-area-context) is that the container adds padding to the elements inside it, rather than to the entire screen, making it more flexible for use.
 
-### Props
+#### Props
 
 - `edges`: An array indicating which edges of the screen to respect. Possible values are 'top', 'right', 'bottom', 'left'. Defaults to all edges.
 - `style`: Custom styles to apply to the view. Note that padding values will be adjusted to respect safe area insets.
 
-### Usage
+#### Usage
 
 ```jsx
 <AppSafeAreaView edges={['top', 'bottom']} style={styles.container}>
@@ -43,15 +43,15 @@ At the moment this library contains the following components:
 
 ## Store utils
 
-1. `setupReactotron(projectName: string)` - configure and initialize Reactotron for development purposes.
+### 1. `setupReactotron(projectName: string)` - configure and initialize Reactotron for development purposes.
 Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?q=reactotron-app&expanded=true) on your computer for use.
 
-### Usage
+#### Usage
 
 ```ts
 import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
 
-const reactotron = setupReactotron();
+const reactotron = setupReactotron('your-app');
 const reactotronEnhancer = reactotron ? [reactotron.createEnhancer()] : [];
 
 const initStore = createStoreInitializer({
