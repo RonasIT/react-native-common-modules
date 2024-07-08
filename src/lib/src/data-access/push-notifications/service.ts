@@ -1,11 +1,11 @@
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import { PermissionStatus } from 'expo-modules-core';
 import { Platform } from 'react-native';
-import { PermissionStatus } from './enums';
 
 export interface ObtainPushNotificationsTokenArgs {
-  getTokenErrorHandler: () => void;
+  getTokenErrorHandler?: (permissionStatus: PermissionStatus) => void;
 }
 
 Notifications.setNotificationHandler({
@@ -28,18 +28,6 @@ if (Platform.OS === 'android') {
 class PushNotificationsService {
   private _pushToken?: string;
 
-  private async getExistingPermissions(): Promise<PermissionStatus> {
-    const { status } = await Notifications.getPermissionsAsync();
-
-    return status;
-  }
-
-  private async requestPermissions(): Promise<PermissionStatus> {
-    const { status } = await Notifications.requestPermissionsAsync();
-
-    return status;
-  }
-
   public get pushToken(): string | undefined {
     return this._pushToken;
   }
@@ -48,13 +36,16 @@ class PushNotificationsService {
     getTokenErrorHandler,
   }: ObtainPushNotificationsTokenArgs): Promise<string | undefined> {
     if (Device.isDevice) {
-      const existingPermissionsStatus = await this.getExistingPermissions();
+      const { status: existingPermissionsStatus } = await Notifications.getPermissionsAsync();
 
       if (existingPermissionsStatus !== PermissionStatus.GRANTED) {
-        const permissionsStatus = await this.requestPermissions();
+        const { status: permissionsStatus } = await Notifications.requestPermissionsAsync();
 
         if (permissionsStatus !== PermissionStatus.GRANTED) {
-          getTokenErrorHandler?.();
+          getTokenErrorHandler?.(permissionsStatus) ||
+            console.warn(
+              'Failed to obtain push notifications token.\nPlease specify the "getTokenErrorHandler" callback in the usePushNotifications hook to clear this warning'
+            );
 
           return;
         }
@@ -62,7 +53,7 @@ class PushNotificationsService {
 
       const projectId = Constants.expoConfig?.extra?.eas.projectId;
       if (!projectId) {
-        console.error('projectId is not specified in eas config');
+        console.error('EAS projectId is not specified in app.config.ts. Push notifications may not work.');
       }
 
       const token = await Notifications.getExpoPushTokenAsync({ projectId });

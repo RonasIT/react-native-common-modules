@@ -11,14 +11,22 @@ type ApiConfig = {
   method?: 'GET' | 'get' | 'POST' | 'post';
 };
 
-export interface UsePushNotificationsArgs extends ObtainPushNotificationsTokenArgs {
+export type UsePushNotificationsArgs = ObtainPushNotificationsTokenArgs & {
   isAuthenticated: boolean;
-  subscribeDevice?: ({ expoToken }: { expoToken: string }) => Promise<Response>;
-  unsubscribeDevice?: ({ expoToken }: { expoToken: string }) => Promise<Response>;
   onNotificationResponse?: (notification: Notifications.Notification) => void;
-  apiConfig?: ApiConfig;
   apiErrorHandler?: (response: Response) => void;
-}
+} & (
+    | {
+        subscribeDevice: ({ expoToken }: { expoToken: string }) => Promise<Response>;
+        unsubscribeDevice: ({ expoToken }: { expoToken: string }) => Promise<Response>;
+        apiConfig?: undefined;
+      }
+    | {
+        apiConfig: ApiConfig;
+        subscribeDevice?: undefined;
+        unsubscribeDevice?: undefined;
+      }
+  );
 
 export const usePushNotifications = ({
   isAuthenticated,
