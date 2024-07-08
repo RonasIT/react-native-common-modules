@@ -4,42 +4,89 @@ import { useEffect, useState, useRef } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 import { ObtainPushNotificationsTokenArgs, pushNotificationsService } from '../service';
 
+type ApiConfig = {
+  accessToken: string;
+  subscribeDeviceUrl: string;
+  unsubscribeDeviceUrl: string;
+  method?: 'GET' | 'get' | 'POST' | 'post';
+};
+
 export interface UsePushNotificationsArgs extends ObtainPushNotificationsTokenArgs {
-  subscribeDevice: ({ expoToken }: { expoToken: string }) => void;
   isAuthenticated: boolean;
+  subscribeDevice?: ({ expoToken }: { expoToken: string }) => Promise<Response>;
+  unsubscribeDevice?: ({ expoToken }: { expoToken: string }) => Promise<Response>;
   onNotificationResponse?: (notification: Notifications.Notification) => void;
+  apiConfig?: ApiConfig;
+  apiErrorHandler?: (response: Response) => void;
 }
 
 export const usePushNotifications = ({
-  subscribeDevice,
   isAuthenticated,
-  getTokenErrorHandler,
-  wrongDeviceErrorHandler,
+  subscribeDevice,
+  unsubscribeDevice,
   onNotificationResponse,
+  apiConfig,
+  apiErrorHandler,
+  getTokenErrorHandler,
 }: UsePushNotificationsArgs): void => {
   const [pushToken, setPushToken] = useState(pushNotificationsService.pushToken);
+
   const navigationRef = useNavigationContainerRef();
   const rootNavigationState = useRootNavigationState();
-  const isNavigationReady = !!rootNavigationState?.key;
+  const isNavigationReady = navigationRef?.current?.isReady();
+  const isRootNavigationStateReady = !!rootNavigationState?.key;
+
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const isPermissionFetching = useRef(false);
 
-  const handleNotification = (notification: Notifications.Notification) =>
-    navigationRef?.current?.isReady() && onNotificationResponse?.(notification);
+  const subscribeDeviceCallback: typeof subscribeDevice = subscribeDevice
+    ? subscribeDevice
+    : apiConfig &&
+      (({ expoToken }) =>
+        fetch(apiConfig.subscribeDeviceUrl, {
+          method: apiConfig.method || 'POST',
+          headers: {
+            Authorization: `Bearer ${apiConfig.accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ expoToken }),
+        }));
+
+  const unsubscribeDeviceCallback: typeof unsubscribeDevice = unsubscribeDevice
+    ? unsubscribeDevice
+    : apiConfig &&
+      (({ expoToken }) =>
+        fetch(apiConfig.unsubscribeDeviceUrl, {
+          method: apiConfig.method || 'POST',
+          headers: {
+            Authorization: `Bearer ${apiConfig.accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ expoToken }),
+        }));
+
+  useEffect(() => {
+    if (pushToken && isAuthenticated) {
+      subscribeDeviceCallback?.({ expoToken: pushToken }).catch(apiErrorHandler);
+    }
+  }, [pushToken, isAuthenticated]);
+
+  useEffect(() => {
+    if (pushToken && !isAuthenticated) {
+      unsubscribeDeviceCallback?.({ expoToken: pushToken }).catch(apiErrorHandler);
+    }
+  }, [pushToken, isAuthenticated]);
 
   const setPushNotificationsToken = async () => {
-    const token = await pushNotificationsService.obtainPushNotificationsToken({
-      getTokenErrorHandler,
-      wrongDeviceErrorHandler,
-    });
+    const token = await pushNotificationsService.obtainPushNotificationsToken({ getTokenErrorHandler });
     token && setPushToken(token);
   };
 
   useEffect(() => {
-    if (isAuthenticated && navigationRef?.current?.isReady()) {
+    if (isNavigationReady && isAuthenticated) {
       setPushNotificationsToken();
     }
-  }, [isAuthenticated, navigationRef?.current?.isReady()]);
+  }, [isAuthenticated, isNavigationReady]);
 
   useEffect(() => {
     // NOTE: Workaround https://github.com/facebook/react-native/issues/30206#issuecomment-1698972226
@@ -58,13 +105,12 @@ export const usePushNotifications = ({
     };
   }, [pushToken, isAuthenticated]);
 
-  useEffect(() => {
-    pushToken && subscribeDevice({ expoToken: pushToken });
-  }, [pushToken]);
+  const handleNotification = (notification: Notifications.Notification) =>
+    isNavigationReady && onNotificationResponse?.(notification);
 
   useEffect(() => {
-    if (isNavigationReady && isAuthenticated && lastNotificationResponse?.notification) {
+    if (isAuthenticated && isRootNavigationStateReady && lastNotificationResponse?.notification) {
       handleNotification(lastNotificationResponse.notification);
     }
-  }, [lastNotificationResponse, isNavigationReady, isAuthenticated]);
+  }, [lastNotificationResponse, isRootNavigationStateReady, isAuthenticated]);
 };

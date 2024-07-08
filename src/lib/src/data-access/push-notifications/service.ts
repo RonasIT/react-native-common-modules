@@ -6,7 +6,6 @@ import { PermissionStatus } from './enums';
 
 export interface ObtainPushNotificationsTokenArgs {
   getTokenErrorHandler: () => void;
-  wrongDeviceErrorHandler?: () => void;
 }
 
 Notifications.setNotificationHandler({
@@ -16,6 +15,15 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+if (Platform.OS === 'android') {
+  Notifications.setNotificationChannelAsync('default', {
+    name: 'default',
+    importance: Notifications.AndroidImportance.MAX,
+    vibrationPattern: [0, 250, 250, 250],
+    lightColor: '#FF231F7C',
+  });
+}
 
 class PushNotificationsService {
   private _pushToken?: string;
@@ -38,17 +46,7 @@ class PushNotificationsService {
 
   public async obtainPushNotificationsToken({
     getTokenErrorHandler,
-    wrongDeviceErrorHandler,
   }: ObtainPushNotificationsTokenArgs): Promise<string | undefined> {
-    if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-
     if (Device.isDevice) {
       const existingPermissionsStatus = await this.getExistingPermissions();
 
@@ -62,15 +60,18 @@ class PushNotificationsService {
         }
       }
 
-      const token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig?.extra?.eas.projectId,
-      });
+      const projectId = Constants.expoConfig?.extra?.eas.projectId;
+      if (!projectId) {
+        console.error('projectId is not specified in eas config');
+      }
+
+      const token = await Notifications.getExpoPushTokenAsync({ projectId });
 
       this._pushToken = token.data;
 
       return token.data;
     } else {
-      wrongDeviceErrorHandler?.();
+      console.error('Must use physical device for push notifications');
 
       return;
     }
