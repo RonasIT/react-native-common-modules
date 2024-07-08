@@ -12,7 +12,9 @@ At the moment this library contains the following components:
 
 ## UI-components
 
-### 1. `AppPressable` - component can be used in the same way as the built-in `Pressable` component, but it also includes opacity control.
+### 1. `AppPressable`
+
+Component can be used in the same way as the built-in `Pressable` component, but it also includes opacity control.
 
 #### Props
 
@@ -26,7 +28,9 @@ At the moment this library contains the following components:
 </AppPressable>
 ```
 
-### 2. `AppSafeAreaView` - is a component for granular control of safe area edges on each screen. The difference from `SafeAreaView` in [react-native-safe-area-context](https://www.npmjs.com/package/react-native-safe-area-context) is that the container adds padding to the elements inside it, rather than to the entire screen, making it more flexible for use.
+### 2. `AppSafeAreaView`
+
+Is a component for granular control of safe area edges on each screen. The difference from `SafeAreaView` in [react-native-safe-area-context](https://www.npmjs.com/package/react-native-safe-area-context) is that the container adds padding to the elements inside it, rather than to the entire screen, making it more flexible for use.
 
 #### Props
 
@@ -43,7 +47,9 @@ At the moment this library contains the following components:
 
 ## Store utils
 
-### 1. `setupReactotron(projectName: string)` - configure and initialize Reactotron for development purposes.
+### 1. `setupReactotron(projectName: string)`
+
+Configure and initialize Reactotron for development purposes.
 Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?q=reactotron-app&expanded=true) on your computer for use.
 
 #### Usage
