@@ -49,8 +49,7 @@ export const usePushNotifications = ({
 
   const subscribeDeviceCallback: typeof subscribeDevice = subscribeDevice
     ? subscribeDevice
-    : apiConfig &&
-      (({ expoToken }) =>
+    : ({ expoToken }) =>
         fetch(apiConfig.subscribeDeviceUrl, {
           method: apiConfig.method || 'POST',
           headers: {
@@ -58,12 +57,11 @@ export const usePushNotifications = ({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ expoToken }),
-        }));
+        });
 
   const unsubscribeDeviceCallback: typeof unsubscribeDevice = unsubscribeDevice
     ? unsubscribeDevice
-    : apiConfig &&
-      (({ expoToken }) =>
+    : ({ expoToken }) =>
         fetch(apiConfig.unsubscribeDeviceUrl, {
           method: apiConfig.method || 'POST',
           headers: {
@@ -71,7 +69,7 @@ export const usePushNotifications = ({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ expoToken }),
-        }));
+        });
 
   useEffect(() => {
     if (pushToken && isAuthenticated) {
@@ -81,7 +79,9 @@ export const usePushNotifications = ({
 
   useEffect(() => {
     if (pushToken && !isAuthenticated) {
-      unsubscribeDeviceCallback?.({ expoToken: pushToken }).catch(apiErrorHandler);
+      unsubscribeDeviceCallback?.({ expoToken: pushToken })
+        .catch(apiErrorHandler)
+        .finally(() => setPushToken(undefined));
     }
   }, [pushToken, isAuthenticated]);
 

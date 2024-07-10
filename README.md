@@ -55,11 +55,13 @@ Service for integrating push notifications into the project.
 
 `PushNotificationsService` public method:
 
-- `pushToken` - get an Expo token that can be used to send a push notification to the device using Expo's push notifications service.
+- `pushToken` - getter for retrieving the token if it already exists.
+
+- `obtainPushNotificationsToken` - get an Expo token that can be used to send a push notification to the device using Expo's push notifications service.
 
 ####  `usePushNotifications`
 
-Hook, that automatically subscribes the device to receive push notifications when the user is authenticated and unsubscribes when the user is not authenticated. It supports custom subscription and unsubscription logic through provided functions or API configuration. Listens for responses to notifications and executes a callback, if provided, when a notification is interacted with.
+Hook, that automatically subscribes the device to receive push notifications when a user becomes authenticated, and unsubscribes when a user becomes non-authenticated. It supports custom subscription and unsubscription logic through provided functions or API configuration. Listens for responses to notifications and executes a callback, if provided, when a notification is interacted with.
 Used in the root `App` component.
 
 `usePushNotifications` hook arguments:
@@ -71,6 +73,22 @@ Used in the root `App` component.
 - `apiConfig` (optional) - API configuration for subscribing and unsubscribing the device (when `subscribeDevice` and `unsubscribeDevice` are not provided).
 - `apiErrorHandler` (optional) - API error handler for subscribe/unsubscribe functions.
 - `getTokenErrorHandler` (optional) - handler for error that occur when attempting to obtain a push notifications token.
+
+#### Usage
+
+```ts
+// Somewhere in a root component of your app:
+const authToken = useSelector(authSelectors.token);
+...
+usePushNotifications({
+  apiConfig: {
+    subscribeDeviceUrl: 'https://your-api.com/api/v1/push-notifications/subscribe',
+    unsubscribeDeviceUrl: 'https://your-api.com/api/v1/push-notifications/unsubscribe',
+    accessToken: authToken,
+  },
+  isAuthenticated: !!authToken,
+})
+```
 
 ## Development utils
 

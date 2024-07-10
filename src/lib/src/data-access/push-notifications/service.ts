@@ -5,7 +5,7 @@ import { PermissionStatus } from 'expo-modules-core';
 import { Platform } from 'react-native';
 
 export interface ObtainPushNotificationsTokenArgs {
-  getTokenErrorHandler?: (permissionStatus: PermissionStatus) => void;
+  getTokenErrorHandler?: (permissionResponse: Notifications.PermissionResponse) => void;
 }
 
 Notifications.setNotificationHandler({
@@ -39,10 +39,10 @@ class PushNotificationsService {
       const { status: existingPermissionsStatus } = await Notifications.getPermissionsAsync();
 
       if (existingPermissionsStatus !== PermissionStatus.GRANTED) {
-        const { status: permissionsStatus } = await Notifications.requestPermissionsAsync();
+        const response = await Notifications.requestPermissionsAsync();
 
-        if (permissionsStatus !== PermissionStatus.GRANTED) {
-          getTokenErrorHandler?.(permissionsStatus) ||
+        if (response.status !== PermissionStatus.GRANTED) {
+          getTokenErrorHandler?.(response) ||
             console.warn(
               'Failed to obtain push notifications token.\nPlease specify the "getTokenErrorHandler" callback in the usePushNotifications hook to clear this warning'
             );
