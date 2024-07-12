@@ -24,8 +24,8 @@
     "src"
   ],
   "peerDependencies": {
-    "react": "18.2.0",
-    "react-native": "0.74.1"
+    "react": "*",
+    "react-native": "*"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
