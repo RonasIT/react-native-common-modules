@@ -6,21 +6,26 @@ Common components for Ronas IT projects.
 
 1. Install dependencies: `npm install`
 2. Start app for local development: `cd apps/example && npx expo start`
-   - Use [Expo Go](https://expo.dev/client) to run mobile version
+3. Use [Expo Go](https://expo.dev/client) to run mobile version
+
+## Usage
+
+1. Install the package: `npm i @ronas-it/react-native-common-modules`
+2. Import modules to your app and use as described below
+
+### UI-components
 
 At the moment this library contains the following components:
 
-## UI-components
+#### 1. `AppPressable`
 
-### 1. `AppPressable`
+This component can be used in the same way as the built-in [Pressable component](https://reactnative.dev/docs/pressable), but it also includes opacity control.
 
-Component can be used in the same way as the built-in `Pressable` component, but it also includes opacity control.
-
-#### Props
+**Props:**
 
 - `pressedOpacity`: Opacity value. Default is 0.4.
 
-#### Usage
+**Example:**
 
 ```jsx
 <AppPressable style={styles.button} pressedOpacity={0.5}>
@@ -28,16 +33,16 @@ Component can be used in the same way as the built-in `Pressable` component, but
 </AppPressable>
 ```
 
-### 2. `AppSafeAreaView`
+#### 2. `AppSafeAreaView`
 
-Is a component for granular control of safe area edges on each screen. The difference from `SafeAreaView` in [react-native-safe-area-context](https://www.npmjs.com/package/react-native-safe-area-context) is that the container adds padding to the elements inside it, rather than to the entire screen, making it more flexible for use.
+A component for granular control of safe area edges on each screen. The difference from `SafeAreaView` in [react-native-safe-area-context](https://www.npmjs.com/package/react-native-safe-area-context) is that the container adds padding to the elements inside it, rather than to the entire screen, making it more flexible for use.
 
-#### Props
+**Props:**
 
 - `edges`: An array indicating which edges of the screen to respect. Possible values are 'top', 'right', 'bottom', 'left'. Defaults to all edges.
 - `style`: Custom styles to apply to the view. Note that padding values will be adjusted to respect safe area insets.
 
-#### Usage
+**Example:**
 
 ```jsx
 <AppSafeAreaView edges={['top', 'bottom']} style={styles.container}>
@@ -45,23 +50,24 @@ Is a component for granular control of safe area edges on each screen. The diffe
 </AppSafeAreaView>
 ```
 
-## Services
+### Services
 
-### 1. `PushNotificationsService` and `usePushNotifications` hook
+#### 1. Push notifications
 
-#### `PushNotificationsService`
+##### `PushNotificationsService`
 
-Service for integrating push notifications into the project.
+Service for integrating [Expo push notifications](https://docs.expo.dev/push-notifications/overview/) into apps.
+Requires [setup](https://docs.expo.dev/push-notifications/push-notifications-setup/) and [backend implementation](https://docs.expo.dev/push-notifications/sending-notifications/) for sending notifications.
 
-`PushNotificationsService` public method:
-
-- `pushToken` - getter for retrieving the token if it already exists.
+`PushNotificationsService` public methods:
 
 - `obtainPushNotificationsToken` - get an Expo token that can be used to send a push notification to the device using Expo's push notifications service.
 
-####  `usePushNotifications`
+- `pushToken` - getter for retrieving the token if it was already obtained.
 
-Hook, that automatically subscribes the device to receive push notifications when a user becomes authenticated, and unsubscribes when a user becomes non-authenticated. It supports custom subscription and unsubscription logic through provided functions or API configuration. Listens for responses to notifications and executes a callback, if provided, when a notification is interacted with.
+##### `usePushNotifications`
+
+Hook, that automatically subscribes the device to receive push notifications when a user becomes authenticated, and unsubscribes when a user becomes non-authenticated. It supports custom subscription and unsubscription logic through provided functions or API configuration. Listens for [responses](https://docs.expo.dev/push-notifications/receiving-notifications/) to notifications and executes a callback, if provided, when a notification is interacted with.
 Used in the root `App` component.
 
 `usePushNotifications` hook arguments:
@@ -74,7 +80,7 @@ Used in the root `App` component.
 - `apiErrorHandler` (optional) - API error handler for subscribe/unsubscribe functions.
 - `getTokenErrorHandler` (optional) - handler for error that occur when attempting to obtain a push notifications token.
 
-#### Usage
+**Example:**
 
 ```ts
 // Somewhere in a root component of your app:
@@ -90,14 +96,14 @@ usePushNotifications({
 })
 ```
 
-## Development utils
+### Development utils
 
-### 1. `setupReactotron(projectName: string)`
+#### 1. `setupReactotron(projectName: string)`
 
 Configures and initializes [Reactotron debugger](https://github.com/infinitered/reactotron) with [redux plugin](https://docs.infinite.red/reactotron/plugins/redux/) for development purposes.
 Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?q=reactotron-app&expanded=true) on your computer for use.
 
-#### Usage
+**Example:**
 
 ```ts
 import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
