@@ -31,6 +31,8 @@ export function VirtualizedListExample(): ReactElement {
     );
   };
 
+  const keyExtractor: VirtualizedListProps<Book>['keyExtractor'] = (item) => item.isbn;
+
   return (
     <View style={styles.example}>
       <View style={styles.container}>
@@ -38,13 +40,14 @@ export function VirtualizedListExample(): ReactElement {
         <Text>Direction: {direction}</Text>
       </View>
       <VirtualizedList
-        estimatedItemSize={100}
+        estimatedItemSize={86}
         data={booksMock}
         renderItem={renderItem}
         onScrollUp={handleScrollUp}
         onScrollDown={handleScrollDown}
         onScrollEndDrag={handleScrollEnd}
         onMomentumScrollEnd={handleScrollEnd}
+        keyExtractor={keyExtractor}
       />
     </View>
   );
