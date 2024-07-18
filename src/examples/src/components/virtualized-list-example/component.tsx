@@ -6,26 +6,17 @@ import { Book } from '../../models';
 
 export function VirtualizedListExample(): ReactElement {
   const [direction, setDirection] = useState<'UP' | 'DOWN'>();
-  const [isScrollDirectionChanged, setIsScrollDirectionChanged] = useState(false);
 
   const handleScrollUp = (): void => {
     setDirection('UP');
-    // setIsScrollDirectionChanged(false);
   };
 
   const handleScrollDown = (): void => {
     setDirection('DOWN');
-    // setIsScrollDirectionChanged(false);
   };
 
   const handleScrollEnd = (): void => {
     setDirection(undefined);
-    setIsScrollDirectionChanged(false);
-  };
-
-  const handleScrollDirectionChange = (): void => {
-    console.warn('CHANGE');
-    setIsScrollDirectionChanged(true);
   };
 
   const renderItem: VirtualizedListProps<Book>['renderItem'] = ({ item }) => {
@@ -44,10 +35,7 @@ export function VirtualizedListExample(): ReactElement {
     <View style={styles.example}>
       <View style={styles.container}>
         <Text style={styles.title}>Virtualized list</Text>
-        <Text>
-          Direction: {direction}
-          {isScrollDirectionChanged ? ' (changed)' : ''}
-        </Text>
+        <Text>Direction: {direction}</Text>
       </View>
       <VirtualizedList
         estimatedItemSize={100}
@@ -57,7 +45,6 @@ export function VirtualizedListExample(): ReactElement {
         onScrollDown={handleScrollDown}
         onScrollEndDrag={handleScrollEnd}
         onMomentumScrollEnd={handleScrollEnd}
-        onScrollDirectionChange={handleScrollDirectionChange}
       />
     </View>
   );
