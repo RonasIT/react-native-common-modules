@@ -1,5 +1,6 @@
+import { setLanguage } from '@ronas-it/react-native-common-modules';
 import { Stack } from 'expo-router';
-import { ReactElement } from 'react';
+import { ReactElement, createContext, useState } from 'react';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -7,6 +8,24 @@ export { ErrorBoundary } from 'expo-router';
 export const unstable_settings = {
   initialRouteName: 'index',
 };
+
+const translations = {
+  en: {
+    ...require('i18n/example/en.json')
+  },
+  fr: {
+    ...require('i18n/example/fr.json')
+  }
+};
+
+const useLanguage = setLanguage(translations, 'en');
+
+interface LanguageContextProps {
+  language: string;
+  onLanguageChange?: (language: keyof typeof translations) => void;
+}
+
+export const LanguageContext = createContext<LanguageContextProps>({ language: 'en' });
 
 function App(): ReactElement {
   return (
@@ -17,5 +36,13 @@ function App(): ReactElement {
 }
 
 export default function RootLayout(): ReactElement | null {
-  return <App />;
+  const [language, setLanguage] = useState<keyof typeof translations>('en');
+
+  useLanguage(language);
+
+  return (
+    <LanguageContext.Provider value={{ language, onLanguageChange: setLanguage }}>
+      <App />
+    </LanguageContext.Provider>
+  );
 }
