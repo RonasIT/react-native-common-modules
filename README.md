@@ -96,6 +96,36 @@ usePushNotifications({
 })
 ```
 
+#### 2. Storage
+
+A library that provides two types of key-value storage API: [AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/usage/) and [SecuredStorage](https://docs.expo.dev/versions/latest/sdk/securestore/) (IOS, Android).
+
+**Example**
+
+Implement storage service:
+
+```ts
+import { AsyncStorageItem, SecureStorageItem } from '@ronas-it/react-native-common-modules';
+
+class AppStorageService {
+  public token = new SecureStorageItem('token');
+  public tokenExpiryDate = new SecureStorageItem('tokenExpiryDate');
+  public language = new AsyncStorageItem('language');
+}
+
+export const appStorageService = new AppStorageService();
+```
+
+Usage:
+```ts
+// Get storage item
+const token = await appStorageService.token.get();
+// Set storage item
+appStorageService.token.set('new_token');
+// Delete storage item
+appStorageService.token.remove();
+```
+
 ### Development utils
 
 #### 1. `setupReactotron(projectName: string)`
