@@ -1,8 +1,8 @@
 import { ReactElement, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { VirtualizedList, VirtualizedListProps } from '@ronas-it/react-native-common-modules';
-import { booksMock } from '../../mocks';
-import { Book } from '../../models';
+import { booksMock } from './mocks';
+import { Book } from './models';
 
 export function VirtualizedListExample(): ReactElement {
   const [direction, setDirection] = useState<'UP' | 'DOWN'>();

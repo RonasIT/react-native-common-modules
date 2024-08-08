@@ -1,4 +1,4 @@
-import { VirtualizedListExample } from '@ronas-it/examples';
+import { VirtualizedListExample } from '@ronas-it/example/virtualized-scroll-example';
 import { AppPressable, AppSafeAreaView } from '@ronas-it/react-native-common-modules';
 import { ReactElement } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';

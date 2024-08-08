@@ -170,24 +170,6 @@ export const booksRawList = [
     authors: ['Bear Bibeault', 'Yehuda Katz'],
   },
   {
-    title: 'Building Secure and Reliable Network Applications',
-    isbn: '1884777295',
-    pageCount: 591,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/birman.jpg',
-    shortDescription:
-      '"... tackles the difficult problem of building reliable distributed computing systems in a way that not only presents the principles but also describes proven practical solutions." --John Warne, BNR Europe',
-    authors: ['Kenneth P. Birman'],
-  },
-  {
-    title: 'Ruby for Rails',
-    isbn: '1932394699',
-    pageCount: 532,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/black.jpg',
-    shortDescription:
-      'The word is out: with Ruby on Rails you can build powerful Web applications easily and quickly! And just like the Rails framework itself, Rails applications are Ruby programs. That means you can   t tap into the full power of Rails unless you master the Ruby language.',
-    authors: ['David A. Black'],
-  },
-  {
     title: 'The Well-Grounded Rubyist',
     isbn: '1933988657',
     pageCount: 520,
@@ -259,15 +241,6 @@ export const booksRawList = [
     authors: ['Robert Chapman'],
   },
   {
-    title: 'Mobile Agents',
-    isbn: '1884777368',
-    pageCount: 320,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/cockayne.jpg',
-    shortDescription:
-      'Mobile Agents is the first book to give the reader the ability to create and use powerful mobile agents on the Internet.',
-    authors: ['William R. Cockayne and Michael Zyda', 'editors'],
-  },
-  {
     title: 'Spring Dynamic Modules in Action',
     isbn: '1935182307',
     pageCount: 450,
@@ -284,15 +257,6 @@ export const booksRawList = [
     shortDescription:
       'Android in Practice is treasure trove of Android goodness, with over 100 tested, ready-to-use techniques including complete end-to-end example applications and practical tips for real world mobile application developers. Written by real world Android developers, this book addresses the trickiest questions raised in forums and mailing lists. Using an easy-to-follow problem/solution/discussion format, it dives into important topics not covered in other Android books, like advanced drawing and graphics, testing and instrumentation, building and deploying applications, using alternative languages, and native development.',
     authors: ['Charlie Collins', 'Michael D. Galpin', '', 'Matthias Kaeppler'],
-  },
-  {
-    title: 'POJOs in Action',
-    isbn: '1932394583',
-    pageCount: 592,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/crichardson.jpg',
-    shortDescription:
-      '"POJOs in Action is required reading for battle-weary EJB developers and for new developers who want to avoid the sins of the fathers by using lightweight frameworks.    -- C# Online.NET',
-    authors: ['Chris Richardson'],
   },
   {
     title: 'Hello! HTML5 & CSS3',
@@ -314,7 +278,7 @@ export const booksRawList = [
   },
   {
     title: 'Building Secure and Reliable Network Applications',
-    isbn: '1884777295',
+    isbn: '1884777290',
     pageCount: 591,
     thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/birman.jpg',
     shortDescription:
@@ -332,80 +296,6 @@ export const booksRawList = [
     authors: ['David A. Black'],
   },
   {
-    title: 'The Well-Grounded Rubyist',
-    isbn: '1933988657',
-    pageCount: 520,
-    publishedDate: { $date: '2009-04-01T00:00:00.000-0700' },
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/black2.jpg',
-    shortDescription:
-      'What would appear to be the most complex topic of the book is in fact surprisingly easy to assimilate, and one realizes that the efforts of the author to gradually lead us to a sufficient knowledge of Ruby in order to tackle without pain the most difficult subjects, bears its fruit.       Eric Grimois, Developpez.com',
-    authors: ['David A. Black'],
-  },
-  {
-    title: "Website Owner's Manual",
-    isbn: '1933988452',
-    pageCount: 296,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/boag.jpg',
-    shortDescription:
-      "Website Owner's Manual helps you form a vision for your site, guides you through the process of selecting a web design agency, and gives you enough background information to make intelligent decisions throughout the development process. This book provides a jargon-free overview of web design, including accessibility, usability, online marketing, and web development techniques. You'll gain a practical understanding of the technologies, processes, and ideas that drive a successful website.",
-    longDescription:
-      "Just because you're responsible for your organization's web presence doesn't mean you know how to build a website. The job of planning, launching, and managing a site often falls to people who have little or no experience in web design or development. Website Owner's Manual is a book for the thousands of marketers, IT managers, project leaders, and business owners who need to put a website in place and keep it running with a minimum of trouble.    Website Owner's Manual helps you form a vision for your site, guides you through the process of selecting a web design agency, and gives you enough background information to make intelligent decisions throughout the development process. This book provides a jargon-free overview of web design, including accessibility, usability, online marketing, and web development techniques. You'll gain a practical understanding of the technologies, processes, and ideas that drive a successful website.",
-    authors: ['Paul A. Boag'],
-  },
-  {
-    title: 'ASP.NET 4.0 in Practice',
-    isbn: '1935182463',
-    pageCount: 504,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/bochicchio.jpg',
-    shortDescription:
-      'ASP.NET 4.0 in Practice contains real world techniques from well-known professionals who have been using ASP.NET since the first previews.',
-    authors: ['Daniele Bochicchio', 'Stefano Mostarda', 'Marco De Sanctis'],
-  },
-  {
-    title: 'Hello! Python',
-    isbn: '1935182080',
-    pageCount: 350,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/briggs.jpg',
-    shortDescription:
-      'Hello! Python fully covers the building blocks of Python programming and gives you a gentle introduction to more advanced topics such as object oriented programming, functional programming, network programming, and program design. New (or nearly new) programmers will learn most of what they need to know to start using Python immediately.',
-    authors: ['Anthony Briggs'],
-  },
-  {
-    title: 'iPhone in Action',
-    isbn: '193398886X',
-    pageCount: 472,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/callen.jpg',
-    shortDescription:
-      '   There is not another iPhone title that does such a great coverage of both Web and SDK topics under one roof, thus providing a well-rounded developer education.       Vladimir Pasman, Cocoacast.com',
-    authors: ['Christopher Allen', 'Shannon Appelcline'],
-  },
-  {
-    title: 'Silverlight 2 in Action',
-    isbn: '1933988428',
-    pageCount: 400,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/campbell.jpg',
-    shortDescription:
-      '   Silverlight 2 in Action gives you a solid, well-thought out and coherent foundation for building RIA web applications, and provides you with lots of technical details without ever becoming cloudy.       Golo Roden, author, trainer and speaker for .NET technologies',
-    authors: ['Chad A. Campbell', 'John Stockton'],
-  },
-  {
-    title: 'The Quick Python Book, Second Edition',
-    isbn: '193518220X',
-    pageCount: 360,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ceder.jpg',
-    shortDescription:
-      "This revision of Manning's popular The Quick Python Book offers a clear, crisp introduction to the elegant Python programming language and its famously easy-to-read syntax. Written for programmers new to Python, this updated edition covers features common to other languages concisely, while introducing Python's comprehensive standard functions library and unique features in detail.",
-    authors: ['Naomi R. Ceder'],
-  },
-  {
-    title: 'Practical Methods for Your Year 2000 Problem',
-    isbn: '188477752X',
-    pageCount: 236,
-    shortDescription:
-      'Practical Methods for Your Year 2000 Problem gives the Year 2000 project team a step-by-step methodology for addressing the Year 2000 problem.',
-    authors: ['Robert Chapman'],
-  },
-  {
     title: 'Mobile Agents',
     isbn: '1884777368',
     pageCount: 320,
@@ -415,25 +305,6 @@ export const booksRawList = [
     authors: ['William R. Cockayne and Michael Zyda', 'editors'],
   },
   {
-    title: 'Spring Dynamic Modules in Action',
-    isbn: '1935182307',
-    pageCount: 450,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/cogoluegnes.jpg',
-    shortDescription:
-      "Spring Dynamic Modules in Action introduces Spring DM and OSGi to Java EE developers and architects. It presents the fundamental concepts of OSGi-based apps and maps them to the familiar ideas of the Spring framework. Then, it engages you with the techniques and concepts you'll need to develop stable, flexible enterprise apps. You'll learn how to embed a Spring container inside an OSGi bundle, and how Spring DM lets you blend Spring strengths like dependency injection with OSGi-based services. Along the way, you'll see how Spring DM handles data access and web-based components, and you'll explore topics like unit testing and configuration in an OSGi-based environment.",
-    authors: ['Arnaud Cogoluegnes', 'Thierry Templier', '', 'Andy Piper'],
-  },
-
-  {
-    title: 'Android in Practice',
-    isbn: '1935182927',
-    pageCount: 500,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/collins.jpg',
-    shortDescription:
-      'Android in Practice is treasure trove of Android goodness, with over 100 tested, ready-to-use techniques including complete end-to-end example applications and practical tips for real world mobile application developers. Written by real world Android developers, this book addresses the trickiest questions raised in forums and mailing lists. Using an easy-to-follow problem/solution/discussion format, it dives into important topics not covered in other Android books, like advanced drawing and graphics, testing and instrumentation, building and deploying applications, using alternative languages, and native development.',
-    authors: ['Charlie Collins', 'Michael D. Galpin', '', 'Matthias Kaeppler'],
-  },
-  {
     title: 'POJOs in Action',
     isbn: '1932394583',
     pageCount: 592,
@@ -441,24 +312,6 @@ export const booksRawList = [
     shortDescription:
       '"POJOs in Action is required reading for battle-weary EJB developers and for new developers who want to avoid the sins of the fathers by using lightweight frameworks.    -- C# Online.NET',
     authors: ['Chris Richardson'],
-  },
-  {
-    title: 'Hello! HTML5 & CSS3',
-    isbn: '1935182897',
-    pageCount: 325,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/crowther.jpg',
-    shortDescription:
-      "Quick and Easy HTML5 and CSS3 is written for the web designer or developer who wants a fast, example-oriented introduction to the new HTML and CSS features. After a quick review of the basics, you'll turn to what's new. Start by learning to apply important new elements and attributes by building your first real HTML5 pages. You'll then take a quick tour through the new APIs: Form Validation, Canvas, Drag & Drop, Geolocation and Offline Applications. You'll also discover how to include video and audio on your pages without plug-ins, and how to draw interactive vector graphics with SVG.",
-    authors: ['Rob Crowther'],
-  },
-  {
-    title: 'Seam in Action',
-    isbn: '1933988401',
-    pageCount: 624,
-    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/dallen.jpg',
-    shortDescription:
-      'Seam in Action goes into great detail on the ways in which Seam helps reduce the burden of integration with different technologies such as Hibernate and JSF, allowing the developer to focus on the core business objective at hand.       Shobana Jayaraman, Digital Infrastructure Analyst, University of Texas Southwestern Medical Center Library, The Tech Static',
-    authors: ['Dan Allen'],
   },
   {
     title: 'Lucene in Action, Second Edition',
@@ -516,6 +369,7 @@ export const booksRawList = [
   },
   {
     title: 'Portlets and Apache Portals',
+    isbn: '1930110922',
     pageCount: 500,
     thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/hepper.jpg',
     shortDescription:

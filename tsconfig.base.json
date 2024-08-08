@@ -23,7 +23,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ronas-it/examples": ["src/examples/src/index.ts"],
+      "@ronas-it/example/virtualized-scroll-example": ["src/libs/example/virtualized-scroll-example/src/index.ts"],
       "@ronas-it/react-native-common-modules": ["src/lib/src/index.ts"]
     }
   },
