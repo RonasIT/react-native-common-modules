@@ -63,7 +63,7 @@ A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that
 
 **Example:**
 
-```jsx
+```tsx
 export function App(): ReactElement {
   const [direction, setDirection] = useState<'UP' | 'DOWN'>();
 
@@ -81,7 +81,7 @@ export function App(): ReactElement {
 
   const renderItem: VirtualizedListProps<Book>['renderItem'] = ({ item }) => {
     return (
-      <View >
+      <View>
         <Text>{item.isbn}</Text>
         <Text>{item.title}</Text>
       </View>
