@@ -96,7 +96,37 @@ usePushNotifications({
 })
 ```
 
-### Development utils
+#### 2. Storage
+
+A library that provides two types of key-value storage API: [AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/usage/) and [SecuredStorage](https://docs.expo.dev/versions/latest/sdk/securestore/) (IOS, Android).
+
+**Example**
+
+Implement storage service:
+
+```ts
+import { AsyncStorageItem, SecureStorageItem } from '@ronas-it/react-native-common-modules';
+
+class AppStorageService {
+  public token = new SecureStorageItem('token');
+  public tokenExpiryDate = new SecureStorageItem('tokenExpiryDate');
+  public language = new AsyncStorageItem('language');
+}
+
+export const appStorageService = new AppStorageService();
+```
+
+Usage:
+```ts
+// Get storage item
+const token = await appStorageService.token.get();
+// Set storage item
+appStorageService.token.set('new_token');
+// Delete storage item
+appStorageService.token.remove();
+```
+
+### Utils
 
 #### 1. `setupReactotron(projectName: string)`
 
@@ -117,4 +147,85 @@ const initStore = createStoreInitializer({
   middlewares,
   enhancers,
 });
+```
+
+#### 2. `i18n`
+
+Provides functions to set language and use translations using [i18n-js](https://github.com/fnando/i18n-js)
+
+**Example:**
+
+root layout:
+
+```ts
+const translations = {
+  en: {
+    ...require('i18n/example/en.json')
+  },
+  fr: {
+    ...require('i18n/example/fr.json')
+  }
+};
+
+const useLanguage = setLanguage(translations, 'en');
+
+interface LanguageContextProps {
+  language: string;
+  onLanguageChange?: (language: keyof typeof translations) => void;
+}
+
+export const LanguageContext = createContext<LanguageContextProps>({ language: 'en' });
+
+function App(): ReactElement {
+  return (
+    <Stack>
+      <Stack.Screen name='index' />
+    </Stack>
+  );
+}
+
+export default function RootLayout(): ReactElement | null {
+  const [language, setLanguage] = useState<keyof typeof translations>('en');
+
+  useLanguage(language);
+
+  return (
+    <LanguageContext.Provider value={{ language, onLanguageChange: setLanguage }}>
+      <App />
+    </LanguageContext.Provider>
+  );
+}
+```
+
+screen:
+
+```ts
+import { AppPressable, AppSafeAreaView, useTranslation } from '@ronas-it/react-native-common-modules';
+import { ReactElement, useContext } from 'react';
+import { View, Text, Alert } from 'react-native';
+import { LanguageContext } from './_layout';
+
+export default function RootScreen(): ReactElement {
+  const translate = useTranslation('EXAMPLE');
+  const { language, onLanguageChange } = useContext(LanguageContext);
+
+  const onPress = () => Alert.alert(translate('TEXT_PRESSED'));
+
+  const handleLanguageChange = (): void => {
+    onLanguageChange?.(language === 'en' ? 'fr' : 'en');
+  };
+
+  return (
+    <AppSafeAreaView edges={['bottom']} style={styles.safeAreaContainer}>
+      <View style={styles.container}>
+        <AppPressable onPress={onPress} hitSlop={10}>
+        <Text>{translate('BUTTON_PRESS_ME')}</Text>
+        </AppPressable>
+        <AppPressable onPress={handleLanguageChange} hitSlop={10}>
+          <Text>{translate('BUTTON_LANGUAGE')}</Text>
+        </AppPressable>
+      </View>
+    </AppSafeAreaView>
+  );
+}
 ```
