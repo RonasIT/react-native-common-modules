@@ -184,7 +184,7 @@ appStorageService.token.set('new_token');
 appStorageService.token.remove();
 ```
 
-### Development utils
+### Utils
 
 #### 1. `setupReactotron(projectName: string)`
 
