@@ -50,6 +50,64 @@ A component for granular control of safe area edges on each screen. The differen
 </AppSafeAreaView>
 ```
 
+#### 3. `VirtualizedList`
+
+A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that includes `onScrollUp` and `onScrollDown` props.
+
+**Props:**
+
+- `onScrollUp`: Called when user scrolls up.
+- `onScrollDown`: Called when user scrolls down.
+
+> **_NOTE:_** `onScrollUp` and `onScrollDown` are synced with `onScroll`
+
+**Example:**
+
+```tsx
+export function App(): ReactElement {
+  const [direction, setDirection] = useState<'UP' | 'DOWN'>();
+
+  const handleScrollUp = (): void => {
+    setDirection('UP');
+  };
+
+  const handleScrollDown = (): void => {
+    setDirection('DOWN');
+  };
+
+  const handleScrollEnd = (): void => {
+    setDirection(undefined);
+  };
+
+  const renderItem: VirtualizedListProps<Book>['renderItem'] = ({ item }) => {
+    return (
+      <View>
+        <Text>{item.isbn}</Text>
+        <Text>{item.title}</Text>
+      </View>
+    );
+  };
+
+  const keyExtractor: VirtualizedListProps<Book>['keyExtractor'] = (item) => item.isbn;
+
+  return (
+    <View>
+      <Text>Direction: {direction}</Text>
+      <VirtualizedList
+        estimatedItemSize={86}
+        data={books}
+        renderItem={renderItem}
+        onScrollUp={handleScrollUp}
+        onScrollDown={handleScrollDown}
+        onScrollEndDrag={handleScrollEnd}
+        onMomentumScrollEnd={handleScrollEnd}
+        keyExtractor={keyExtractor}
+      />
+    </View>
+  );
+}
+```
+
 ### Services
 
 #### 1. Push notifications
@@ -137,7 +195,7 @@ Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?
 
 ```ts
 import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
-import { setupReactotron } from '@ronas-it/react-native-common-modules'
+import { setupReactotron } from '@ronas-it/react-native-common-modules';
 
 const reactotron = setupReactotron('your-app');
 const enhancers = reactotron ? [reactotron.createEnhancer()] : [];
