@@ -184,6 +184,38 @@ appStorageService.token.set('new_token');
 appStorageService.token.remove();
 ```
 
+#### 3. Image Picker
+
+`ImagePickerService` gives the application access to the camera and image gallery.
+
+Public methods:
+- `getImage` - initializes the application (camera or gallery) and returns a result containing an image.
+- `launchGallery` - launches the gallery application and returns a result containing the selected images.
+- `launchCamera` - launches the camera application and returns the taken photo.
+- `requestGalleryAccess` - requests the application access to the gallery.
+- `requestCameraAccess` - requests the application access to the camera.
+- `getFormData` - creates a [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object with image.
+
+**Example**
+
+Pick image and send request:
+
+```ts
+const handlePickImage = async (source: ImagePickerSource) => {
+  const image = await imagePickerService.getImage(source);
+  const asset = image?.assets?.[0];
+
+  if (!asset) {
+    return;
+  }
+
+  const data = imagePickerService.getFormData(asset.uri);
+
+  // API call
+  createMedia(data);
+};
+```
+
 ### Utils
 
 #### 1. `setupReactotron(projectName: string)`
