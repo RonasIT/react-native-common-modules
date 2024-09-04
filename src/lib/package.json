@@ -1,6 +1,6 @@
 {
   "name": "@ronas-it/react-native-common-modules",
-  "version": "0.3.0",
+  "version": "0.4.1",
   "description": "Common modules for React Native apps at Ronas IT",
   "license": "MIT",
   "author": "Ronas IT",
@@ -30,6 +30,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@reduxjs/toolkit": "^2.2.6",
+    "@shopify/flash-list": "^1.6.4",
     "expo-device": "~6.0.2",
     "expo-image-picker": "^15.0.5",
     "expo-localization": "^15.0.3",
