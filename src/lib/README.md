@@ -2,12 +2,6 @@
 
 Common components for Ronas IT projects.
 
-## Start the example app
-
-1. Install dependencies: `npm install`
-2. Start app for local development: `cd apps/example && npx expo start`
-3. Use [Expo Go](https://expo.dev/client) to run mobile version
-
 ## Usage
 
 1. Install the package: `npm i @ronas-it/react-native-common-modules`
@@ -48,6 +42,64 @@ A component for granular control of safe area edges on each screen. The differen
 <AppSafeAreaView edges={['top', 'bottom']} style={styles.container}>
   <Text>Content goes here</Text>
 </AppSafeAreaView>
+```
+
+#### 3. `VirtualizedList`
+
+A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that includes `onScrollUp` and `onScrollDown` props.
+
+**Props:**
+
+- `onScrollUp`: Called when user scrolls up.
+- `onScrollDown`: Called when user scrolls down.
+
+> **_NOTE:_** `onScrollUp` and `onScrollDown` are synced with `onScroll`
+
+**Example:**
+
+```tsx
+export function App(): ReactElement {
+  const [direction, setDirection] = useState<'UP' | 'DOWN'>();
+
+  const handleScrollUp = (): void => {
+    setDirection('UP');
+  };
+
+  const handleScrollDown = (): void => {
+    setDirection('DOWN');
+  };
+
+  const handleScrollEnd = (): void => {
+    setDirection(undefined);
+  };
+
+  const renderItem: VirtualizedListProps<Book>['renderItem'] = ({ item }) => {
+    return (
+      <View>
+        <Text>{item.isbn}</Text>
+        <Text>{item.title}</Text>
+      </View>
+    );
+  };
+
+  const keyExtractor: VirtualizedListProps<Book>['keyExtractor'] = (item) => item.isbn;
+
+  return (
+    <View>
+      <Text>Direction: {direction}</Text>
+      <VirtualizedList
+        estimatedItemSize={86}
+        data={books}
+        renderItem={renderItem}
+        onScrollUp={handleScrollUp}
+        onScrollDown={handleScrollDown}
+        onScrollEndDrag={handleScrollEnd}
+        onMomentumScrollEnd={handleScrollEnd}
+        keyExtractor={keyExtractor}
+      />
+    </View>
+  );
+}
 ```
 
 ### Services
@@ -126,6 +178,38 @@ appStorageService.token.set('new_token');
 appStorageService.token.remove();
 ```
 
+#### 3. Image Picker
+
+`ImagePickerService` gives the application access to the camera and image gallery.
+
+Public methods:
+- `getImage` - initializes the application (camera or gallery) and returns a result containing an image.
+- `launchGallery` - launches the gallery application and returns a result containing the selected images.
+- `launchCamera` - launches the camera application and returns the taken photo.
+- `requestGalleryAccess` - requests the application access to the gallery.
+- `requestCameraAccess` - requests the application access to the camera.
+- `getFormData` - creates a [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object with image.
+
+**Example**
+
+Pick image and send request:
+
+```ts
+const handlePickImage = async (source: ImagePickerSource) => {
+  const image = await imagePickerService.getImage(source);
+  const asset = image?.assets?.[0];
+
+  if (!asset) {
+    return;
+  }
+
+  const data = imagePickerService.getFormData(asset.uri);
+
+  // API call
+  createMedia(data);
+};
+```
+
 ### Utils
 
 #### 1. `setupReactotron(projectName: string)`
@@ -137,7 +221,7 @@ Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?
 
 ```ts
 import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
-import { setupReactotron } from '@ronas-it/react-native-common-modules'
+import { setupReactotron } from '@ronas-it/react-native-common-modules';
 
 const reactotron = setupReactotron('your-app');
 const enhancers = reactotron ? [reactotron.createEnhancer()] : [];
