@@ -22,6 +22,8 @@ This component can be used in the same way as the built-in [Pressable component]
 **Example:**
 
 ```jsx
+import { AppPressable } from '@ronas-it/react-native-common-modules';
+
 <AppPressable style={styles.button} pressedOpacity={0.5}>
   <Text>Press Me</Text>
 </AppPressable>
@@ -39,6 +41,8 @@ A component for granular control of safe area edges on each screen. The differen
 **Example:**
 
 ```jsx
+import { AppSafeAreaView } from '@ronas-it/react-native-common-modules';
+
 <AppSafeAreaView edges={['top', 'bottom']} style={styles.container}>
   <Text>Content goes here</Text>
 </AppSafeAreaView>
@@ -58,6 +62,8 @@ A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that
 **Example:**
 
 ```tsx
+import { VirtualizedList, VirtualizedListProps } from '@ronas-it/react-native-common-modules';
+
 export function App(): ReactElement {
   const [direction, setDirection] = useState<'UP' | 'DOWN'>();
 
@@ -136,6 +142,9 @@ Used in the root `App` component.
 
 ```ts
 // Somewhere in a root component of your app:
+import { usePushNotifications } from '@ronas-it/react-native-common-modules';
+
+...
 const authToken = useSelector(authSelectors.token);
 ...
 usePushNotifications({
@@ -195,6 +204,8 @@ Public methods:
 Pick image and send request:
 
 ```ts
+import { imagePickerService, ImagePickerSource } from '@ronas-it/react-native-common-modules';
+
 const handlePickImage = async (source: ImagePickerSource) => {
   const image = await imagePickerService.getImage(source);
   const asset = image?.assets?.[0];
@@ -242,6 +253,8 @@ Provides functions to set language and use translations using [i18n-js](https://
 root layout:
 
 ```ts
+import { setLanguage } from '@ronas-it/react-native-common-modules';
+
 const translations = {
   en: {
     ...require('i18n/example/en.json')
