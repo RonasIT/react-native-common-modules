@@ -13,11 +13,16 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
   }
 
   public async connect(authToken?: string): Promise<void> {
-    const authURL = this.options.authURL;
+    const activityTimeout = this.options.activityTimeout;
+    const pongTimeout = this.options.pongTimeout;
+
     await this.pusher.init({
-      ...omit(this.options, ['authURL']),
+      ...omit(this.options, ['authURL', 'activityTimeout', 'pongTimeout']),
+      // RN Pusher accepts timeouts in seconds
+      activityTimeout: activityTimeout ? Math.round(activityTimeout) : undefined,
+      pongTimeout: pongTimeout ? Math.round(pongTimeout) : undefined,
       onSubscriptionError: (channelName) =>  this.addEventHandlerToPusher(channelName as TChannelName),
-      onAuthorizer: authURL ? async (channelName: string, socketID: string) => {
+      onAuthorizer: this.options.authURL ? async (channelName: string, socketID: string) => {
         return await this.authorize(channelName, socketID, authToken);
       } : undefined
     });

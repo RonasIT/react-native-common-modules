@@ -221,6 +221,53 @@ const handlePickImage = async (source: ImagePickerSource) => {
 };
 ```
 
+#### 4. WebSocket
+
+`WebSocketService` manages WebSocket connections using [Pusher](https://pusher.com/) and can work in both web and mobile applications.
+Doesn't support Expo Go.
+
+Options for `WebSocketService` constructor:
+
+- `apiKey` (required) - `APP_KEY` from [Pusher Channels Dashboard](https://dashboard.pusher.com/).
+- `cluster` (required) - `APP_CLUSTER` from [Pusher Channels Dashboard](https://dashboard.pusher.com/).
+- `authURL` (optional) - a URL that returns the authentication signature needed for private channels.
+- `useTLS` (optional) - a flag that indicates whether TLS encrypted transport should be used. Default value is `true`.
+- `activityTimeout` (optional) - time in milliseconds to ping a server after last message.
+- `pongTimeout` (optional) - time in milliseconds to wait a response after a pinging request.
+
+`WebSocketService` public methods:
+
+- `connect` initializes and connects the Pusher client. Optional authorization token is used for secure connections.
+- `subscribeToChannel` subscribes to a specified channel and registers an event listener for incoming messages on that channel.
+- `unsubscribeFromChannel` removes an event listener and, if there is no listeners for a specified channel, unsubscribes from it.
+
+**Example:**
+
+```ts
+import { WebSocketService } from '@ronas-it/react-native-common-modules';
+
+// Create a service instance
+type ChannelName = `private-conversations.${number}` | `private-users.${number}`;
+const webSocketService = new WebSocketService<ChannelName>({
+  apiKey: '1234567890qwertyuiop',
+  cluster: 'eu',
+  authURL: 'https://your-api.com/api/v1/broadcasting/auth'
+});
+
+// Initialize Pusher, e.g. after an app initialization or successful authorization
+await webSocketService.connect('your-auth-token');
+
+// Subscribe to a channel when it's necessary
+webSocketService.subscribeToChannel('private-conversations.123', (event) => {
+  console.log('Received event:', event);
+});
+
+// Unsubscribe from a channel, e.g. before an app closing or logging out
+webSocketService.unsubscribeFromChannel('private-conversations.123', (event) => {
+  console.log('Received event:', event);
+});
+```
+
 ### Utils
 
 #### 1. `setupReactotron(projectName: string)`

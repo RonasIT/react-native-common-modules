@@ -2,7 +2,7 @@ export interface WebSocketOptions {
   apiKey: string;
   cluster: string;
   useTLS?: boolean;
-  activityTimeout?: number;
-  pongTimeout?: number;
+  activityTimeout?: number; // in ms
+  pongTimeout?: number; // in ms
   authURL?: string;
 }
