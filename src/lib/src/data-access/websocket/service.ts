@@ -1,7 +1,8 @@
 import { Pusher, PusherEvent } from '@pusher/pusher-websocket-react-native';
 import { BaseWebSocketService } from './base-service';
 import { WebSocketListener } from './types';
-import { WebSocketOptions } from './interfaces/options';
+import { WebSocketOptions } from './interfaces';
+import { omit } from 'lodash';
 
 export class WebSocketService<TChannelName extends string> extends BaseWebSocketService<TChannelName> {
   private readonly pusher: Pusher;
@@ -14,8 +15,7 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
   public async connect(): Promise<void> {
     const authOptions = this.options.auth;
     await this.pusher.init({
-      apiKey: this.options.key,
-      cluster: this.options.cluster,
+      ...omit(this.options, ['auth']),
       onSubscriptionError: (channelName) =>  this.addEventHandlerToPusher(channelName as TChannelName),
       onAuthorizer: authOptions ? async (channelName: string, socketID: string) => {
         return await this.authorize(channelName, socketID);

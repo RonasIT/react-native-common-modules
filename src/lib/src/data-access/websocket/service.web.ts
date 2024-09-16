@@ -2,13 +2,16 @@ import Pusher, { ChannelAuthorizationCallback } from 'pusher-js';
 import { BaseWebSocketService } from './base-service';
 import { WebSocketListener } from './types';
 import { ChannelAuthorizationRequestParams } from 'pusher-js/types/src/core/auth/options';
+import { omit } from 'lodash';
 
 export class WebSocketService<TChannelName extends string> extends BaseWebSocketService<TChannelName> {
   private pusher?: Pusher;
 
   public connect(): void {
     const authOptions = this.options.auth;
-    this.pusher = new Pusher(this.options.key, {
+    this.pusher = new Pusher(this.options.apiKey, {
+      ...omit(this.options, ['auth', 'apiKey', 'useTLS']),
+      forceTLS: this.options.useTLS,
       cluster: this.options.cluster,
       channelAuthorization: authOptions ? {
         customHandler: async (
