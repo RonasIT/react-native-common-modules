@@ -4,8 +4,5 @@ export interface WebSocketOptions {
   useTLS?: boolean;
   activityTimeout?: number;
   pongTimeout?: number;
-  auth?: {
-    url: string;
-    token?: string
-  }
+  authURL?: string;
 }

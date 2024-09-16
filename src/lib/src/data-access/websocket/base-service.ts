@@ -11,7 +11,7 @@ export abstract class BaseWebSocketService<TChannelName extends string> {
     this.options = options;
   }
 
-  public abstract connect(authToken: string | null): void;
+  public abstract connect(authToken?: string): void;
 
   public subscribeToChannel(channelName: TChannelName, onEvent: WebSocketListener): void {
     this.channels[channelName] ? this.channels[channelName].push(onEvent) : (this.channels[channelName] = [onEvent]);
@@ -24,17 +24,17 @@ export abstract class BaseWebSocketService<TChannelName extends string> {
     }
   }
 
-  protected async authorize(channelName: string, socketID: string): Promise<ChannelAuthorizationData> {
-    const authOptions = this.options.auth;
+  protected async authorize(channelName: string, socketID: string, authToken?: string): Promise<ChannelAuthorizationData> {
+    const authURL = this.options.authURL;
 
-    if (!authOptions) {
-      throw new Error('Unable to connect to WebSocket, because auth options are missing');
+    if (!authURL || !authToken) {
+      throw new Error('Unable to connect to WebSocket, because auth url or token is missing');
     }
 
-    const response = await fetch(authOptions.url, {
+    const response = await fetch(authURL, {
       method: 'POST',
-      credentials: authOptions.token ? undefined : 'include',
-      headers: this.getAuthHeaders(authOptions.token),
+      credentials: authToken ? undefined : 'include',
+      headers: this.getAuthHeaders(authToken),
       body: JSON.stringify({
         socket_id: socketID,
         channel_name: channelName

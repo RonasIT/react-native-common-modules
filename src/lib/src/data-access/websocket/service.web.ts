@@ -7,18 +7,18 @@ import { omit } from 'lodash';
 export class WebSocketService<TChannelName extends string> extends BaseWebSocketService<TChannelName> {
   private pusher?: Pusher;
 
-  public connect(): void {
-    const authOptions = this.options.auth;
+  public connect(authToken?: string): void {
+    const authURL = this.options.authURL;
     this.pusher = new Pusher(this.options.apiKey, {
-      ...omit(this.options, ['auth', 'apiKey', 'useTLS']),
+      ...omit(this.options, ['authURL', 'apiKey', 'useTLS']),
       forceTLS: this.options.useTLS,
       cluster: this.options.cluster,
-      channelAuthorization: authOptions ? {
+      channelAuthorization: authURL ? {
         customHandler: async (
           { socketId, channelName }: ChannelAuthorizationRequestParams,
           callback: ChannelAuthorizationCallback
         ) => {
-          const authData = await this.authorize(channelName, socketId);
+          const authData = await this.authorize(channelName, socketId, authToken);
           callback(null, authData);
         }
       } : undefined

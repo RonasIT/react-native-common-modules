@@ -12,13 +12,13 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
     this.pusher = Pusher.getInstance();
   }
 
-  public async connect(): Promise<void> {
-    const authOptions = this.options.auth;
+  public async connect(authToken?: string): Promise<void> {
+    const authURL = this.options.authURL;
     await this.pusher.init({
-      ...omit(this.options, ['auth']),
+      ...omit(this.options, ['authURL']),
       onSubscriptionError: (channelName) =>  this.addEventHandlerToPusher(channelName as TChannelName),
-      onAuthorizer: authOptions ? async (channelName: string, socketID: string) => {
-        return await this.authorize(channelName, socketID);
+      onAuthorizer: authURL ? async (channelName: string, socketID: string) => {
+        return await this.authorize(channelName, socketID, authToken);
       } : undefined
     });
     this.pusher.connect();
