@@ -232,6 +232,9 @@ const handlePickImage = async (source: ImagePickerSource) => {
 `WebSocketService` manages WebSocket connections using [Pusher](https://pusher.com/) and can work in both web and mobile applications.
 Doesn't support Expo Go.
 
+It's necessary to install [@pusher/pusher-websocket-react-native](https://github.com/pusher/pusher-websocket-react-native)
+for a mobile app and [pusher-js](https://github.com/pusher/pusher-js) for a web app.
+
 Options for `WebSocketService` constructor:
 
 - `apiKey` (required) - `APP_KEY` from [Pusher Channels Dashboard](https://dashboard.pusher.com/).
