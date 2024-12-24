@@ -15,6 +15,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: 'example-app',
     scheme: 'example-dev',
     version: '0.1.0',
+    newArchEnabled: true,
     orientation: 'portrait',
     icon: './assets/icon.png',
     splash: {

@@ -7,7 +7,7 @@ export class AsyncStorageItem implements StorageItem {
 
   public async set(value: string | null): Promise<void> {
     if (isNil(value)) {
-      this.remove();
+      await this.remove();
     } else {
       await AsyncStorage.setItem(this.key, value);
     }

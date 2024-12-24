@@ -4,7 +4,7 @@ import { Alert, Linking } from 'react-native';
 
 export class ImagePickerService {
   public defaultOptions: ImagePicker.ImagePickerOptions = {
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    mediaTypes: 'images',
     allowsEditing: true,
     base64: true,
     quality: 0.3,
