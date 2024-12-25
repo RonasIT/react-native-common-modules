@@ -15,7 +15,6 @@ module.exports = {
     react: {
       version: 'detect',
     },
-    'react-native/style-sheet-object-names': ['EStyleSheet'],
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
@@ -33,7 +32,7 @@ module.exports = {
     'unused-imports',
     'react',
     'react-hooks',
-    'react-native',
+    '@stylistic',
     'import',
   ],
   extends: [
@@ -44,27 +43,27 @@ module.exports = {
     'prettier',
   ],
   rules: {
-    indent: ['warn', 2, { SwitchCase: 1 }],
-    quotes: ['warn', 'single', { allowTemplateLiterals: true }],
+    '@stylistic/indent': ['warn', 2, { SwitchCase: 1 }],
+    '@stylistic/quotes': ['warn', 'single', { allowTemplateLiterals: true }],
     'react/react-in-jsx-scope': 'off',
-    'arrow-parens': ['warn', 'always'],
-    'comma-dangle': ['warn', 'never'],
+    '@stylistic/arrow-parens': ['warn', 'always'],
+    '@stylistic/comma-dangle': ['warn', 'never'],
     'no-var': 'warn',
     'no-dupe-class-members': 'off',
     'import/prefer-default-export': 'off',
-    'implicit-arrow-linebreak': ['warn', 'beside'],
-    'newline-per-chained-call': ['warn', { ignoreChainWithDepth: 2 }],
-    'function-call-argument-newline': ['warn', 'consistent'],
-    'function-paren-newline': ['warn', 'consistent'],
-    'array-element-newline': ['warn', 'consistent'],
-    'array-bracket-newline': ['warn', { multiline: true }],
-    'padding-line-between-statements': [
+    '@stylistic/implicit-arrow-linebreak': ['warn', 'beside'],
+    '@stylistic/newline-per-chained-call': ['warn', { ignoreChainWithDepth: 2 }],
+    '@stylistic/function-call-argument-newline': ['warn', 'consistent'],
+    '@stylistic/function-paren-newline': ['warn', 'consistent'],
+    '@stylistic/array-element-newline': ['warn', 'consistent'],
+    '@stylistic/array-bracket-newline': ['warn', { multiline: true }],
+    '@stylistic/padding-line-between-statements': [
       'warn',
       { blankLine: 'always', prev: '*', next: 'return' },
       { blankLine: 'always', prev: '*', next: 'multiline-block-like' },
     ],
     '@typescript-eslint/no-use-before-define': ['warn', { variables: false }],
-    '@typescript-eslint/lines-between-class-members': [
+    '@stylistic/lines-between-class-members': [
       'warn',
       'always',
       { exceptAfterSingleLine: true },
@@ -86,7 +85,7 @@ module.exports = {
       'warn',
       { allowExpressions: true },
     ],
-    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-require-imports': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/array-type': [
       'warn',
@@ -153,8 +152,8 @@ module.exports = {
         format: ['UPPER_CASE'],
       },
     ],
-    'unused-imports/no-unused-imports-ts': 'warn',
-    'unused-imports/no-unused-vars-ts': [
+    'unused-imports/no-unused-imports': 'warn',
+    'unused-imports/no-unused-vars': [
       'warn',
       {
         vars: 'all',
@@ -163,15 +162,12 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
-    'jsx-quotes': ['warn', 'prefer-single'],
+    '@stylistic/jsx-quotes': ['warn', 'prefer-single'],
     'react/jsx-boolean-value': 'off',
-    'react/self-closing-comp': ['warn', { component: true, html: true }],
-    'react/jsx-max-props-per-line': [1, { maximum: { single: 2, multi: 1 } }],
-    'react/jsx-first-prop-new-line': ['warn', 'multiline'],
+    '@stylistic/jsx-self-closing-comp': ['warn', { component: true, html: true }],
+    '@stylistic/jsx-max-props-per-line': [1, { maximum: { single: 2, multi: 1 } }],
+    '@stylistic/jsx-first-prop-new-line': ['warn', 'multiline'],
     'react/prop-types': 'off',
-    'react-native/no-unused-styles': 'warn',
-    'react-native/no-inline-styles': 'warn',
-    'react-native/no-single-element-style-arrays': 'warn',
     'react/jsx-fragments': ['warn', 'element'],
     'import/newline-after-import': 'warn',
     'import/no-unresolved': 'error',
@@ -206,8 +202,8 @@ module.exports = {
     {
       files: ['*actions.ts'],
       rules: {
-        'function-call-argument-newline': ['warn', 'always'],
-        'function-paren-newline': ['warn', { minItems: 1 }],
+        '@stylistic/function-call-argument-newline': ['warn', 'always'],
+        '@stylistic/function-paren-newline': ['warn', { minItems: 1 }],
       },
     },
     {
@@ -215,8 +211,8 @@ module.exports = {
       rules: {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
-        'function-call-argument-newline': ['warn', 'always'],
-        'function-paren-newline': ['warn', 'multiline-arguments'],
+        '@stylistic/function-call-argument-newline': ['warn', 'always'],
+        '@stylistic/function-paren-newline': ['warn', 'multiline-arguments'],
       },
     },
   ],
