@@ -1,18 +1,28 @@
-import React from 'react';
-import { Pressable, PressableProps, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import React, { forwardRef } from 'react';
+import { Pressable, PressableProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 export interface AppPressableProps extends PressableProps {
   pressedOpacity?: number;
 }
 
-export function AppPressable({ children, style, pressedOpacity = 0.4, ...props }: AppPressableProps) {
+export const AppPressable = forwardRef<View, AppPressableProps>(({
+  children,
+  style,
+  pressedOpacity = 0.4,
+  ...props
+}, ref) => {
   return (
     <Pressable
+      ref={ref}
       style={({ pressed }) =>
-        StyleSheet.flatten([{ opacity: pressed ? pressedOpacity : 1 }, style as StyleProp<ViewStyle>])
+        StyleSheet.flatten([
+          { opacity: pressed ? pressedOpacity : 1 },
+          style as StyleProp<ViewStyle>,
+        ])
       }
-      {...props}>
+      {...props}
+    >
       {children}
     </Pressable>
   );
-}
+});
