@@ -1,6 +1,6 @@
 {
   "name": "@ronas-it/react-native-common-modules",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Common modules for React Native apps at Ronas IT",
   "license": "MIT",
   "author": "Ronas IT",
@@ -44,7 +44,7 @@
     "expo-secure-store": "^14.0.0",
     "i18n-js": "^4.5.1",
     "lodash": "^4.17.21",
-    "react-native-safe-area-context": "~5.0.0",
+    "react-native-safe-area-context": "^4.12.0",
     "reactotron-react-native": "^5.1.11",
     "reactotron-redux": "^3.1.10"
   }
