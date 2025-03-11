@@ -23,7 +23,7 @@
   "files": [
     "src"
   ],
-  "dependencies": {
+  "devDependencies": {
     "@nx/rollup": "20.3.0"
   },
   "peerDependencies": {
@@ -43,7 +43,6 @@
     "expo-notifications": "*",
     "expo-router": "*",
     "i18n-js": "*",
-    "lodash": "*",
     "react-native-safe-area-context": "*",
     "reactotron-react-native": "*",
     "reactotron-redux": "*",
@@ -87,9 +86,6 @@
       "optional": true
     },
     "i18n-js": {
-      "optional": true
-    },
-    "lodash": {
       "optional": true
     },
     "react-native-safe-area-context": {
