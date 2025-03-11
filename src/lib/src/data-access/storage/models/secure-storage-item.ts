@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { isNil } from 'lodash';
+import { isNil } from 'lodash-es';
 import { StorageItem } from './item';
 
 /**

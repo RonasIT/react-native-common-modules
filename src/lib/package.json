@@ -43,6 +43,7 @@
     "expo-notifications": "*",
     "expo-router": "*",
     "i18n-js": "*",
+    "lodash-es": "*",
     "react-native-safe-area-context": "*",
     "reactotron-react-native": "*",
     "reactotron-redux": "*",

@@ -1,4 +1,4 @@
-import { pick, startCase } from 'lodash';
+import { pick, startCase } from 'lodash-es';
 import { ReactElement, useMemo } from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { Edge, useSafeAreaInsets } from 'react-native-safe-area-context';

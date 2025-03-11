@@ -37,7 +37,7 @@ import { AppPressable } from '@ronas-it/react-native-common-modules';
 
 #### 2. `AppSafeAreaView`
 
-> **_NOTE:_** Required dependencies: `react-native-safe-area-context`, `lodash`
+> **_NOTE:_** Required dependencies: `react-native-safe-area-context`
 
 A component for granular control of safe area edges on each screen. The difference from `SafeAreaView` in [react-native-safe-area-context](https://www.npmjs.com/package/react-native-safe-area-context) is that the container adds padding to the elements inside it, rather than to the entire screen, making it more flexible for use.
 
@@ -122,7 +122,7 @@ export function App(): ReactElement {
 
 #### 1. Push notifications
 
-> **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`, `lodash`
+> **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
 
 ##### `PushNotificationsService`
 
@@ -173,7 +173,7 @@ usePushNotifications({
 
 > **_NOTE:_** The `AsyncStorageItem` and `SecureStorageItem` classes are deprecated and will be removed in future versions. Please use the `react-native-mmkv` implementation instead.
 
-> **_NOTE:_** Required dependencies: `@react-native-async-storage/async-storage`, `expo-secure-store`, `lodash`
+> **_NOTE:_** Required dependencies: `@react-native-async-storage/async-storage`, `expo-secure-store`
 
 A library that provides two types of key-value storage API: [AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/usage/) and [SecuredStorage](https://docs.expo.dev/versions/latest/sdk/securestore/) (IOS, Android).
 
@@ -241,7 +241,7 @@ const handlePickImage = async (source: ImagePickerSource) => {
 
 #### 4. WebSocket
 
-> **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `lodash`
+> **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`
 
 `WebSocketService` manages WebSocket connections using [Pusher](https://pusher.com/) and can work in both web and mobile applications.
 Doesn't support Expo Go.

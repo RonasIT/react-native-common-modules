@@ -2,7 +2,7 @@ import { Pusher, PusherEvent } from '@pusher/pusher-websocket-react-native';
 import { BaseWebSocketService } from './base-service';
 import { WebSocketListener } from './types';
 import { WebSocketOptions } from './interfaces';
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
 
 export class WebSocketService<TChannelName extends string> extends BaseWebSocketService<TChannelName> {
   private readonly pusher: Pusher;

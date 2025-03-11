@@ -2,7 +2,7 @@ import Pusher, { ChannelAuthorizationCallback } from 'pusher-js';
 import { BaseWebSocketService } from './base-service';
 import { WebSocketListener } from './types';
 import { ChannelAuthorizationRequestParams } from 'pusher-js/types/src/core/auth/options';
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
 
 export class WebSocketService<TChannelName extends string> extends BaseWebSocketService<TChannelName> {
   private pusher?: Pusher;

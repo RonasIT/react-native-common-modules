@@ -1,4 +1,4 @@
-import { without } from 'lodash';
+import { without } from 'lodash-es';
 import { WebSocketListener } from './types';
 import { WebSocketChannels, WebSocketOptions } from './interfaces';
 import { ChannelAuthorizationData } from 'pusher-js/types/src/core/auth/options';

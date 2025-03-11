@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { isNil } from 'lodash';
+import { isNil } from 'lodash-es';
 import { StorageItem } from './item';
 
 /**
