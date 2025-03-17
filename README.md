@@ -37,6 +37,8 @@ import { AppPressable } from '@ronas-it/react-native-common-modules';
 
 #### 2. `AppSafeAreaView`
 
+> **_NOTE:_** Required dependencies: `react-native-safe-area-context`
+
 A component for granular control of safe area edges on each screen. The difference from `SafeAreaView` in [react-native-safe-area-context](https://www.npmjs.com/package/react-native-safe-area-context) is that the container adds padding to the elements inside it, rather than to the entire screen, making it more flexible for use.
 
 **Props:**
@@ -55,6 +57,8 @@ import { AppSafeAreaView } from '@ronas-it/react-native-common-modules';
 ```
 
 #### 3. `VirtualizedList`
+
+> **_NOTE:_** Required dependencies: `@shopify/flash-list`
 
 A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that includes `onScrollUp` and `onScrollDown` props.
 
@@ -118,6 +122,8 @@ export function App(): ReactElement {
 
 #### 1. Push notifications
 
+> **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
+
 ##### `PushNotificationsService`
 
 Service for integrating [Expo push notifications](https://docs.expo.dev/push-notifications/overview/) into apps.
@@ -165,6 +171,10 @@ usePushNotifications({
 
 #### 2. Storage
 
+> **_NOTE:_** The `AsyncStorageItem` and `SecureStorageItem` classes are deprecated and will be removed in future versions. Please use the `react-native-mmkv` implementation instead.
+
+> **_NOTE:_** Required dependencies: `@react-native-async-storage/async-storage`, `expo-secure-store`
+
 A library that provides two types of key-value storage API: [AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/usage/) and [SecuredStorage](https://docs.expo.dev/versions/latest/sdk/securestore/) (IOS, Android).
 
 **Example**
@@ -194,6 +204,8 @@ appStorageService.token.remove();
 ```
 
 #### 3. Image Picker
+
+> **_NOTE:_** Required dependencies: `expo-image-picker`
 
 `ImagePickerService` gives the application access to the camera and image gallery.
 
@@ -228,6 +240,8 @@ const handlePickImage = async (source: ImagePickerSource) => {
 ```
 
 #### 4. WebSocket
+
+> **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`
 
 `WebSocketService` manages WebSocket connections using [Pusher](https://pusher.com/) and can work in both web and mobile applications.
 Doesn't support Expo Go.
@@ -281,6 +295,8 @@ webSocketService.unsubscribeFromChannel('private-conversations.123', (event) => 
 
 #### 1. `setupReactotron(projectName: string)`
 
+> **_NOTE:_** Required dependencies: `@reduxjs/toolkit`, `reactotron-react-native`, `reactotron-react-js`, `reactotron-redux`, `@react-native-async-storage/async-storage`
+
 Configures and initializes [Reactotron debugger](https://github.com/infinitered/reactotron) with [redux plugin](https://docs.infinite.red/reactotron/plugins/redux/) for development purposes.
 Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?q=reactotron-app&expanded=true) on your computer for use.
 
@@ -301,6 +317,8 @@ const initStore = createStoreInitializer({
 ```
 
 #### 2. `i18n`
+
+> **_NOTE:_** Required dependencies: `i18n-js`, `expo-localization`
 
 Provides functions to set language and use translations using [i18n-js](https://github.com/fnando/i18n-js)
 

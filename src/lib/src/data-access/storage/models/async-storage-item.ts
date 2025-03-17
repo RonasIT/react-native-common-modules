@@ -1,7 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { isNil } from 'lodash';
+import { isNil } from 'lodash-es';
 import { StorageItem } from './item';
 
+/**
+ * @deprecated This class is deprecated and will be removed in future versions. 
+ * Please use the react-native-mmkv implementation instead.
+ */
 export class AsyncStorageItem implements StorageItem {
   constructor(private key: string) {}
 

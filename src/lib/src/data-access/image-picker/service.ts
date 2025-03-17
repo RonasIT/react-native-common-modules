@@ -27,16 +27,16 @@ export class ImagePickerService {
     return ImagePicker.requestMediaLibraryPermissionsAsync();
   }
 
-  public launchGallery(): Promise<ImagePicker.ImagePickerResult> {
-    return ImagePicker.launchImageLibraryAsync(this.defaultOptions);
+  public launchGallery(options?: ImagePicker.ImagePickerOptions): Promise<ImagePicker.ImagePickerResult> {
+    return ImagePicker.launchImageLibraryAsync({ ...this.defaultOptions, ...options });
   }
 
   public requestCameraAccess(): Promise<ImagePicker.PermissionResponse> {
     return ImagePicker.requestCameraPermissionsAsync();
   }
 
-  public launchCamera(): Promise<ImagePicker.ImagePickerResult> {
-    return ImagePicker.launchCameraAsync(this.defaultOptions);
+  public launchCamera(options?: ImagePicker.ImagePickerOptions): Promise<ImagePicker.ImagePickerResult> {
+    return ImagePicker.launchCameraAsync({ ...this.defaultOptions, ...options });
   }
 
   private async pickImage(source: ImagePickerSource, onPermissionDenied?: () => void): Promise<ImagePicker.ImagePickerResult | ImagePickerError> {
