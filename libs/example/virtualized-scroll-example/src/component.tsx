@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { VirtualizedList, VirtualizedListProps } from '@ronas-it/react-native-common-modules';
+import { VirtualizedList, VirtualizedListProps } from '@ronas-it/react-native-common-modules/src/ui/virtualized-scroll';
 import { booksMock } from './mocks';
 import { Book } from './models';
 
