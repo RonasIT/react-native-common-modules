@@ -1,4 +1,4 @@
-import { setLanguage } from '@ronas-it/react-native-common-modules';
+import { setLanguage } from '@ronas-it/react-native-common-modules/src/utils/i18n';
 import { Stack } from 'expo-router';
 import { ReactElement, createContext, useState } from 'react';
 

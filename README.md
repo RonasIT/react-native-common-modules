@@ -2,11 +2,21 @@
 
 Common components for Ronas IT projects.
 
-## Start the example app
+## Development
+
+### Use example app
 
 1. Install dependencies: `npm install`
 2. Start app for local development: `cd apps/example && npx expo start`
 3. Use [Expo Go](https://expo.dev/client) to run mobile version
+
+### Release
+
+To publish the package update to NPM, run:
+
+```sh
+npx nx run lib:nx-release-publish
+```
 
 ## Usage
 
@@ -28,7 +38,7 @@ This component can be used in the same way as the built-in [Pressable component]
 **Example:**
 
 ```jsx
-import { AppPressable } from '@ronas-it/react-native-common-modules';
+import { AppPressable } from '@ronas-it/react-native-common-modules/src/ui/pressable';
 
 <AppPressable style={styles.button} pressedOpacity={0.5}>
   <Text>Press Me</Text>
@@ -49,7 +59,7 @@ A component for granular control of safe area edges on each screen. The differen
 **Example:**
 
 ```jsx
-import { AppSafeAreaView } from '@ronas-it/react-native-common-modules';
+import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/safe-area-view';
 
 <AppSafeAreaView edges={['top', 'bottom']} style={styles.container}>
   <Text>Content goes here</Text>
@@ -72,7 +82,7 @@ A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that
 **Example:**
 
 ```tsx
-import { VirtualizedList, VirtualizedListProps } from '@ronas-it/react-native-common-modules';
+import { VirtualizedList, VirtualizedListProps } from '@ronas-it/react-native-common-modules/src/ui/virtualized-scroll';
 
 export function App(): ReactElement {
   const [direction, setDirection] = useState<'UP' | 'DOWN'>();
@@ -154,7 +164,7 @@ Used in the root `App` component.
 
 ```ts
 // Somewhere in a root component of your app:
-import { usePushNotifications } from '@ronas-it/react-native-common-modules';
+import { usePushNotifications } from '@ronas-it/react-native-common-modules/src/data-access/push-notifications';
 
 ...
 const authToken = useSelector(authSelectors.token);
@@ -182,7 +192,7 @@ A library that provides two types of key-value storage API: [AsyncStorage](https
 Implement storage service:
 
 ```ts
-import { AsyncStorageItem, SecureStorageItem } from '@ronas-it/react-native-common-modules';
+import { AsyncStorageItem, SecureStorageItem } from '@ronas-it/react-native-common-modules/src/data-access/storage';
 
 class AppStorageService {
   public token = new SecureStorageItem('token');
@@ -222,7 +232,7 @@ Public methods:
 Pick image and send request:
 
 ```ts
-import { imagePickerService, ImagePickerSource } from '@ronas-it/react-native-common-modules';
+import { imagePickerService, ImagePickerSource } from '@ronas-it/react-native-common-modules/src/data-access/image-picker';
 
 const handlePickImage = async (source: ImagePickerSource) => {
   const image = await imagePickerService.getImage(source);
@@ -267,7 +277,7 @@ Options for `WebSocketService` constructor:
 **Example:**
 
 ```ts
-import { WebSocketService } from '@ronas-it/react-native-common-modules';
+import { WebSocketService } from '@ronas-it/react-native-common-modules/src/data-access/websocket';
 
 // Create a service instance
 type ChannelName = `private-conversations.${number}` | `private-users.${number}`;
@@ -304,7 +314,7 @@ Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?
 
 ```ts
 import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
-import { setupReactotron } from '@ronas-it/react-native-common-modules';
+import { setupReactotron } from '@ronas-it/react-native-common-modules/src/data-access/store/utils/reactotron';
 
 const reactotron = setupReactotron('your-app');
 const enhancers = reactotron ? [reactotron.createEnhancer()] : [];
@@ -327,7 +337,7 @@ Provides functions to set language and use translations using [i18n-js](https://
 root layout:
 
 ```ts
-import { setLanguage } from '@ronas-it/react-native-common-modules';
+import { setLanguage } from '@ronas-it/react-native-common-modules/src/utils/i18n';
 
 const translations = {
   en: {
@@ -371,7 +381,9 @@ export default function RootLayout(): ReactElement | null {
 screen:
 
 ```ts
-import { AppPressable, AppSafeAreaView, useTranslation } from '@ronas-it/react-native-common-modules';
+import { AppPressable } from '@ronas-it/react-native-common-modules/src/ui/pressable';
+import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/safe-area-view';
+import { useTranslation } from '@ronas-it/react-native-common-modules/src/utils/i18n';
 import { ReactElement, useContext } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { LanguageContext } from './_layout';
