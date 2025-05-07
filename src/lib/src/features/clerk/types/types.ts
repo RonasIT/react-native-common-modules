@@ -22,7 +22,7 @@ type StartAuthorizationReturn = (BaseSuccessReturn | BaseFailureReturn) & WithCl
 
 type AuthorizationFinishedReturn = (WithTokenSuccessReturn | WithTokenFailureReturn) & WithClerkReturn;
 
-export type OtpMethod = 'email' | 'phone';
+export type OtpMethod = 'emailAddress' | 'phone';
 
 export type UseClerkResourcesReturn = WithClerkReturn & {
   setActive: SetActive;
