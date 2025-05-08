@@ -27,6 +27,7 @@
     "@nx/rollup": "20.3.0"
   },
   "peerDependencies": {
+    "@clerk/clerk-expo": "*",
     "@pusher/pusher-websocket-react-native": "*",
     "@react-native-async-storage/async-storage": "*",
     "expo-secure-store": "*",
@@ -50,6 +51,9 @@
     "reactotron-react-js": "*"
   },
   "peerDependenciesMeta": {
+    "@clerk/clerk-expo": {
+      "optional": true
+    },
     "@pusher/pusher-websocket-react-native": {
       "optional": true
     },

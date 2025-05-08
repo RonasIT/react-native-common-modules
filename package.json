@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@clerk/clerk-expo": "2.9.0",
     "@expo/metro-config": "~0.19.8",
     "@expo/metro-runtime": "~4.0.0",
     "@react-native-async-storage/async-storage": "1.23.1",
@@ -41,6 +42,7 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
+    "@clerk/types": "^4.48.0",
     "@config-plugins/detox": "~9.0.0",
     "@expo/cli": "~0.22.7",
     "@nx/detox": "20.3.0",
