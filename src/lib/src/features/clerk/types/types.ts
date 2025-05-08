@@ -37,30 +37,6 @@ export interface UseGetSessionTokenReturn {
 
 export type GetSessionTokenReturn = WithTokenSuccessReturn | WithTokenFailureReturn;
 
-// Phone OTP types:
-
-export interface UseAuthWithPhoneOtpReturn {
-  startSignIn: (params: { phone: string }) => Promise<StartSignInReturn>;
-  startSignUp: (params: { phone: string }) => Promise<StartSignUpReturn>;
-  startAuthorization: (params: { phone: string }) => Promise<StartAuthorizationReturn>;
-  sendOtpCode: () => Promise<void>;
-  verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
-  isLoading: boolean;
-  isVerifying: boolean;
-}
-
-// Email OTP types:
-
-export interface UseAuthWithEmailOtpReturn {
-  startSignIn: (params: { email: string }) => Promise<StartSignInReturn>;
-  startSignUp: (params: { email: string }) => Promise<StartSignUpReturn>;
-  startAuthorization: (params: { email: string }) => Promise<StartAuthorizationReturn>;
-  sendOtpCode: () => Promise<void>;
-  verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
-  isLoading: boolean;
-  isVerifying: boolean;
-}
-
 // OTP types:
 
 export interface UseAuthWithOtpReturn {
