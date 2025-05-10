@@ -1,7 +1,7 @@
 import { isClerkAPIResponseError } from '@clerk/clerk-expo';
 import { EmailCodeFactor, PhoneCodeFactor } from '@clerk/types';
 import { useState } from 'react';
-import { OtpError } from '../enums';
+import { ClerkApiError } from '../enums';
 import { OtpMethod, UseAuthWithOtpReturn } from '../types';
 import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-token';
@@ -82,7 +82,7 @@ export function useAuthWithOtp({ method }: { method: OtpMethod }): UseAuthWithOt
       if (isClerkAPIResponseError(e)) {
         const error = e.errors[0];
 
-        if (error?.code === OtpError.FORM_IDENTIFIER_EXIST) {
+        if (error?.code === ClerkApiError.FORM_IDENTIFIER_EXIST) {
           await signIn?.create({ identifier });
           await sendOtpCode();
 

@@ -1,4 +1,4 @@
-import { ClerkAPIError, SetActive, SignInResource, SignOut, SignUpResource } from '@clerk/types';
+import { ClerkAPIError, OAuthStrategy, SetActive, SignInResource, SignOut, SignUpResource } from '@clerk/types';
 
 type BaseSuccessReturn = { isSuccess: true; error?: never };
 
@@ -21,6 +21,10 @@ type StartSignInReturn = (BaseSuccessReturn | BaseFailureReturn) & WithSignInRet
 type StartAuthorizationReturn = (BaseSuccessReturn | BaseFailureReturn) & WithClerkReturn;
 
 type AuthorizationFinishedReturn = (WithTokenSuccessReturn | WithTokenFailureReturn) & WithClerkReturn;
+
+type StartIdentifierPasswordAuthorizationReturn =
+  | AuthorizationFinishedReturn
+  | (StartAuthorizationReturn & { sessionToken?: null });
 
 export type OtpMethod = 'emailAddress' | 'phone';
 
@@ -47,4 +51,45 @@ export interface UseAuthWithOtpReturn {
   verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
   isLoading: boolean;
   isVerifying: boolean;
+}
+
+// Ticket types:
+
+export type StartAuthorizationWithTicketReturn = (WithTokenSuccessReturn | WithTokenFailureReturn) & WithSignInReturn;
+
+export interface UseAuthWithTicketReturn {
+  startAuthorization: (params: {
+    ticket: string;
+    tokenTemplate?: string;
+  }) => Promise<StartAuthorizationWithTicketReturn>;
+  isLoading: boolean;
+}
+
+//SSO types:
+
+export interface StartSSOArgs {
+  strategy: OAuthStrategy;
+  redirectUrl?: string;
+  tokenTemplate?: string;
+}
+
+// Username + Password types:
+
+export interface UseAuthWithUsernamePasswordReturn {
+  startSignIn: (params: {
+    username: string;
+    password: string;
+    tokenTemplate?: string;
+  }) => Promise<AuthorizationFinishedReturn>;
+  startSignUp: (params: {
+    username: string;
+    password: string;
+    tokenTemplate?: string;
+  }) => Promise<AuthorizationFinishedReturn>;
+  startAuthorization: (params: {
+    username: string;
+    password: string;
+    tokenTemplate?: string;
+  }) => Promise<StartIdentifierPasswordAuthorizationReturn>;
+  isLoading: boolean;
 }
