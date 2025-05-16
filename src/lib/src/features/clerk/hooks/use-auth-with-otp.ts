@@ -152,7 +152,6 @@ export function useAuthWithOtp({ method }: { method: OtpMethod }): UseAuthWithOt
             error,
             isSuccess: false,
           };
-
         }
       }
 

@@ -26,7 +26,7 @@ type StartIdentifierPasswordAuthorizationReturn =
   | AuthorizationFinishedReturn
   | (StartAuthorizationReturn & { sessionToken?: null });
 
-export type OtpMethod = 'emailAddress' | 'phone';
+export type OtpMethod = 'emailAddress' | 'phoneNumber';
 
 export type UseClerkResourcesReturn = WithClerkReturn & {
   setActive: SetActive;
