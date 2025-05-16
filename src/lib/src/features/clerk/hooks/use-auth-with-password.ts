@@ -1,24 +1,24 @@
 import { isClerkAPIResponseError } from '@clerk/clerk-expo';
 import { useState } from 'react';
 import { ClerkApiError } from '../enums';
-import { AuthPasswordMethod, UseAuthWithPasswordReturn } from '../types';
+import { AuthPasswordMethod, UseAuthWithPasswordOtpReturn } from '../types';
 import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-token';
 
-export function useAuthWithPassword({ method }: { method: AuthPasswordMethod }): UseAuthWithPasswordReturn {
+export function useAuthWithPassword({ method }: { method: AuthPasswordMethod }): UseAuthWithPasswordOtpReturn {
   const { signUp, signIn, setActive } = useClerkResources();
   const { getSessionToken } = useGetSessionToken();
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
-  const sendOtpCode: UseAuthWithPasswordReturn['sendOtpCode'] = async () => {
+  const sendOtpCode: UseAuthWithPasswordOtpReturn['sendOtpCode'] = async () => {
     await (method === 'emailAddress' ?
       signUp?.prepareEmailAddressVerification()
       : signUp?.preparePhoneNumberVerification()
     );
   };
 
-  const startSignUp: UseAuthWithPasswordReturn['startSignUp'] = async ({ identifier, password }) => {
+  const startSignUp: UseAuthWithPasswordOtpReturn['startSignUp'] = async ({ identifier, password }) => {
     try {
       setIsLoading(true);
       await signUp?.create({ [method]: identifier, password });
@@ -32,7 +32,7 @@ export function useAuthWithPassword({ method }: { method: AuthPasswordMethod }):
     }
   };
 
-  const startSignIn: UseAuthWithPasswordReturn['startSignIn'] = async ({ identifier, password, tokenTemplate }) => {
+  const startSignIn: UseAuthWithPasswordOtpReturn['startSignIn'] = async ({ identifier, password, tokenTemplate }) => {
     try {
       setIsLoading(true);
       const completeSignIn = await signIn?.create({
@@ -68,7 +68,7 @@ export function useAuthWithPassword({ method }: { method: AuthPasswordMethod }):
     }
   };
 
-  const startAuthorization: UseAuthWithPasswordReturn['startAuthorization'] = async ({
+  const startAuthorization: UseAuthWithPasswordOtpReturn['startAuthorization'] = async ({
     identifier,
     password,
     tokenTemplate
@@ -96,7 +96,7 @@ export function useAuthWithPassword({ method }: { method: AuthPasswordMethod }):
     }
   };
 
-  const verifyCode: UseAuthWithPasswordReturn['verifyCode'] = async ({ code, tokenTemplate }) => {
+  const verifyCode: UseAuthWithPasswordOtpReturn['verifyCode'] = async ({ code, tokenTemplate }) => {
     try {
       setIsVerifying(true);
 

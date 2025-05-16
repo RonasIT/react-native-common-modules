@@ -73,28 +73,7 @@ export interface StartSSOArgs {
   tokenTemplate?: string;
 }
 
-// Username + Password types:
-
-export interface UseAuthWithUsernamePasswordReturn {
-  startSignIn: (params: {
-    username: string;
-    password: string;
-    tokenTemplate?: string;
-  }) => Promise<AuthorizationFinishedReturn>;
-  startSignUp: (params: {
-    username: string;
-    password: string;
-    tokenTemplate?: string;
-  }) => Promise<AuthorizationFinishedReturn>;
-  startAuthorization: (params: {
-    username: string;
-    password: string;
-    tokenTemplate?: string;
-  }) => Promise<StartIdentifierPasswordAuthorizationReturn>;
-  isLoading: boolean;
-}
-
-// Auth with email/phone password types:
+// Auth with password types:
 
 export type AuthPasswordMethod = 'emailAddress' | 'phoneNumber';
 
@@ -114,8 +93,12 @@ export interface UseAuthWithPasswordReturn {
     password: string;
     tokenTemplate?: string;
   }) => Promise<StartIdentifierPasswordAuthorizationReturn>;
+  isLoading: boolean;
+}
+
+// Auth with password and OTP types (email/phone):
+export interface UseAuthWithPasswordOtpReturn extends UseAuthWithPasswordReturn {
   sendOtpCode: () => Promise<void>;
   verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
-  isLoading: boolean;
   isVerifying: boolean;
 }
