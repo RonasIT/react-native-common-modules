@@ -124,6 +124,12 @@ export function useAuthWithPassword({ method }: { method: AuthPasswordMethod }):
           isSuccess: false
         };
       }
+
+      return {
+        signIn,
+        signUp,
+        isSuccess: false
+      };
     } catch (error) {
       return {
         signIn,
@@ -134,12 +140,6 @@ export function useAuthWithPassword({ method }: { method: AuthPasswordMethod }):
     } finally {
       setIsVerifying(false);
     }
-
-    return {
-      signIn,
-      signUp,
-      isSuccess: false
-    };
   };
 
   return {

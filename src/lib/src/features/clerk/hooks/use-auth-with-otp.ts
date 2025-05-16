@@ -152,8 +152,15 @@ export function useAuthWithOtp({ method }: { method: OtpMethod }): UseAuthWithOt
             error,
             isSuccess: false,
           };
+
         }
       }
+
+      return {
+        signIn,
+        signUp,
+        isSuccess: false
+      };
     } catch (error) {
       return {
         signIn,
@@ -164,12 +171,6 @@ export function useAuthWithOtp({ method }: { method: OtpMethod }): UseAuthWithOt
     } finally {
       setIsVerifying(false);
     }
-
-    return {
-      signIn,
-      signUp,
-      isSuccess: false,
-    };
   };
 
   return {

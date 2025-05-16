@@ -94,7 +94,7 @@ export interface UseAuthWithUsernamePasswordReturn {
   isLoading: boolean;
 }
 
-// Auth with password types:
+// Auth with email/phone password types:
 
 export type AuthPasswordMethod = 'emailAddress' | 'phoneNumber';
 
