@@ -33,7 +33,7 @@ export type UseClerkResourcesReturn = WithClerkReturn & {
   signOut: SignOut;
 };
 
-//Get token types
+// Get token types
 
 export interface UseGetSessionTokenReturn {
   getSessionToken: (params: { tokenTemplate?: string }) => Promise<GetSessionTokenReturn>;
@@ -65,7 +65,7 @@ export interface UseAuthWithTicketReturn {
   isLoading: boolean;
 }
 
-//SSO types:
+// SSO types:
 
 export interface StartSSOArgs {
   strategy: OAuthStrategy;
@@ -92,4 +92,30 @@ export interface UseAuthWithUsernamePasswordReturn {
     tokenTemplate?: string;
   }) => Promise<StartIdentifierPasswordAuthorizationReturn>;
   isLoading: boolean;
+}
+
+// Auth with password types:
+
+export type AuthPasswordMethod = 'emailAddress' | 'phoneNumber';
+
+export interface UseAuthWithPasswordReturn {
+  startSignIn: (params: {
+    identifier: string;
+    password: string;
+    tokenTemplate?: string;
+  }) => Promise<AuthorizationFinishedReturn>;
+  startSignUp: (params: {
+    identifier: string;
+    password: string;
+    tokenTemplate?: string;
+  }) => Promise<StartSignUpReturn>;
+  startAuthorization: (params: {
+    identifier: string;
+    password: string;
+    tokenTemplate?: string;
+  }) => Promise<StartIdentifierPasswordAuthorizationReturn>;
+  sendOtpCode: () => Promise<void>;
+  verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+  isLoading: boolean;
+  isVerifying: boolean;
 }
