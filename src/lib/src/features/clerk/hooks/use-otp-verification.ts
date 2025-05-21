@@ -1,4 +1,4 @@
-import { EmailCodeFactor, PhoneCodeFactor, SignInFactor } from '@clerk/types';
+import { EmailCodeFactor, PhoneCodeFactor } from '@clerk/types';
 import { useState } from 'react';
 import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-token';

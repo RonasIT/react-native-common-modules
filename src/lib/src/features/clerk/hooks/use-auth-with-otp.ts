@@ -1,5 +1,4 @@
 import { isClerkAPIResponseError } from '@clerk/clerk-expo';
-import { EmailCodeFactor, PhoneCodeFactor } from '@clerk/types';
 import { useState } from 'react';
 import { ClerkApiError } from '../enums';
 import { OtpMethod, UseAuthWithOtpReturn } from '../types';
@@ -39,7 +38,7 @@ export function useAuthWithOtp({ method }: { method: OtpMethod }): UseAuthWithOt
       setIsLoading(false);
     }
   };
-
+ 
   const startAuthorization: UseAuthWithOtpReturn['startAuthorization'] = async ({ identifier }) => {
     try {
       setIsLoading(true);

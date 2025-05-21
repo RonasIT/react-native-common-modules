@@ -54,9 +54,9 @@ export interface UseOtpVerificationReturn {
 // OTP types:
 
 export interface UseAuthWithOtpReturn extends Omit<UseOtpVerificationReturn, 'verifyCode'> {
-  startSignIn: (params: { identifier: string; method: OtpMethod }) => Promise<StartSignInReturn>;
-  startSignUp: (params: { identifier: string; method: OtpMethod }) => Promise<StartSignUpReturn>;
-  startAuthorization: (params: { identifier: string; method: OtpMethod }) => Promise<StartAuthorizationReturn>;
+  startSignIn: (params: { identifier: string; }) => Promise<StartSignInReturn>;
+  startSignUp: (params: { identifier: string; }) => Promise<StartSignUpReturn>;
+  startAuthorization: (params: { identifier: string; }) => Promise<StartAuthorizationReturn>;
   verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
   isLoading: boolean;
 }
@@ -79,6 +79,11 @@ export interface StartSSOArgs {
   strategy: OAuthStrategy;
   redirectUrl?: string;
   tokenTemplate?: string;
+}
+
+export interface UseAuthWithSSOReturn {
+  startSSOFlow: (params: StartSSOArgs) => Promise<AuthorizationFinishedReturn>;
+  isLoading: boolean;
 }
 
 // Auth with password types:
