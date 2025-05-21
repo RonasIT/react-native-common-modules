@@ -28,6 +28,8 @@ type StartIdentifierPasswordAuthorizationReturn =
 
 export type OtpMethod = 'emailAddress' | 'phoneNumber';
 
+export type OtpStrategy = 'email_code' | 'phone_code';
+
 export type UseClerkResourcesReturn = WithClerkReturn & {
   setActive: SetActive;
   signOut: SignOut;
@@ -41,16 +43,22 @@ export interface UseGetSessionTokenReturn {
 
 export type GetSessionTokenReturn = WithTokenSuccessReturn | WithTokenFailureReturn;
 
+// OTP verification types:
+
+export interface UseOtpVerificationReturn {
+  sendOtpCode: (strategy: OtpStrategy) => Promise<void>;
+  verifyCode: (params: { code: string; strategy: OtpStrategy; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+  isVerifying: boolean;
+}
+
 // OTP types:
 
-export interface UseAuthWithOtpReturn {
+export interface UseAuthWithOtpReturn extends Omit<UseOtpVerificationReturn, 'verifyCode'> {
   startSignIn: (params: { identifier: string; method: OtpMethod }) => Promise<StartSignInReturn>;
   startSignUp: (params: { identifier: string; method: OtpMethod }) => Promise<StartSignUpReturn>;
   startAuthorization: (params: { identifier: string; method: OtpMethod }) => Promise<StartAuthorizationReturn>;
-  sendOtpCode: () => Promise<void>;
   verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
   isLoading: boolean;
-  isVerifying: boolean;
 }
 
 // Ticket types:
@@ -97,8 +105,6 @@ export interface UseAuthWithPasswordReturn {
 }
 
 // Auth with password and OTP types (email/phone):
-export interface UseAuthWithPasswordOtpReturn extends UseAuthWithPasswordReturn {
-  sendOtpCode: () => Promise<void>;
-  verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
-  isVerifying: boolean;
+export interface UseAuthWithPasswordOtpReturn extends UseAuthWithPasswordReturn, Omit<UseOtpVerificationReturn, 'verifyCode'> {
+  verifyCode: (params: { code: string, tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
 }

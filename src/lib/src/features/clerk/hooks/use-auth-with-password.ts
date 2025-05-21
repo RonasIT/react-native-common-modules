@@ -3,26 +3,21 @@ import { useState } from 'react';
 import { ClerkApiError } from '../enums';
 import { AuthPasswordMethod, UseAuthWithPasswordOtpReturn } from '../types';
 import { useClerkResources } from './use-clerk-resources';
+import { useOtpVerification } from './use-otp-verification';
 import { useGetSessionToken } from './use-get-token';
 
 export function useAuthWithPassword({ method }: { method: AuthPasswordMethod }): UseAuthWithPasswordOtpReturn {
   const { signUp, signIn, setActive } = useClerkResources();
+  const { sendOtpCode, verifyCode: verifyOtpCode, isVerifying } = useOtpVerification();
   const { getSessionToken } = useGetSessionToken();
   const [isLoading, setIsLoading] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
-
-  const sendOtpCode: UseAuthWithPasswordOtpReturn['sendOtpCode'] = async () => {
-    await (method === 'emailAddress' ?
-      signUp?.prepareEmailAddressVerification()
-      : signUp?.preparePhoneNumberVerification()
-    );
-  };
+  const strategy = method === 'emailAddress' ? 'email_code' : 'phone_code';
 
   const startSignUp: UseAuthWithPasswordOtpReturn['startSignUp'] = async ({ identifier, password }) => {
     try {
       setIsLoading(true);
       await signUp?.create({ [method]: identifier, password });
-      await sendOtpCode();
+      await sendOtpCode(strategy);
 
       return { isSuccess: true, signUp };
     } catch (error) {
@@ -76,70 +71,28 @@ export function useAuthWithPassword({ method }: { method: AuthPasswordMethod }):
     try {
       setIsLoading(true);
       await signUp?.create({ [method]: identifier, password });
-      await sendOtpCode();
+      await sendOtpCode(strategy);
 
       return { signUp, signIn, isSuccess: true, isSignedIn: false };
-    } catch (e) {
-      if (isClerkAPIResponseError(e)) {
-        const error = e.errors[0];
+    } catch (error) {
+      if (isClerkAPIResponseError(error)) {
+        const e = error.errors[0];
 
-        if (error?.code === ClerkApiError.FORM_IDENTIFIER_EXIST) {
-          await startSignIn({ identifier, password, tokenTemplate });
+        if (e?.code === ClerkApiError.FORM_IDENTIFIER_EXIST) {
+          const result = await startSignIn({ identifier, password, tokenTemplate });
 
-          return { signIn, signUp, isSuccess: true };
+          return result;
         }
       }
 
-      return { signIn, signUp, error: e, isSuccess: false };
+      return { signIn, signUp, error, isSuccess: false };
     } finally {
       setIsLoading(false);
     }
   };
 
   const verifyCode: UseAuthWithPasswordOtpReturn['verifyCode'] = async ({ code, tokenTemplate }) => {
-    try {
-      setIsVerifying(true);
-
-      const completeSignUp = method === 'emailAddress' ?
-        await signUp?.attemptEmailAddressVerification({ code })
-        : await signUp?.attemptPhoneNumberVerification({ code });
-
-      if (completeSignUp?.status === 'complete') {
-        await setActive?.({ session: completeSignUp.createdSessionId });
-        const { sessionToken, error } = await getSessionToken({ tokenTemplate });
-
-        if (sessionToken) {
-          return {
-            sessionToken,
-            signIn,
-            signUp,
-            isSuccess: true
-          };
-        }
-
-        return {
-          signIn,
-          signUp,
-          error,
-          isSuccess: false
-        };
-      }
-
-      return {
-        signIn,
-        signUp,
-        isSuccess: false
-      };
-    } catch (error) {
-      return {
-        signIn,
-        signUp,
-        error,
-        isSuccess: false
-      };
-    } finally {
-      setIsVerifying(false);
-    }
+    return verifyOtpCode({ code, strategy, tokenTemplate });
   };
 
   return {

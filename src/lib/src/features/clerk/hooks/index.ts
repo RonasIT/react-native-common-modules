@@ -5,3 +5,4 @@ export * from './use-auth-with-sso';
 export * from './use-auth-with-username-password';
 export * from './use-auth-with-ticket';
 export * from './use-auth-with-password';
+export * from './use-otp-verification';
