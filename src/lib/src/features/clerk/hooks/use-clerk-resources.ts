@@ -1,4 +1,4 @@
-import { getClerkInstance, useAuth } from '@clerk/clerk-expo';
+import { getClerkInstance } from '@clerk/clerk-expo';
 import { UseClerkResourcesReturn } from '../types';
 
 export const useClerkResources = (): UseClerkResourcesReturn => {

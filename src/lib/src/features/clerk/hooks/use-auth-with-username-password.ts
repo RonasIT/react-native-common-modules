@@ -1,23 +1,23 @@
 import { isClerkAPIResponseError } from '@clerk/clerk-expo';
 import { useState } from 'react';
 import { ClerkApiError } from '../enums';
-import { UseAuthWithUsernamePasswordReturn } from '../types/types';
 import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-token';
+import { UseAuthWithPasswordReturn } from '../types';
 
-export function useAuthWithUsernamePassword(): UseAuthWithUsernamePasswordReturn {
+export function useAuthWithUsernamePassword(): UseAuthWithPasswordReturn {
   const { signUp, signIn, setActive } = useClerkResources();
   const { getSessionToken } = useGetSessionToken();
   const [isLoading, setIsLoading] = useState(false);
 
-  const startSignUp: UseAuthWithUsernamePasswordReturn['startSignUp'] = async ({
-    username,
+  const startSignUp: UseAuthWithPasswordReturn['startSignUp'] = async ({
+    identifier,
     password,
     tokenTemplate
   }) => {
     try {
       setIsLoading(true);
-      const signUpAttempt = await signUp?.create({ username, password });
+      const signUpAttempt = await signUp?.create({ username: identifier, password });
 
       if (signUpAttempt?.status === 'complete') {
         await setActive?.({ session: signUpAttempt.createdSessionId });
@@ -42,14 +42,14 @@ export function useAuthWithUsernamePassword(): UseAuthWithUsernamePasswordReturn
     }
   };
 
-  const startSignIn: UseAuthWithUsernamePasswordReturn['startSignIn'] = async ({
-    username,
+  const startSignIn: UseAuthWithPasswordReturn['startSignIn'] = async ({
+    identifier,
     password,
     tokenTemplate
   }) => {
     try {
       setIsLoading(true);
-      const signInAttempt = await signIn?.create({ identifier: username, password });
+      const signInAttempt = await signIn?.create({ identifier, password });
 
       if (signInAttempt?.status === 'complete') {
         await setActive?.({ session: signInAttempt.createdSessionId });
@@ -74,7 +74,7 @@ export function useAuthWithUsernamePassword(): UseAuthWithUsernamePasswordReturn
     }
   };
 
-  const startAuthorization: UseAuthWithUsernamePasswordReturn['startAuthorization'] = async (args) => {
+  const startAuthorization: UseAuthWithPasswordReturn['startAuthorization'] = async (args) => {
     const result = await startSignUp(args)
 
     if (result?.error && isClerkAPIResponseError(result?.error)) {
@@ -92,6 +92,6 @@ export function useAuthWithUsernamePassword(): UseAuthWithUsernamePasswordReturn
     startSignIn,
     startSignUp,
     startAuthorization,
-    isLoading
+    isLoading,
   };
 }

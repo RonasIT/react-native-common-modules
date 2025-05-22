@@ -26,14 +26,16 @@ type StartIdentifierPasswordAuthorizationReturn =
   | AuthorizationFinishedReturn
   | (StartAuthorizationReturn & { sessionToken?: null });
 
-export type OtpMethod = 'emailAddress' | 'phone';
+export type OtpMethod = 'emailAddress' | 'phoneNumber';
+
+export type OtpStrategy = 'email_code' | 'phone_code';
 
 export type UseClerkResourcesReturn = WithClerkReturn & {
   setActive: SetActive;
   signOut: SignOut;
 };
 
-//Get token types
+// Get token types
 
 export interface UseGetSessionTokenReturn {
   getSessionToken: (params: { tokenTemplate?: string }) => Promise<GetSessionTokenReturn>;
@@ -41,16 +43,22 @@ export interface UseGetSessionTokenReturn {
 
 export type GetSessionTokenReturn = WithTokenSuccessReturn | WithTokenFailureReturn;
 
+// OTP verification types:
+
+export interface UseOtpVerificationReturn {
+  sendOtpCode: (strategy: OtpStrategy) => Promise<void>;
+  verifyCode: (params: { code: string; strategy: OtpStrategy; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+  isVerifying: boolean;
+}
+
 // OTP types:
 
-export interface UseAuthWithOtpReturn {
-  startSignIn: (params: { identifier: string; method: OtpMethod }) => Promise<StartSignInReturn>;
-  startSignUp: (params: { identifier: string; method: OtpMethod }) => Promise<StartSignUpReturn>;
-  startAuthorization: (params: { identifier: string; method: OtpMethod }) => Promise<StartAuthorizationReturn>;
-  sendOtpCode: () => Promise<void>;
+export interface UseAuthWithOtpReturn extends Omit<UseOtpVerificationReturn, 'verifyCode'> {
+  startSignIn: (params: { identifier: string; }) => Promise<StartSignInReturn>;
+  startSignUp: (params: { identifier: string; }) => Promise<StartSignUpReturn>;
+  startAuthorization: (params: { identifier: string; }) => Promise<StartAuthorizationReturn>;
   verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
   isLoading: boolean;
-  isVerifying: boolean;
 }
 
 // Ticket types:
@@ -65,7 +73,7 @@ export interface UseAuthWithTicketReturn {
   isLoading: boolean;
 }
 
-//SSO types:
+// SSO types:
 
 export interface StartSSOArgs {
   strategy: OAuthStrategy;
@@ -73,23 +81,35 @@ export interface StartSSOArgs {
   tokenTemplate?: string;
 }
 
-// Username + Password types:
+export interface UseAuthWithSSOReturn {
+  startSSOFlow: (params: StartSSOArgs) => Promise<AuthorizationFinishedReturn>;
+  isLoading: boolean;
+}
 
-export interface UseAuthWithUsernamePasswordReturn {
+// Auth with password types:
+
+export type AuthPasswordMethod = 'emailAddress' | 'phoneNumber';
+
+export interface UseAuthWithPasswordReturn {
   startSignIn: (params: {
-    username: string;
+    identifier: string;
     password: string;
     tokenTemplate?: string;
   }) => Promise<AuthorizationFinishedReturn>;
   startSignUp: (params: {
-    username: string;
+    identifier: string;
     password: string;
     tokenTemplate?: string;
-  }) => Promise<AuthorizationFinishedReturn>;
+  }) => Promise<StartSignUpReturn>;
   startAuthorization: (params: {
-    username: string;
+    identifier: string;
     password: string;
     tokenTemplate?: string;
   }) => Promise<StartIdentifierPasswordAuthorizationReturn>;
   isLoading: boolean;
+}
+
+// Auth with password and OTP types (email/phone):
+export interface UseAuthWithPasswordOtpReturn extends UseAuthWithPasswordReturn, Omit<UseOtpVerificationReturn, 'verifyCode'> {
+  verifyCode: (params: { code: string, tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
 }
