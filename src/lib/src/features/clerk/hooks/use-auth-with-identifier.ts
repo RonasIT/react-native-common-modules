@@ -102,7 +102,7 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
           handleSignInWithPassword(signInAttempt, tokenTemplate);
         }
       } else if (verifyBy === 'otp') {
-        await signIn?.create({ [method]: identifier });
+        await signIn?.create({ identifier });
         await sendOtpCode(strategy);
 
         return { isSuccess: true, signIn };
