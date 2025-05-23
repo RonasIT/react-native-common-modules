@@ -1,7 +1,7 @@
 import { isClerkAPIResponseError } from '@clerk/clerk-expo';
 import { useState } from 'react';
 import { ClerkApiError } from '../enums';
-import { AuthIdentifierVerifyBy, IdentifierMethodFor, StartAuthParams, StartAuthReturn, StartAuthWithPasswordReturn, UseAuthWithIdentifierReturn } from '../types';
+import { AuthIdentifierVerifyBy, IdentifierMethodFor, StartAuthParams, StartSignInWithIdentifierReturn, StartSignUpWithIdentifierReturn, UseAuthWithIdentifierReturn } from '../types';
 import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-token';
 import { useOtpVerification } from './use-otp-verification';
@@ -10,14 +10,14 @@ import { SignInResource } from '@clerk/types';
 export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, Method extends IdentifierMethodFor<VerifyBy>>(
   method: Method,
   verifyBy: VerifyBy
-): UseAuthWithIdentifierReturn<VerifyBy> {
+): UseAuthWithIdentifierReturn<VerifyBy, Method> {
   const { signUp, signIn, setActive } = useClerkResources();
   const { sendOtpCode, verifyCode: verifyOtpCode, isVerifying } = useOtpVerification();
   const { getSessionToken } = useGetSessionToken();
   const [isLoading, setIsLoading] = useState(false);
   const strategy = method === 'emailAddress' ? 'email_code' : 'phone_code';
 
-  const startSignUp: UseAuthWithIdentifierReturn<VerifyBy>['startSignUp'] = async (params) => {
+  const startSignUp: UseAuthWithIdentifierReturn<VerifyBy, Method>['startSignUp'] = async (params) => {
     try {
       setIsLoading(true);
       const { identifier } = params;
@@ -30,9 +30,11 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
         if (signUpAttempt?.status === 'complete') {
           await setActive?.({ session: signUpAttempt.createdSessionId });
           const { sessionToken } = await getSessionToken({ tokenTemplate });
-          return { sessionToken, signUp, isSuccess: !!sessionToken };
+
+          return { sessionToken, signUp, isSuccess: true } as StartSignUpWithIdentifierReturn<Method>;
         }
-        return { isSuccess: false, signUp };
+        
+        return { isSuccess: false, signUp } as StartSignUpWithIdentifierReturn<Method>;
       }
 
       // Auth with email or phone number
@@ -44,6 +46,7 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
       }
 
       await sendOtpCode(strategy);
+      
       return { isSuccess: true, signUp };
     } catch (error) {
       return { error, signUp, isSuccess: false };
@@ -52,17 +55,18 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
     }
   };
 
-  const startSignIn: UseAuthWithIdentifierReturn<VerifyBy>['startSignIn'] = async (params) => {
-    const handleSignInWithPassword = async (signInAttempt: SignInResource, tokenTemplate?: string): Promise<StartAuthWithPasswordReturn> => {
+  const startSignIn: UseAuthWithIdentifierReturn<VerifyBy, Method>['startSignIn'] = async (params) => {
+    const handleSignInWithPassword = async (signInAttempt: SignInResource, tokenTemplate?: string): Promise<StartSignInWithIdentifierReturn<VerifyBy>> => {
       await setActive?.({ session: signInAttempt.createdSessionId });
       const { sessionToken, error } = await getSessionToken({ tokenTemplate });
 
       if (sessionToken) {
         return {
           signIn,
+          error,
           sessionToken,
           isSuccess: true
-        };
+        } as StartSignInWithIdentifierReturn<VerifyBy>;
       }
 
       return {
@@ -112,7 +116,7 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
     }
   };
 
-  const startAuthorization = async (params: StartAuthParams<VerifyBy>): StartAuthReturn => {
+  const startAuthorization: UseAuthWithIdentifierReturn<VerifyBy, Method>['startAuthorization'] = async (params) => {
     try {
       setIsLoading(true);
       const result = await startSignUp(params);
@@ -133,10 +137,16 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
     }
   };
 
+  const verifyCode: UseAuthWithIdentifierReturn<VerifyBy, Method>['verifyCode'] = async ({ code, tokenTemplate }) => {
+    return verifyOtpCode({ code, strategy, tokenTemplate });
+  };
+
   return {
     startSignIn,
     startSignUp,
     startAuthorization,
+    sendOtpCode,
+    verifyCode,
     isLoading,
     isVerifying,
   };

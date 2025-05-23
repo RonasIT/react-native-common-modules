@@ -22,10 +22,6 @@ type StartAuthorizationReturn = (BaseSuccessReturn | BaseFailureReturn) & WithCl
 
 type AuthorizationFinishedReturn = (WithTokenSuccessReturn | WithTokenFailureReturn) & WithClerkReturn;
 
-type StartIdentifierPasswordAuthorizationReturn =
-  | AuthorizationFinishedReturn
-  | (StartAuthorizationReturn & { sessionToken?: null });
-
 export type OtpMethod = 'emailAddress' | 'phoneNumber';
 
 export type OtpStrategy = 'email_code' | 'phone_code';
@@ -42,24 +38,6 @@ export interface UseGetSessionTokenReturn {
 }
 
 export type GetSessionTokenReturn = WithTokenSuccessReturn | WithTokenFailureReturn;
-
-// OTP verification types:
-
-export interface UseOtpVerificationReturn {
-  sendOtpCode: (strategy: OtpStrategy) => Promise<void>;
-  verifyCode: (params: { code: string; strategy: OtpStrategy; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
-  isVerifying: boolean;
-}
-
-// OTP types:
-
-export interface UseAuthWithOtpReturn extends Omit<UseOtpVerificationReturn, 'verifyCode'> {
-  startSignIn: (params: { identifier: string; }) => Promise<StartSignInReturn>;
-  startSignUp: (params: { identifier: string; }) => Promise<StartSignUpReturn>;
-  startAuthorization: (params: { identifier: string; }) => Promise<StartAuthorizationReturn>;
-  verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
-  isLoading: boolean;
-}
 
 // Ticket types:
 
@@ -86,32 +64,12 @@ export interface UseAuthWithSSOReturn {
   isLoading: boolean;
 }
 
-// Auth with password types:
+// OTP verification types:
 
-export type AuthPasswordMethod = 'emailAddress' | 'phoneNumber';
-
-export interface UseAuthWithPasswordReturn {
-  startSignIn: (params: {
-    identifier: string;
-    password: string;
-    tokenTemplate?: string;
-  }) => Promise<AuthorizationFinishedReturn>;
-  startSignUp: (params: {
-    identifier: string;
-    password: string;
-    tokenTemplate?: string;
-  }) => Promise<StartSignUpReturn>;
-  startAuthorization: (params: {
-    identifier: string;
-    password: string;
-    tokenTemplate?: string;
-  }) => Promise<StartIdentifierPasswordAuthorizationReturn>;
-  isLoading: boolean;
-}
-
-// Auth with password and OTP types (email/phone):
-export interface UseAuthWithPasswordOtpReturn extends UseAuthWithPasswordReturn, Omit<UseOtpVerificationReturn, 'verifyCode'> {
-  verifyCode: (params: { code: string, tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+export interface UseOtpVerificationReturn {
+  sendOtpCode: (strategy: OtpStrategy) => Promise<void>;
+  verifyCode: (params: { code: string; strategy: OtpStrategy; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+  isVerifying: boolean;
 }
 
 // Auth with identifier types:
@@ -129,18 +87,28 @@ export type StartAuthParams<
   ? { identifier: string }
   : { identifier: string; password: string; tokenTemplate?: string }
 
-export type StartAuthReturn = Promise<
-  StartSignInReturn | StartSignUpReturn | StartAuthorizationReturn
->;
+export type StartSignInWithIdentifierReturn<
+  VerifyBy extends AuthIdentifierVerifyBy
+> = VerifyBy extends 'password'
+  ? StartSignInReturn & { sessionToken?: string } : StartSignInReturn;
 
-export type StartAuthWithPasswordReturn = StartSignInReturn & { sessionToken?: string };
+export type StartSignUpWithIdentifierReturn<
+  Method extends AuthIdentifierMethod
+> = Method extends 'username'
+  ? StartSignUpReturn & { sessionToken?: string } : StartSignUpReturn;
+
+export type StartAuthorizationWithIdentifierReturn<
+  VerifyBy extends AuthIdentifierVerifyBy
+> = VerifyBy extends 'password'
+  ? StartAuthorizationReturn & { sessionToken?: string } : StartAuthorizationReturn;
 
 export interface UseAuthWithIdentifierReturn<
-  VerifyBy extends AuthIdentifierVerifyBy
-> {
-  startSignIn: (params: StartAuthParams<VerifyBy>) => Promise<StartSignInReturn>;
-  startSignUp: (params: StartAuthParams<VerifyBy>) => Promise<StartSignUpReturn>;
-  startAuthorization: (params: StartAuthParams<VerifyBy>) => Promise<StartAuthorizationReturn>;
+  VerifyBy extends AuthIdentifierVerifyBy,
+  Method extends AuthIdentifierMethod
+> extends Omit<UseOtpVerificationReturn, 'verifyCode'> {
+  startSignIn: (params: StartAuthParams<VerifyBy>) => Promise<StartSignInWithIdentifierReturn<VerifyBy>>;
+  startSignUp: (params: StartAuthParams<VerifyBy>) => Promise<StartSignUpWithIdentifierReturn<Method>>;
+  startAuthorization: (params: StartAuthParams<VerifyBy>) => Promise<StartAuthorizationWithIdentifierReturn<VerifyBy>>;
+  verifyCode: (params: { code: string, tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
   isLoading: boolean;
-  isVerifying: boolean;
 }
