@@ -50,7 +50,7 @@ export function useAddIdentifier(): UseAddIdentifierReturn {
     try {
       const verifyAttempt = await identifierResource?.attemptVerification({ code });
 
-      if (verifyAttempt?.verification.status === 'verified') {
+      if (verifyAttempt?.verification?.status === 'verified') {
         return { isSuccess: true, user };
       } else {
         return { isSuccess: false, verifyAttempt };
@@ -63,8 +63,8 @@ export function useAddIdentifier(): UseAddIdentifierReturn {
   };
 
   const prepareVerification = async ({ isEmail, identifier }: { identifier: string; isEmail: boolean }) => {
-    const phoneResource = user?.phoneNumbers.find((a) => a.phoneNumber === identifier);
-    const emailResource = user?.emailAddresses.find((a) => a.emailAddress === identifier);
+    const phoneResource = user?.phoneNumbers?.find((a) => a.phoneNumber === identifier);
+    const emailResource = user?.emailAddresses?.find((a) => a.emailAddress === identifier);
 
     await (isEmail
       ? emailResource?.prepareVerification({ strategy: 'email_code' })
@@ -74,10 +74,10 @@ export function useAddIdentifier(): UseAddIdentifierReturn {
 
   const getIdentifierVerified = ({ identifier, isEmail }: { identifier: string; isEmail: boolean }): boolean => {
     const identifierResource = isEmail
-      ? user?.emailAddresses.find((a) => a.emailAddress === identifier)
-      : user?.phoneNumbers.find((a) => a.phoneNumber === identifier);
+      ? user?.emailAddresses?.find((a) => a.emailAddress === identifier)
+      : user?.phoneNumbers?.find((a) => a.phoneNumber === identifier);
 
-    return identifierResource?.verification.status === 'verified';
+    return identifierResource?.verification?.status === 'verified';
   };
 
   return { createIdentifier, verifyCode, isCreating, isVerifying };
