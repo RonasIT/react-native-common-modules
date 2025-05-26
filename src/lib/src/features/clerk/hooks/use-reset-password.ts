@@ -10,7 +10,7 @@ export function useResetPassword({ method }: { method: OtpMethod }): UseResetPas
   const [isCodeSending, setIsCodeSending] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
 
-  const sendCode: UseResetPasswordReturn['sendCode'] = async ({ identifier }) => {
+  const startResetPassword: UseResetPasswordReturn['startResetPassword'] = async ({ identifier }) => {
     setIsCodeSending(true);
 
     try {
@@ -19,7 +19,7 @@ export function useResetPassword({ method }: { method: OtpMethod }): UseResetPas
         identifier,
       });
 
-      return { isSuccess: true, signIn: signIn };
+      return { isSuccess: true, signIn };
     } catch (error) {
       return { isSuccess: false, signIn, error };
     } finally {
@@ -54,5 +54,5 @@ export function useResetPassword({ method }: { method: OtpMethod }): UseResetPas
     return { isSuccess: false, signIn };
   };
 
-  return { sendCode, resetPassword, isCodeSending, isResetting };
+  return { startResetPassword, resetPassword, isCodeSending, isResetting };
 }

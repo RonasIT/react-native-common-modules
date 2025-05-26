@@ -110,14 +110,17 @@ export interface UseAuthWithPasswordReturn {
 }
 
 // Auth with password and OTP types (email/phone):
+
 export interface UseAuthWithPasswordOtpReturn extends UseAuthWithPasswordReturn, Omit<UseOtpVerificationReturn, 'verifyCode'> {
   verifyCode: (params: { code: string, tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
 }
 
-
 //Reset password types:
+
 export interface UseResetPasswordReturn {
-  sendCode: (params: { identifier: string }) => Promise<(BaseSuccessReturn | BaseFailureReturn) & WithSignInReturn>;
+  startResetPassword: (params: {
+    identifier: string;
+  }) => Promise<(BaseSuccessReturn | BaseFailureReturn) & WithSignInReturn>;
   resetPassword: (params: {
     code: string;
     password: string;
