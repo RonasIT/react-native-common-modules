@@ -1,4 +1,4 @@
-import { ClerkAPIError, OAuthStrategy, SetActive, SignInResource, SignOut, SignUpResource } from '@clerk/types';
+import { ClerkAPIError, EmailAddressResource, OAuthStrategy, PhoneNumberResource, SetActive, SignInResource, SignOut, SignUpResource, UserResource } from '@clerk/types';
 
 type BaseSuccessReturn = { isSuccess: true; error?: never };
 
@@ -47,16 +47,20 @@ export type GetSessionTokenReturn = WithTokenSuccessReturn | WithTokenFailureRet
 
 export interface UseOtpVerificationReturn {
   sendOtpCode: (strategy: OtpStrategy) => Promise<void>;
-  verifyCode: (params: { code: string; strategy: OtpStrategy; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+  verifyCode: (params: {
+    code: string;
+    strategy: OtpStrategy;
+    tokenTemplate?: string;
+  }) => Promise<AuthorizationFinishedReturn>;
   isVerifying: boolean;
 }
 
 // OTP types:
 
 export interface UseAuthWithOtpReturn extends Omit<UseOtpVerificationReturn, 'verifyCode'> {
-  startSignIn: (params: { identifier: string; }) => Promise<StartSignInReturn>;
-  startSignUp: (params: { identifier: string; }) => Promise<StartSignUpReturn>;
-  startAuthorization: (params: { identifier: string; }) => Promise<StartAuthorizationReturn>;
+  startSignIn: (params: { identifier: string }) => Promise<StartSignInReturn>;
+  startSignUp: (params: { identifier: string }) => Promise<StartSignUpReturn>;
+  startAuthorization: (params: { identifier: string }) => Promise<StartAuthorizationReturn>;
   verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
   isLoading: boolean;
 }
@@ -96,11 +100,7 @@ export interface UseAuthWithPasswordReturn {
     password: string;
     tokenTemplate?: string;
   }) => Promise<AuthorizationFinishedReturn>;
-  startSignUp: (params: {
-    identifier: string;
-    password: string;
-    tokenTemplate?: string;
-  }) => Promise<StartSignUpReturn>;
+  startSignUp: (params: { identifier: string; password: string; tokenTemplate?: string }) => Promise<StartSignUpReturn>;
   startAuthorization: (params: {
     identifier: string;
     password: string;
@@ -110,6 +110,23 @@ export interface UseAuthWithPasswordReturn {
 }
 
 // Auth with password and OTP types (email/phone):
-export interface UseAuthWithPasswordOtpReturn extends UseAuthWithPasswordReturn, Omit<UseOtpVerificationReturn, 'verifyCode'> {
-  verifyCode: (params: { code: string, tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+export interface UseAuthWithPasswordOtpReturn
+  extends UseAuthWithPasswordReturn,
+    Omit<UseOtpVerificationReturn, 'verifyCode'> {
+  verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+}
+
+
+
+export interface UseAddIdentifierReturn {
+  createIdentifier: (params: {
+    identifier: string;
+  }) => Promise<(BaseSuccessReturn | BaseFailureReturn) & { user?: UserResource | null }>;
+  verifyCode: (params: { code: string }) => Promise<
+    (BaseSuccessReturn | (BaseFailureReturn & { verifyAttempt?: PhoneNumberResource | EmailAddressResource })) & {
+      user?: UserResource | null;
+    }
+  >;
+  isCreating: boolean;
+  isVerifying: boolean;
 }
