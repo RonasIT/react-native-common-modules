@@ -1,16 +1,23 @@
 import { isClerkAPIResponseError } from '@clerk/clerk-expo';
 import { useState } from 'react';
 import { ClerkApiError } from '../enums';
-import { AuthIdentifierVerifyBy, IdentifierMethodFor, StartAuthParams, StartSignInWithIdentifierReturn, StartSignUpWithIdentifierReturn, UseAuthWithIdentifierReturn } from '../types';
+import {
+  AuthIdentifierVerifyBy,
+  IdentifierMethodFor,
+  StartAuthParams,
+  StartSignInWithIdentifierReturn,
+  StartSignUpWithIdentifierReturn,
+  UseAuthWithIdentifierReturn,
+} from '../types';
 import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-token';
 import { useOtpVerification } from './use-otp-verification';
 import { SignInResource } from '@clerk/types';
 
-export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, Method extends IdentifierMethodFor<VerifyBy>>(
-  method: Method,
-  verifyBy: VerifyBy
-): UseAuthWithIdentifierReturn<VerifyBy, Method> {
+export function useAuthWithIdentifier<
+  VerifyBy extends AuthIdentifierVerifyBy,
+  Method extends IdentifierMethodFor<VerifyBy>,
+>(method: Method, verifyBy: VerifyBy): UseAuthWithIdentifierReturn<VerifyBy, Method> {
   const { signUp, signIn, setActive } = useClerkResources();
   const { sendOtpCode, verifyCode: verifyOtpCode, isVerifying } = useOtpVerification();
   const { getSessionToken } = useGetSessionToken();
@@ -25,7 +32,7 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
   const handleSignInWithPassword = async (
     signInAttempt: SignInResource,
     isSignUp: boolean,
-    tokenTemplate?: string
+    tokenTemplate?: string,
   ): Promise<StartSignInWithIdentifierReturn<VerifyBy> | StartSignUpWithIdentifierReturn<Method>> => {
     await setActive?.({ session: signInAttempt.createdSessionId });
     const { sessionToken, error } = await handleSessionToken(tokenTemplate);
@@ -35,7 +42,7 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
         signUp,
         error,
         sessionToken,
-        isSuccess: !!sessionToken
+        isSuccess: !!sessionToken,
       } as StartSignUpWithIdentifierReturn<Method>;
     }
 
@@ -43,13 +50,13 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
       signIn,
       error,
       sessionToken,
-      isSuccess: !!sessionToken
+      isSuccess: !!sessionToken,
     } as StartSignInWithIdentifierReturn<VerifyBy>;
   };
 
   const handleUsernameAuth = async (
     params: StartAuthParams<'password'>,
-    isSignUp: boolean
+    isSignUp: boolean,
   ): Promise<StartSignInWithIdentifierReturn<VerifyBy> | StartSignUpWithIdentifierReturn<Method>> => {
     const { identifier, password, tokenTemplate } = params;
     const authMethod = isSignUp ? signUp : signIn;
@@ -61,32 +68,41 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
 
     return {
       isSuccess: false,
-      [isSignUp ? 'signUp' : 'signIn']: authMethod
+      [isSignUp ? 'signUp' : 'signIn']: authMethod,
     } as StartSignInWithIdentifierReturn<VerifyBy> | StartSignUpWithIdentifierReturn<Method>;
   };
 
   const handleEmailPhoneAuth = async (
     params: StartAuthParams<VerifyBy>,
-    isSignUp: boolean
+    isSignUp: boolean,
   ): Promise<StartSignInWithIdentifierReturn<VerifyBy> | StartSignUpWithIdentifierReturn<Method>> => {
     const { identifier } = params;
     const authMethod = isSignUp ? signUp : signIn;
+    const identifierFieldName = isSignUp ? method : 'identifier';
 
     if (verifyBy === 'password') {
-      const { password, tokenTemplate } = params as StartAuthParams<'password'>;
-      const authAttempt = await authMethod?.create({ [method]: identifier, password });
+      try {
+        const { password, tokenTemplate } = params as StartAuthParams<'password'>;
+        const authAttempt = await authMethod?.create({ [identifierFieldName]: identifier, password });
 
-      if (authAttempt?.status === 'complete' && 'createdSessionId' in authAttempt) {
-        return handleSignInWithPassword(authAttempt as SignInResource, isSignUp, tokenTemplate);
+        if (authAttempt?.status === 'complete' && 'createdSessionId' in authAttempt) {
+          return handleSignInWithPassword(authAttempt as SignInResource, isSignUp, tokenTemplate);
+        }
+      } catch (error) {
+        return { error, signIn, signUp };
       }
     } else if (verifyBy === 'otp') {
-      await authMethod?.create({ [method]: identifier });
-      await sendOtpCode(strategy);
+      try {
+        await authMethod?.create({ [identifierFieldName]: identifier });
+        await sendOtpCode(strategy);
+      } catch (error) {
+        return { error, signIn, signUp };
+      }
     }
 
     return {
       isSuccess: true,
-      [isSignUp ? 'signUp' : 'signIn']: authMethod
+      [isSignUp ? 'signUp' : 'signIn']: authMethod,
     } as StartSignInWithIdentifierReturn<VerifyBy> | StartSignUpWithIdentifierReturn<Method>;
   };
 
@@ -128,7 +144,7 @@ export function useAuthWithIdentifier<VerifyBy extends AuthIdentifierVerifyBy, M
         }
       }
 
-      return result;
+      return { ...result, isSignUp: true };
     } catch (error) {
       return { error, signIn, signUp, isSuccess: false } as StartSignInWithIdentifierReturn<VerifyBy>;
     } finally {
