@@ -18,7 +18,7 @@ type StartSignUpReturn = (BaseSuccessReturn | BaseFailureReturn) & WithSignUpRet
 
 type StartSignInReturn = (BaseSuccessReturn | BaseFailureReturn) & WithSignInReturn;
 
-type StartAuthorizationReturn = (BaseSuccessReturn | BaseFailureReturn) & WithClerkReturn & { isSignUp?: boolean };;
+type StartAuthorizationReturn = (BaseSuccessReturn | BaseFailureReturn) & WithClerkReturn & { isSignUp?: boolean };
 
 type AuthorizationFinishedReturn = (WithTokenSuccessReturn | WithTokenFailureReturn) & WithClerkReturn;
 
