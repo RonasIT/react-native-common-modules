@@ -102,14 +102,24 @@ export type StartAuthorizationWithIdentifierReturn<
 > = Method extends 'username'
   ? StartAuthorizationReturn & { sessionToken?: string } : StartAuthorizationReturn;
 
-export interface UseAuthWithIdentifierReturn< 
-  VerifyBy extends AuthIdentifierVerifyBy,
-  Method extends AuthIdentifierMethod
-> {
+interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyBy> {
   startSignIn: (params: StartAuthParams<VerifyBy>) => Promise<StartSignInWithIdentifierReturn<VerifyBy>>;
-  startSignUp: (params: StartAuthParams<VerifyBy>) => Promise<StartSignUpWithIdentifierReturn<Method>>;
-  startAuthorization: (params: StartAuthParams<VerifyBy>) => Promise<StartAuthorizationWithIdentifierReturn<Method>>;
+  startSignUp: (params: StartAuthParams<VerifyBy>) => Promise<StartSignUpWithIdentifierReturn<any>>;
+  startAuthorization: (params: StartAuthParams<VerifyBy>) => Promise<StartAuthorizationWithIdentifierReturn<any>>;
   isLoading: boolean;
-  verifyCode: (params: { code: string, tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
-  isVerifying: boolean;
 }
+
+type ConditionalUseAuthWithIdentifierReturn<
+  VerifyBy extends AuthIdentifierVerifyBy,
+  Method extends AuthIdentifierMethod,
+> = Method extends 'username'
+  ? BaseUseAuthWithIdentifierReturn<VerifyBy>
+  : BaseUseAuthWithIdentifierReturn<VerifyBy> & {
+    verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+    isVerifying: boolean;
+  };
+
+export type UseAuthWithIdentifierReturn<
+  VerifyBy extends AuthIdentifierVerifyBy,
+  Method extends AuthIdentifierMethod,
+> = ConditionalUseAuthWithIdentifierReturn<VerifyBy, Method>;

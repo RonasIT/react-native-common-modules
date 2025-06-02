@@ -154,14 +154,23 @@ export function useAuthWithIdentifier<
 
   const verifyCode = async ({ code, tokenTemplate }: { code: string; tokenTemplate?: string }) => {
     return verifyOtpCode({ code, strategy, tokenTemplate });
-  }; 
-
-  return {
-    startSignIn,
-    startSignUp,
-    startAuthorization,
-    isLoading,
-    verifyCode,
-    isVerifying,
   };
+
+  if (method === 'username') {
+    return {
+      startSignIn,
+      startSignUp,
+      startAuthorization,
+      isLoading,
+    } as UseAuthWithIdentifierReturn<TVerifyBy, TMethod>;
+  } else {
+    return {
+      startSignIn,
+      startSignUp,
+      startAuthorization,
+      isLoading,
+      verifyCode,
+      isVerifying,
+    } as UseAuthWithIdentifierReturn<TVerifyBy, TMethod>;
+  }
 }
