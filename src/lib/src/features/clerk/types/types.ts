@@ -115,11 +115,26 @@ type ConditionalUseAuthWithIdentifierReturn<
 > = Method extends 'username'
   ? BaseUseAuthWithIdentifierReturn<VerifyBy>
   : BaseUseAuthWithIdentifierReturn<VerifyBy> & {
-    verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
-    isVerifying: boolean;
-  };
+      verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+      isVerifying: boolean;
+    };
 
 export type UseAuthWithIdentifierReturn<
   VerifyBy extends AuthIdentifierVerifyBy,
   Method extends AuthIdentifierMethod,
 > = ConditionalUseAuthWithIdentifierReturn<VerifyBy, Method>;
+
+//Reset password types:
+
+export interface UseResetPasswordReturn {
+  startResetPassword: (params: {
+    identifier: string;
+  }) => Promise<(BaseSuccessReturn | BaseFailureReturn) & WithSignInReturn>;
+  resetPassword: (params: {
+    code: string;
+    password: string;
+    tokenTemplate?: string;
+  }) => Promise<AuthorizationFinishedReturn>;
+  isResetting: boolean;
+  isCodeSending: boolean;
+}
