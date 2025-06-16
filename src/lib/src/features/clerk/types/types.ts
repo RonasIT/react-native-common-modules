@@ -1,4 +1,4 @@
-import { ClerkAPIError, OAuthStrategy, SetActive, SignInResource, SignOut, SignUpResource } from '@clerk/types';
+import { ClerkAPIError, EmailAddressResource, OAuthStrategy, PhoneNumberResource, SetActive, SignInResource, SignOut, SignUpResource, UserResource } from '@clerk/types';
 
 type BaseSuccessReturn = { isSuccess: true; error?: never };
 
@@ -39,6 +39,18 @@ export interface UseGetSessionTokenReturn {
 
 export type GetSessionTokenReturn = WithTokenSuccessReturn | WithTokenFailureReturn;
 
+// OTP verification types:
+
+export interface UseOtpVerificationReturn {
+  sendOtpCode: (strategy: OtpStrategy) => Promise<void>;
+  verifyCode: (params: {
+    code: string;
+    strategy: OtpStrategy;
+    tokenTemplate?: string;
+  }) => Promise<AuthorizationFinishedReturn>;
+  isVerifying: boolean;
+}
+
 // Ticket types:
 
 export type StartAuthorizationWithTicketReturn = (WithTokenSuccessReturn | WithTokenFailureReturn) & WithSignInReturn;
@@ -69,6 +81,19 @@ export interface UseAuthWithSSOReturn {
 export interface UseOtpVerificationReturn {
   sendOtpCode: (strategy: OtpStrategy) => Promise<void>;
   verifyCode: (params: { code: string; strategy: OtpStrategy; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+  isVerifying: boolean;
+}
+
+export interface UseAddIdentifierReturn {
+  createIdentifier: (params: {
+    identifier: string;
+  }) => Promise<(BaseSuccessReturn | BaseFailureReturn) & { user?: UserResource | null }>;
+  verifyCode: (params: { code: string }) => Promise<
+    (BaseSuccessReturn | (BaseFailureReturn & { verifyAttempt?: PhoneNumberResource | EmailAddressResource })) & {
+      user?: UserResource | null;
+    }
+  >;
+  isCreating: boolean;
   isVerifying: boolean;
 }
 
@@ -138,3 +163,4 @@ export interface UseResetPasswordReturn {
   isResetting: boolean;
   isCodeSending: boolean;
 }
+
