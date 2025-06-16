@@ -2,7 +2,7 @@ import { VirtualizedListExample } from '@ronas-it/example/virtualized-scroll-exa
 import { AppPressable } from '@ronas-it/react-native-common-modules/src/ui/pressable';
 import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/safe-area-view';
 import { useTranslation } from '@ronas-it/react-native-common-modules/src/utils/i18n';
-import { ReactElement, useContext, useRef } from 'react';
+import { ReactElement, useContext } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import { LanguageContext } from './_layout';
 
