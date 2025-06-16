@@ -468,7 +468,7 @@ export const AuthWithIdentifierComponent = () => {
     await startSignUp({ identifier, password });
   };
 
-  const handleVerifyOtp = async () => {
+  const handleVerifyCode = async () => {
     const result = await verifyCode({ code: otp });
     console.log(result.sessionToken)
   };
@@ -487,7 +487,7 @@ export const AuthWithIdentifierComponent = () => {
         onChangeText={setVerificationCode}
       />
       <Button onPress={handleSignUp} title="Sign Up" disabled={isLoading || isVerifying} />
-      <Button onPress={handleSignIn} title="Verify code" disabled={isLoading || isVerifying} />
+      <Button onPress={handleVerifyCode} title="Verify code" disabled={isLoading || isVerifying} />
     </View>
   );
 };
