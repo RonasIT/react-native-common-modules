@@ -59,3 +59,5 @@ cache/
 **/android
 
 .eslintcache
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
