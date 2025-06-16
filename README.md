@@ -446,7 +446,7 @@ Parameters:
 Returned Object:
 
 - `startSignUp`: Initiates a new user registration using the specified identifier and verification method.
-- `startSignIn`: Initiates an existing user authentication using the specified identifier and verification method.
+- `startSignIn`: Initiates authentication of an existing user using the specified identifier and verification method.
 - `startAuthorization`: Determines whether to initiate a sign-up or sign-in based on whether the user has been registered previously.
 - `verifyCode`: Verifies an OTP code if the verification method is 'otp'.
 - `isLoading:` Indicates whether an authentication request is in progress.
@@ -456,7 +456,7 @@ Returned Object:
 
 ```ts
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Alert } from 'react-native';
+import { View, TextInput, Button } from 'react-native';
 import { useAuthWithIdentifier } from '@ronas-it/react-native-common-modules/src/features/clerk';
 
 export const AuthWithIdentifierComponent = () => {
@@ -494,6 +494,32 @@ export const AuthWithIdentifierComponent = () => {
 
 ```
 
+#### `useAuthWithSSO`
+
+Hook provides functionality to handle [SSO](https://clerk.com/docs/references/expo/use-sso) authentication flows.
+
+Returned Object:
+
+- `startSSOFlow`: A function to initiate an SSO flow. It takes a strategy, redirectUrl, and optional tokenTemplate as parameters, starting the SSO authentication and returning session information or errors upon completion.
+- `isLoading`: A boolean indicating whether an SSO process is currently ongoing.
+
+#### `useAuthWithTicket`
+
+This hook is a utility that facilitates user authentication using a ticket-based strategy (ticket is a token generated from the Backend API).
+
+Returned Object:
+
+- `startAuthorization`: A function to initiate authentication with a ticket. It accepts an object with ticket and optional tokenTemplate parameters to kick off the authorization process and returns the session details.
+- `isLoading`: A boolean indicating whether the ticket-based authorization process is ongoing.
+
+#### `useGetSessionToken`
+
+This hook is a utility for getting session tokens.
+
+Returned Object:
+
+- `getSessionToken`: A function to retrieve the session token. It takes an optional [tokenTemplate](https://clerk.com/docs/backend-requests/jwt-templates) parameter to specify a template for the token.
+
 #### `useAddIdentifier`
 
 Hook provides functionality to add new email or phone number identifiers to a user's account and verify them using verification codes.
@@ -514,32 +540,6 @@ Returned Object:
 - `sendOtpCode`: Sends an OTP code to the user's identifier (email or phone number) based on the specified strategy.
 - `verifyCode`: Verifies the OTP code provided by the user, completing the authentication process.
 - `isVerifying`: A boolean indicating whether a verification attempt is currently in progress.
-
-#### `useGetSessionToken`
-
-This hook is a utility for getting session tokens.
-
-Returned Object:
-
-- `getSessionToken`: A function to retrieve the session token. It takes an optional [tokenTemplate](https://clerk.com/docs/backend-requests/jwt-templates) parameter to specify a template for the token.
-
-#### `useAuthWithSSO`
-
-Hook provides functionality to handle [SSO](https://clerk.com/docs/references/expo/use-sso) authentication flows.
-
-Returned Object:
-
-- `startSSOFlow`: A function to initiate an SSO flow. It takes a strategy, redirectUrl, and optional tokenTemplate as parameters, starting the SSO authentication and returning session information or errors upon completion.
-- `isLoading`: A boolean indicating whether an SSO process is currently ongoing.
-
-#### `useAuthWithTicket`
-
-This hook is a utility that facilitates user authentication using a ticket-based strategy (ticket is a token generated from the Backend API).
-
-Returned Object:
-
-- `startAuthorization`: A function to initiate authentication with a ticket. It accepts an object with ticket and optional tokenTemplate parameters to kick off the authorization process and returns the session details.
-- `isLoading`: A boolean indicating whether the ticket-based authorization process is ongoing.
 
 #### `useResetPassword`
 
