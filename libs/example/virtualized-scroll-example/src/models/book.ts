@@ -3,7 +3,7 @@ export class Book {
   public title: string;
   public pageCount: number;
   public shortDescription: string;
-  public authors: string[];
+  public authors: Array<string>;
 
   constructor(model: Partial<Book> = {}) {
     Object.assign(this, model);
