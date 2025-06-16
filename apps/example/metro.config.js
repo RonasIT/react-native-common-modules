@@ -1,7 +1,7 @@
+const path = require('path');
 const { getDefaultConfig } = require('@expo/metro-config');
 const { withNxMetro } = require('@nx/expo');
 const { mergeConfig } = require('metro-config');
-const path = require('path');
 
 const appRoot = __dirname;
 const monorepoRoot = path.resolve(appRoot, '../..');
@@ -15,12 +15,12 @@ const { assetExts, sourceExts } = defaultConfig.resolver;
  */
 const customConfig = {
   transformer: {
-    babelTransformerPath: require.resolve('react-native-svg-transformer'),
+    babelTransformerPath: require.resolve('react-native-svg-transformer')
   },
   resolver: {
     assetExts: assetExts.filter((ext) => ext !== 'svg'),
-    sourceExts: [...sourceExts, 'cjs', 'mjs', 'svg'],
-  },
+    sourceExts: [...sourceExts, 'cjs', 'mjs', 'svg']
+  }
 };
 
 module.exports = withNxMetro(mergeConfig(defaultConfig, customConfig), {
@@ -30,5 +30,5 @@ module.exports = withNxMetro(mergeConfig(defaultConfig, customConfig), {
   // all the file extensions used for imports other than 'ts', 'tsx', 'js', 'jsx', 'json'
   extensions: [],
   // Specify folders to watch, in addition to Nx defaults (workspace libraries and node_modules)
-  watchFolders: [monorepoRoot],
+  watchFolders: [monorepoRoot]
 });
