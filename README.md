@@ -47,7 +47,7 @@ import { AppPressable } from '@ronas-it/react-native-common-modules/src/ui/press
 
 #### 2. `AppSafeAreaView`
 
-> ***NOTE:***   Required dependencies: `react-native-safe-area-context`
+> **NOTE:***  Required dependencies: `react-native-safe-area-context`
 
 A component for granular control of safe area edges on each screen. The difference from `SafeAreaView` in [react-native-safe-area-context](https://www.npmjs.com/package/react-native-safe-area-context) is that the container adds padding to the elements inside it, rather than to the entire screen, making it more flexible for use.
 
@@ -68,7 +68,7 @@ import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/sa
 
 #### 3. `VirtualizedList`
 
-> ***NOTE:***   Required dependencies: `@shopify/flash-list`
+> **NOTE:**   Required dependencies: `@shopify/flash-list`
 
 A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that includes `onScrollUp` and `onScrollDown` props.
 
@@ -77,7 +77,7 @@ A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that
 - `onScrollUp`: Called when user scrolls up.
 - `onScrollDown`: Called when user scrolls down.
 
-> ***NOTE:***   `onScrollUp` and `onScrollDown` are synced with `onScroll`
+> **NOTE:**   `onScrollUp` and `onScrollDown` are synced with `onScroll`
 
 **Example:**
 
@@ -132,7 +132,7 @@ export function App(): ReactElement {
 
 #### 1. Push notifications
 
-> ***NOTE:***   Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
+> **NOTE:**   Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
 
 ##### `PushNotificationsService`
 
@@ -146,7 +146,7 @@ Requires [setup](https://docs.expo.dev/push-notifications/push-notifications-set
 
 ##### `usePushNotifications`
 
-Hook, that automatically subscribes the device to receive push notifications when a user becomes authenticated, and unsubscribes when a user becomes non-authenticated. It supports custom subscription and unsubscription logic through provided functions or API configuration. Listens for [responses](https://docs.expo.dev/push-notifications/receiving-notifications/) to notifications and executes a callback, if provided, when a notification is interacted with.  
+Hook, that automatically subscribes the device to receive push notifications when a user becomes authenticated, and unsubscribes when a user becomes non-authenticated. It supports custom subscription and unsubscription logic through provided functions or API configuration. Listens for [responses](https://docs.expo.dev/push-notifications/receiving-notifications/) to notifications and executes a callback, if provided, when a notification is interacted with.
 Used in the root `App` component.
 
 `usePushNotifications` hook arguments:
@@ -180,9 +180,9 @@ usePushNotifications({
 
 #### 2. Storage
 
-> ***NOTE:***   The `AsyncStorageItem` and `SecureStorageItem` classes are deprecated and will be removed in future versions. Please use the `react-native-mmkv` implementation instead.
+> **NOTE:**   The `AsyncStorageItem` and `SecureStorageItem` classes are deprecated and will be removed in future versions. Please use the `react-native-mmkv` implementation instead.
 
-> ***NOTE:***   Required dependencies: `@react-native-async-storage/async-storage`, `expo-secure-store`
+> **NOTE:**   Required dependencies: `@react-native-async-storage/async-storage`, `expo-secure-store`
 
 A library that provides two types of key-value storage API: [AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/usage/) and [SecuredStorage](https://docs.expo.dev/versions/latest/sdk/securestore/) (IOS, Android).
 
@@ -215,7 +215,7 @@ appStorageService.token.remove();
 
 #### 3. Image Picker
 
-> ***NOTE:***   Required dependencies: `expo-image-picker`
+> **NOTE:**   Required dependencies: `expo-image-picker`
 
 `ImagePickerService` gives the application access to the camera and image gallery.
 
@@ -252,7 +252,7 @@ const handlePickImage = async (source: ImagePickerSource) => {
 
 #### 4. WebSocket
 
-> ***NOTE:***   Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`
+> **NOTE:**   Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`
 
 `WebSocketService` manages WebSocket connections using [Pusher](https://pusher.com/) and can work in both web and mobile applications.  
 Doesn't support Expo Go.
@@ -329,7 +329,7 @@ const initStore = createStoreInitializer({
 
 #### 2. `i18n`
 
-> ***NOTE:***   Required dependencies: `i18n-js`, `expo-localization`
+> **NOTE:**   Required dependencies: `i18n-js`, `expo-localization`
 
 Provides functions to set language and use translations using [i18n-js](https://github.com/fnando/i18n-js)
 
@@ -418,7 +418,7 @@ export default function RootScreen(): ReactElement {
 
 #### 1. Clerk
 
-> ***NOTE:***   Required dependencies: `@clerk/clerk-expo`
+> **NOTE:**   Required dependencies: `@clerk/clerk-expo`
 
 Hooks and helpers to create user authentication with [Clerk Expo SDK](https://clerk.com/docs/references/expo/overview).
 
