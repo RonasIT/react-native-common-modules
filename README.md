@@ -68,7 +68,7 @@ import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/sa
 
 #### 3. `VirtualizedList`
 
-> **_NOTE:_**   Required dependencies: `@shopify/flash-list`
+> **_NOTE:_**  Required dependencies: `@shopify/flash-list`
 
 A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that includes `onScrollUp` and `onScrollDown` props.
 
@@ -77,7 +77,7 @@ A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that
 - `onScrollUp`: Called when user scrolls up.
 - `onScrollDown`: Called when user scrolls down.
 
-> **_NOTE:_**   `onScrollUp` and `onScrollDown` are synced with `onScroll`
+> **_NOTE:_**  `onScrollUp` and `onScrollDown` are synced with `onScroll`
 
 **Example:**
 
@@ -132,7 +132,7 @@ export function App(): ReactElement {
 
 #### 1. Push notifications
 
-> **_NOTE:_**   Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
+> **_NOTE:_**  Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
 
 ##### `PushNotificationsService`
 
@@ -142,6 +142,7 @@ Requires [setup](https://docs.expo.dev/push-notifications/push-notifications-set
 `PushNotificationsService` public methods:
 
 - `obtainPushNotificationsToken` - get an Expo token that can be used to send a push notification to the device using Expo's push notifications service.
+
 - `pushToken` - getter for retrieving the token if it was already obtained.
 
 ##### `usePushNotifications`
@@ -180,9 +181,9 @@ usePushNotifications({
 
 #### 2. Storage
 
-> **_NOTE:_**   The `AsyncStorageItem` and `SecureStorageItem` classes are deprecated and will be removed in future versions. Please use the `react-native-mmkv` implementation instead.
+> **_NOTE:_**  The `AsyncStorageItem` and `SecureStorageItem` classes are deprecated and will be removed in future versions. Please use the `react-native-mmkv` implementation instead.
 
-> **_NOTE:_**   Required dependencies: `@react-native-async-storage/async-storage`, `expo-secure-store`
+> **_NOTE:_**  Required dependencies: `@react-native-async-storage/async-storage`, `expo-secure-store`
 
 A library that provides two types of key-value storage API: [AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/usage/) and [SecuredStorage](https://docs.expo.dev/versions/latest/sdk/securestore/) (IOS, Android).
 
@@ -215,7 +216,7 @@ appStorageService.token.remove();
 
 #### 3. Image Picker
 
-> **_NOTE:_**   Required dependencies: `expo-image-picker`
+> **_NOTE:_**  Required dependencies: `expo-image-picker`
 
 `ImagePickerService` gives the application access to the camera and image gallery.
 
@@ -252,7 +253,7 @@ const handlePickImage = async (source: ImagePickerSource) => {
 
 #### 4. WebSocket
 
-> **_NOTE:_**   Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`
+> **_NOTE:_**  Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`
 
 `WebSocketService` manages WebSocket connections using [Pusher](https://pusher.com/) and can work in both web and mobile applications.  
 Doesn't support Expo Go.
@@ -306,7 +307,7 @@ webSocketService.unsubscribeFromChannel('private-conversations.123', (event) => 
 
 #### 1. `setupReactotron(projectName: string)`
 
-> **_NOTE:_**   Required dependencies: `@reduxjs/toolkit`, `reactotron-react-native`, `reactotron-react-js`, `reactotron-redux`, `@react-native-async-storage/async-storage`
+> **_NOTE:_**  Required dependencies: `@reduxjs/toolkit`, `reactotron-react-native`, `reactotron-react-js`, `reactotron-redux`, `@react-native-async-storage/async-storage`
 
 Configures and initializes [Reactotron debugger](https://github.com/infinitered/reactotron) with [redux plugin](https://docs.infinite.red/reactotron/plugins/redux/) for development purposes.  
 Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?q=reactotron-app&expanded=true) on your computer for use.
@@ -329,7 +330,7 @@ const initStore = createStoreInitializer({
 
 #### 2. `i18n`
 
-> **_NOTE:_**   Required dependencies: `i18n-js`, `expo-localization`
+> **_NOTE:_**  Required dependencies: `i18n-js`, `expo-localization`
 
 Provides functions to set language and use translations using [i18n-js](https://github.com/fnando/i18n-js)
 
