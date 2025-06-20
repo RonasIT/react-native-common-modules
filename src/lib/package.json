@@ -24,7 +24,7 @@
     "src"
   ],
   "devDependencies": {
-    "@nx/rollup": "20.3.0"
+    "@nx/rollup": "21.2.0"
   },
   "peerDependencies": {
     "@pusher/pusher-websocket-react-native": "*",

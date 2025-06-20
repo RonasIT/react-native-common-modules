@@ -62,6 +62,5 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     }
-  },
-  "useLegacyCache": true
+  }
 }

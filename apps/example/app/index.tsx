@@ -10,7 +10,7 @@ export default function RootScreen(): ReactElement {
   const translate = useTranslation('EXAMPLE');
   const { language, onLanguageChange } = useContext(LanguageContext);
 
-  const onPress = () => Alert.alert('Button pressed');
+  const onPress = (): void => Alert.alert('Button pressed');
 
   const handleLanguageChange = (): void => {
     onLanguageChange?.(language === 'en' ? 'fr' : 'en');

@@ -24,15 +24,21 @@
     "baseUrl": ".",
     "paths": {
       "@ronas-it/example/virtualized-scroll-example": ["libs/example/virtualized-scroll-example/src/index.ts"],
+      "@ronas-it/react-native-common-modules/src/data-access/image-picker": [
+        "src/lib/src/data-access/image-picker/index.ts"
+      ],
+      "@ronas-it/react-native-common-modules/src/data-access/push-notifications": [
+        "src/lib/src/data-access/push-notifications/index.ts"
+      ],
+      "@ronas-it/react-native-common-modules/src/data-access/storage": ["src/lib/src/data-access/storage/index.ts"],
+      "@ronas-it/react-native-common-modules/src/data-access/store/utils/reactotron": [
+        "src/lib/src/data-access/store/utils/reactotron/index.ts"
+      ],
+      "@ronas-it/react-native-common-modules/src/data-access/websocket": ["src/lib/src/data-access/websocket/index.ts"],
       "@ronas-it/react-native-common-modules/src/ui/pressable": ["src/lib/src/ui/pressable/index.ts"],
       "@ronas-it/react-native-common-modules/src/ui/safe-area-view": ["src/lib/src/ui/safe-area-view/index.ts"],
       "@ronas-it/react-native-common-modules/src/ui/virtualized-scroll": ["src/lib/src/ui/virtualized-scroll/index.ts"],
-      "@ronas-it/react-native-common-modules/src/data-access/push-notifications": ["src/lib/src/data-access/push-notifications/index.ts"],
-      "@ronas-it/react-native-common-modules/src/data-access/storage": ["src/lib/src/data-access/storage/index.ts"],
-      "@ronas-it/react-native-common-modules/src/data-access/image-picker": ["src/lib/src/data-access/image-picker/index.ts"],
-      "@ronas-it/react-native-common-modules/src/data-access/websocket": ["src/lib/src/data-access/websocket/index.ts"],
-      "@ronas-it/react-native-common-modules/src/data-access/store/utils/reactotron": ["src/lib/src/data-access/store/utils/reactotron/index.ts"],
-      "@ronas-it/react-native-common-modules/src/utils/i18n": ["src/lib/src/utils/i18n/index.ts"],
+      "@ronas-it/react-native-common-modules/src/utils/i18n": ["src/lib/src/utils/i18n/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

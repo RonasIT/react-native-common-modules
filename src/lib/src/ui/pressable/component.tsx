@@ -1,16 +1,18 @@
-import React, { forwardRef } from 'react';
+import { ReactElement, Ref } from 'react';
 import { Pressable, PressableProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 export interface AppPressableProps extends PressableProps {
   pressedOpacity?: number;
+  ref?: Ref<View>
 }
 
-export const AppPressable = forwardRef<View, AppPressableProps>(({
+export const AppPressable = ({
   children,
   style,
   pressedOpacity = 0.4,
+  ref,
   ...props
-}, ref) => {
+}: AppPressableProps): ReactElement => {
   return (
     <Pressable
       ref={ref}
@@ -25,4 +27,4 @@ export const AppPressable = forwardRef<View, AppPressableProps>(({
       {children}
     </Pressable>
   );
-});
+};
