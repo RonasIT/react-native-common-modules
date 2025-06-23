@@ -449,7 +449,7 @@ Returned Object:
 - `startSignIn`: Initiates authentication of an existing user using the specified identifier and verification method.
 - `startAuthorization`: Determines whether to initiate a sign-up or sign-in based on whether the user has been registered previously.
 - `verifyCode`: Verifies an OTP code if the verification method is 'otp'.
-- `isLoading:` Indicates whether an authentication request is in progress.
+- `isLoading`: Indicates whether an authentication request is in progress.
 - `isVerifying`: Indicates whether an OTP verification is in progress.
 
 **Example:**
@@ -460,16 +460,16 @@ import { View, TextInput, Button } from 'react-native';
 import { useAuthWithIdentifier } from '@ronas-it/react-native-common-modules/src/features/clerk';
 
 export const AuthWithIdentifierComponent = () => {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const { startSignUp, verifyCode, isLoading, isVerifying } = useAuthWithIdentifier('emailAddress', 'otp');
 
   const handleSignUp = async () => {
-    await startSignUp({ identifier, password });
+    await startSignUp({ identifier });
   };
 
   const handleVerifyCode = async () => {
-    const result = await verifyCode({ code: otp });
+    const result = await verifyCode({ code: verificationCode });
     console.log(result.sessionToken)
   };
 
@@ -543,7 +543,7 @@ Returned Object:
 
 #### `useResetPassword`
 
-Hook provides a methods to handle password reset functionality through email or phone-based OTP.
+Hook provides methods to handle password reset functionality through email or phone-based OTP.
 
 Returned Object:
 
