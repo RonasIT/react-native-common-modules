@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
-import { ImagePickerSource, ImagePickerError } from './enums';
 import { Alert, Linking } from 'react-native';
+import { ImagePickerSource, ImagePickerError } from './enums';
 
 export class ImagePickerService {
   public defaultOptions: ImagePicker.ImagePickerOptions = {

@@ -14,6 +14,9 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
       forceTLS: this.options.useTLS,
       cluster: this.options.cluster,
       channelAuthorization: authURL ? {
+        // workaround for https://github.com/pusher/pusher-js/issues/715
+        endpoint: '',
+        transport: 'ajax',
         customHandler: async (
           { socketId, channelName }: ChannelAuthorizationRequestParams,
           callback: ChannelAuthorizationCallback

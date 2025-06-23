@@ -1,8 +1,8 @@
+import { omit } from 'lodash-es';
 import { Pusher, PusherEvent } from '@pusher/pusher-websocket-react-native';
 import { BaseWebSocketService } from './base-service';
-import { WebSocketListener } from './types';
 import { WebSocketOptions } from './interfaces';
-import { omit } from 'lodash-es';
+import { WebSocketListener } from './types';
 
 export class WebSocketService<TChannelName extends string> extends BaseWebSocketService<TChannelName> {
   private readonly pusher: Pusher;
@@ -42,7 +42,7 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
     }
   }
 
-  private addEventHandlerToPusher(channelName: TChannelName) {
+  private addEventHandlerToPusher(channelName: TChannelName): void {
     const eventHandler = (event: PusherEvent): void => {
       this.channels[channelName].forEach((listener) => listener(event));
     };

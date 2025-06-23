@@ -85,7 +85,7 @@ export const usePushNotifications = ({
     }
   }, [pushToken, isAuthenticated]);
 
-  const setPushNotificationsToken = async () => {
+  const setPushNotificationsToken = async (): Promise<void> => {
     const token = await pushNotificationsService.obtainPushNotificationsToken({ getTokenErrorHandler });
     token && setPushToken(token);
   };
@@ -98,7 +98,7 @@ export const usePushNotifications = ({
 
   useEffect(() => {
     // NOTE: Workaround https://github.com/facebook/react-native/issues/30206#issuecomment-1698972226
-    const handlerAppStateChange = async (nextAppState: AppStateStatus) => {
+    const handlerAppStateChange = async (nextAppState: AppStateStatus): Promise<void> => {
       if (nextAppState === 'active' && !isPermissionFetching.current) {
         isPermissionFetching.current = true;
         await setPushNotificationsToken();
@@ -113,8 +113,9 @@ export const usePushNotifications = ({
     };
   }, [pushToken, isAuthenticated]);
 
-  const handleNotification = (notification: Notifications.Notification) =>
+  const handleNotification = (notification: Notifications.Notification): void  => {
     isNavigationReady && onNotificationResponse?.(notification);
+  }
 
   useEffect(() => {
     if (isAuthenticated && isRootNavigationStateReady && lastNotificationResponse?.notification) {

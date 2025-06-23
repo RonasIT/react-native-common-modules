@@ -1,7 +1,7 @@
 import { without } from 'lodash-es';
-import { WebSocketListener } from './types';
-import { WebSocketChannels, WebSocketOptions } from './interfaces';
 import { ChannelAuthorizationData } from 'pusher-js/types/src/core/auth/options';
+import { WebSocketChannels, WebSocketOptions } from './interfaces';
+import { WebSocketListener } from './types';
 
 export abstract class BaseWebSocketService<TChannelName extends string> {
   protected channels: WebSocketChannels = {};
@@ -19,6 +19,7 @@ export abstract class BaseWebSocketService<TChannelName extends string> {
 
   public unsubscribeFromChannel(channelName: TChannelName, onEvent: WebSocketListener): void {
     this.channels[channelName] = without(this.channels[channelName], onEvent);
+
     if (this.channels[channelName].length === 0) {
       delete this.channels[channelName];
     }
