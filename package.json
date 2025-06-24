@@ -15,7 +15,6 @@
     "@clerk/clerk-expo": "2.13.1",
     "@expo/metro-config": "~0.20.0",
     "@expo/metro-runtime": "~5.0.4",
-    "@react-native-async-storage/async-storage": "2.1.2",
     "@reduxjs/toolkit": "^2.8.2",
     "@shopify/flash-list": "1.7.6",
     "expo": "^53.0.0",
