@@ -56,7 +56,7 @@ export const usePushNotifications = ({
             Authorization: `Bearer ${apiConfig.accessToken}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ expoToken }),
+          body: JSON.stringify({ expo_token: expoToken }),
         });
 
   const unsubscribeDeviceCallback: typeof unsubscribeDevice = unsubscribeDevice
@@ -68,7 +68,7 @@ export const usePushNotifications = ({
             Authorization: `Bearer ${apiConfig.accessToken}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ expoToken }),
+          body: JSON.stringify({ expo_token: expoToken }),
         });
 
   useEffect(() => {
