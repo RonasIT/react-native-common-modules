@@ -163,41 +163,9 @@ usePushNotifications({
 })
 ```
 
-#### 2. Storage
+> **_NOTE:_** By default, when using the `apiConfig` option, the hook sends the Expo push token to your server in the following format: `JSON.stringify({ expo_token })`
 
-> **_NOTE:_** The `AsyncStorageItem` and `SecureStorageItem` classes are deprecated and will be removed in future versions. Please use the `react-native-mmkv` implementation instead.
-
-> **_NOTE:_** Required dependencies: `@react-native-async-storage/async-storage`, `expo-secure-store`
-
-A library that provides two types of key-value storage API: [AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/usage/) and [SecuredStorage](https://docs.expo.dev/versions/latest/sdk/securestore/) (IOS, Android).
-
-**Example**
-
-Implement storage service:
-
-```ts
-import { AsyncStorageItem, SecureStorageItem } from '@ronas-it/react-native-common-modules/src/data-access/storage';
-
-class AppStorageService {
-  public token = new SecureStorageItem('token');
-  public tokenExpiryDate = new SecureStorageItem('tokenExpiryDate');
-  public language = new AsyncStorageItem('language');
-}
-
-export const appStorageService = new AppStorageService();
-```
-
-Usage:
-```ts
-// Get storage item
-const token = await appStorageService.token.get();
-// Set storage item
-appStorageService.token.set('new_token');
-// Delete storage item
-appStorageService.token.remove();
-```
-
-#### 3. Image Picker
+#### 2. Image Picker
 
 > **_NOTE:_** Required dependencies: `expo-image-picker`
 
@@ -233,7 +201,7 @@ const handlePickImage = async (source: ImagePickerSource) => {
 };
 ```
 
-#### 4. WebSocket
+#### 3. WebSocket
 
 > **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`
 
@@ -287,9 +255,9 @@ webSocketService.unsubscribeFromChannel('private-conversations.123', (event) => 
 
 ### Utils
 
-#### 1. `setupReactotron(projectName: string)`
+#### 1. `setupReactotron(projectName: string, plugins: Array<ReactotronPlugin>)`
 
-> **_NOTE:_** Required dependencies: `@reduxjs/toolkit`, `reactotron-react-native`, `reactotron-react-js`, `reactotron-redux`, `@react-native-async-storage/async-storage`
+> **_NOTE:_** Required dependencies: `@reduxjs/toolkit`, `reactotron-react-native`, `reactotron-react-js`, `reactotron-redux`
 
 Configures and initializes [Reactotron debugger](https://github.com/infinitered/reactotron) with [redux plugin](https://docs.infinite.red/reactotron/plugins/redux/) for development purposes.
 Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?q=reactotron-app&expanded=true) on your computer for use.
@@ -297,10 +265,17 @@ Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?
 **Example:**
 
 ```ts
-import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
 import { setupReactotron } from '@ronas-it/react-native-common-modules/src/data-access/store/utils/reactotron';
+import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
+import Reactotron from 'reactotron-react-native';
+import mmkvPlugin from 'reactotron-react-native-mmkv';
+import type { ReactotronReactNative } from 'reactotron-react-native';
+import { storage } from './mmkv/storage/instance/location'; // <--- update this to your mmkv instance.
 
-const reactotron = setupReactotron('your-app');
+const reactotron = setupReactotron('your-app', [
+  // You can add an array of Reactotron plugins here
+  (reactotron) => mmkvPlugin<ReactotronReactNative>({ storage })
+]);
 const enhancers = reactotron ? [reactotron.createEnhancer()] : [];
 
 const initStore = createStoreInitializer({
