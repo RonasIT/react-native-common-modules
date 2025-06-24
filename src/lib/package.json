@@ -29,7 +29,6 @@
   "peerDependencies": {
     "@clerk/clerk-expo": "*",
     "@pusher/pusher-websocket-react-native": "*",
-    "expo-secure-store": "*",
     "pusher-js": "*",
     "react": "*",
     "react-native": "*",
@@ -54,9 +53,6 @@
       "optional": true
     },
     "@pusher/pusher-websocket-react-native": {
-      "optional": true
-    },
-    "expo-secure-store": {
       "optional": true
     },
     "pusher-js": {
