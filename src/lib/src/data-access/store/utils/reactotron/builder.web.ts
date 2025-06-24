@@ -1,5 +1,7 @@
+import { ReactotronPlugin } from './types';
+
 /* eslint-disable @typescript-eslint/no-var-requires */
-export const setupReactotron = (projectName: string) => {
+export const setupReactotron = (projectName: string, plugins: Array<ReactotronPlugin> = []) => {
   if (__DEV__) {
     const Reactotron = require('reactotron-react-js').default;
 
@@ -13,7 +15,12 @@ export const setupReactotron = (projectName: string) => {
       throw new Error('reactotronRedux is undefined. Please ensure reactotron-redux is properly installed.');
     }
 
-    return Reactotron.configure({ name: projectName }).use(reactotronRedux()).connect();
+    let instance = Reactotron.configure({ name: projectName });
+
+    // Apply plugins
+    instance = plugins.reduce((inst, plugin) => inst.use(plugin(inst)), instance.use(reactotronRedux()));
+
+    return instance.connect();
   }
 
   return undefined;
