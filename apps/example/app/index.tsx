@@ -1,4 +1,3 @@
-import { VirtualizedListExample } from '@ronas-it/example/virtualized-scroll-example';
 import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/safe-area-view';
 import { useTranslation } from '@ronas-it/react-native-common-modules/src/utils/i18n';
 import { ReactElement, useContext } from 'react';
@@ -26,7 +25,6 @@ export default function RootScreen(): ReactElement {
           <Text>{translate('BUTTON_LANGUAGE')}</Text>
         </Pressable>
       </View>
-      <VirtualizedListExample />
     </AppSafeAreaView>
   );
 }
