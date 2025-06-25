@@ -1,9 +1,8 @@
 import { VirtualizedListExample } from '@ronas-it/example/virtualized-scroll-example';
-import { AppPressable } from '@ronas-it/react-native-common-modules/src/ui/pressable';
 import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/safe-area-view';
 import { useTranslation } from '@ronas-it/react-native-common-modules/src/utils/i18n';
 import { ReactElement, useContext } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
 import { LanguageContext } from './_layout';
 
 export default function RootScreen(): ReactElement {
@@ -20,12 +19,12 @@ export default function RootScreen(): ReactElement {
     <AppSafeAreaView edges={['bottom']} style={styles.safeAreaContainer}>
       <View style={styles.container}>
         <Text style={styles.title}>Pressable</Text>
-        <AppPressable onPress={onPress} hitSlop={10}>
+        <Pressable onPress={onPress} hitSlop={10}>
           <Text>{translate('BUTTON_PRESS_ME')}</Text>
-        </AppPressable>
-        <AppPressable onPress={handleLanguageChange} hitSlop={10}>
+        </Pressable>
+        <Pressable onPress={handleLanguageChange} hitSlop={10}>
           <Text>{translate('BUTTON_LANGUAGE')}</Text>
-        </AppPressable>
+        </Pressable>
       </View>
       <VirtualizedListExample />
     </AppSafeAreaView>

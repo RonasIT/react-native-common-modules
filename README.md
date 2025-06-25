@@ -27,25 +27,7 @@ npx nx run lib:nx-release-publish
 
 At the moment this library contains the following components:
 
-#### 1. `AppPressable`
-
-This component can be used in the same way as the built-in [Pressable component](https://reactnative.dev/docs/pressable), but it also includes opacity control.
-
-**Props:**
-
-- `pressedOpacity`: Opacity value. Default is 0.4.
-
-**Example:**
-
-```jsx
-import { AppPressable } from '@ronas-it/react-native-common-modules/src/ui/pressable';
-
-<AppPressable style={styles.button} pressedOpacity={0.5}>
-  <Text>Press Me</Text>
-</AppPressable>
-```
-
-#### 2. `AppSafeAreaView`
+#### 1. `AppSafeAreaView`
 
 > **_NOTE:_** Required dependencies: `react-native-safe-area-context`
 
@@ -66,7 +48,7 @@ import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/sa
 </AppSafeAreaView>
 ```
 
-#### 3. `VirtualizedList`
+#### 2. `VirtualizedList`
 
 > **_NOTE:_** Required dependencies: `@shopify/flash-list`
 
@@ -357,11 +339,10 @@ export default function RootLayout(): ReactElement | null {
 screen:
 
 ```ts
-import { AppPressable } from '@ronas-it/react-native-common-modules/src/ui/pressable';
 import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/safe-area-view';
 import { useTranslation } from '@ronas-it/react-native-common-modules/src/utils/i18n';
 import { ReactElement, useContext } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, Pressable } from 'react-native';
 import { LanguageContext } from './_layout';
 
 export default function RootScreen(): ReactElement {
@@ -377,12 +358,12 @@ export default function RootScreen(): ReactElement {
   return (
     <AppSafeAreaView edges={['bottom']} style={styles.safeAreaContainer}>
       <View style={styles.container}>
-        <AppPressable onPress={onPress} hitSlop={10}>
+        <Pressable onPress={onPress} hitSlop={10}>
         <Text>{translate('BUTTON_PRESS_ME')}</Text>
-        </AppPressable>
-        <AppPressable onPress={handleLanguageChange} hitSlop={10}>
+        </Pressable>
+        <Pressable onPress={handleLanguageChange} hitSlop={10}>
           <Text>{translate('BUTTON_LANGUAGE')}</Text>
-        </AppPressable>
+        </Pressable>
       </View>
     </AppSafeAreaView>
   );
