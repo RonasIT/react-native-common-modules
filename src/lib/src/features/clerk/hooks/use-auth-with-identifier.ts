@@ -10,10 +10,26 @@ import {
   UseAuthWithIdentifierReturn,
 } from '../types';
 import { useClerkResources } from './use-clerk-resources';
-import { useGetSessionToken } from './use-get-token';
+import { useGetSessionToken } from './use-get-session-token';
 import { useOtpVerification } from './use-otp-verification';
 import { SignInResource } from '@clerk/types';
 
+/**
+ * Hook that provides functionality to handle user sign-up and sign-in processes using an identifier such as an email, phone number, or username. It supports both OTP (One Time Password) and password-based authentication methods.
+ * 
+ * @template {AuthIdentifierVerifyBy} TVerifyBy - The verification method type
+ * @template {IdentifierMethodFor<TVerifyBy>} TMethod - The identifier method type
+ * @param {TMethod} method - Specifies the type of identifier used for authentication (e.g., 'emailAddress', 'phoneNumber', 'username')
+ * @param {TVerifyBy} verifyBy - Specifies the verification method ('otp' for one-time passwords or 'password')
+ * 
+ * @returns {UseAuthWithIdentifierReturn<TVerifyBy, TMethod>} Object containing:
+ * - `startSignUp` - Initiates a new user registration using the specified identifier and verification method
+ * - `startSignIn` - Initiates authentication of an existing user using the specified identifier and verification method
+ * - `startAuthorization` - Determines whether to initiate a sign-up or sign-in based on whether the user has been registered previously
+ * - `verifyCode` - Verifies an OTP code if the verification method is 'otp' (only available for non-username methods)
+ * - `isLoading` - Indicates whether an authentication request is in progress
+ * - `isVerifying` - Indicates whether an OTP verification is in progress (only available for non-username methods)
+ */
 export function useAuthWithIdentifier<
   TVerifyBy extends AuthIdentifierVerifyBy,
   TMethod extends IdentifierMethodFor<TVerifyBy>,
