@@ -33,7 +33,6 @@
     "react": "*",
     "react-native": "*",
     "@reduxjs/toolkit": "*",
-    "@shopify/flash-list": "*",
     "expo-constants": "*",
     "expo-device": "*",
     "expo-image-picker": "*",
@@ -59,9 +58,6 @@
       "optional": true
     },
     "@reduxjs/toolkit": {
-      "optional": true
-    },
-    "@shopify/flash-list": {
       "optional": true
     },
     "expo-constants": {

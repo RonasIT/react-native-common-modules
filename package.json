@@ -16,7 +16,6 @@
     "@expo/metro-config": "~0.20.0",
     "@expo/metro-runtime": "~5.0.4",
     "@reduxjs/toolkit": "^2.8.2",
-    "@shopify/flash-list": "1.7.6",
     "expo": "^53.0.0",
     "expo-constants": "~17.1.6",
     "expo-device": "~7.1.4",
