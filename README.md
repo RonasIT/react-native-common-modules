@@ -27,25 +27,7 @@ npx nx run lib:nx-release-publish
 
 At the moment this library contains the following components:
 
-#### 1. `AppPressable`
-
-This component can be used in the same way as the built-in [Pressable component](https://reactnative.dev/docs/pressable), but it also includes opacity control.
-
-**Props:**
-
-- `pressedOpacity`: Opacity value. Default is 0.4.
-
-**Example:**
-
-```jsx
-import { AppPressable } from '@ronas-it/react-native-common-modules/src/ui/pressable';
-
-<AppPressable style={styles.button} pressedOpacity={0.5}>
-  <Text>Press Me</Text>
-</AppPressable>
-```
-
-#### 2. `AppSafeAreaView`
+#### 1. `AppSafeAreaView`
 
 > **_NOTE:_** Required dependencies: `react-native-safe-area-context`
 
@@ -66,68 +48,6 @@ import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/sa
 </AppSafeAreaView>
 ```
 
-#### 3. `VirtualizedList`
-
-> **_NOTE:_** Required dependencies: `@shopify/flash-list`
-
-A component-wrapper for [FlashList](https://shopify.github.io/flash-list/), that includes `onScrollUp` and `onScrollDown` props.
-
-**Props:**
-
-- `onScrollUp`: Called when user scrolls up.
-- `onScrollDown`: Called when user scrolls down.
-
-> **_NOTE:_** `onScrollUp` and `onScrollDown` are synced with `onScroll`
-
-**Example:**
-
-```tsx
-import { VirtualizedList, VirtualizedListProps } from '@ronas-it/react-native-common-modules/src/ui/virtualized-scroll';
-
-export function App(): ReactElement {
-  const [direction, setDirection] = useState<'UP' | 'DOWN'>();
-
-  const handleScrollUp = (): void => {
-    setDirection('UP');
-  };
-
-  const handleScrollDown = (): void => {
-    setDirection('DOWN');
-  };
-
-  const handleScrollEnd = (): void => {
-    setDirection(undefined);
-  };
-
-  const renderItem: VirtualizedListProps<Book>['renderItem'] = ({ item }) => {
-    return (
-      <View>
-        <Text>{item.isbn}</Text>
-        <Text>{item.title}</Text>
-      </View>
-    );
-  };
-
-  const keyExtractor: VirtualizedListProps<Book>['keyExtractor'] = (item) => item.isbn;
-
-  return (
-    <View>
-      <Text>Direction: {direction}</Text>
-      <VirtualizedList
-        estimatedItemSize={86}
-        data={books}
-        renderItem={renderItem}
-        onScrollUp={handleScrollUp}
-        onScrollDown={handleScrollDown}
-        onScrollEndDrag={handleScrollEnd}
-        onMomentumScrollEnd={handleScrollEnd}
-        keyExtractor={keyExtractor}
-      />
-    </View>
-  );
-}
-```
-
 ### Services
 
 #### 1. Push notifications
@@ -136,7 +56,7 @@ export function App(): ReactElement {
 
 ##### `PushNotificationsService`
 
-Service for integrating [Expo push notifications](https://docs.expo.dev/push-notifications/overview/) into apps.
+Service for integrating [Expo push notifications](https://docs.expo.dev/push-notifications/overview/) into apps.  
 Requires [setup](https://docs.expo.dev/push-notifications/push-notifications-setup/) and [backend implementation](https://docs.expo.dev/push-notifications/sending-notifications/) for sending notifications.
 
 `PushNotificationsService` public methods:
@@ -179,47 +99,16 @@ usePushNotifications({
 })
 ```
 
-#### 2. Storage
+> **_NOTE:_** By default, when using the `apiConfig` option, the hook sends the Expo push token to your server in the following format: `JSON.stringify({ expo_token })`
 
-> **_NOTE:_** The `AsyncStorageItem` and `SecureStorageItem` classes are deprecated and will be removed in future versions. Please use the `react-native-mmkv` implementation instead.
-
-> **_NOTE:_** Required dependencies: `@react-native-async-storage/async-storage`, `expo-secure-store`
-
-A library that provides two types of key-value storage API: [AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/usage/) and [SecuredStorage](https://docs.expo.dev/versions/latest/sdk/securestore/) (IOS, Android).
-
-**Example**
-
-Implement storage service:
-
-```ts
-import { AsyncStorageItem, SecureStorageItem } from '@ronas-it/react-native-common-modules/src/data-access/storage';
-
-class AppStorageService {
-  public token = new SecureStorageItem('token');
-  public tokenExpiryDate = new SecureStorageItem('tokenExpiryDate');
-  public language = new AsyncStorageItem('language');
-}
-
-export const appStorageService = new AppStorageService();
-```
-
-Usage:
-```ts
-// Get storage item
-const token = await appStorageService.token.get();
-// Set storage item
-appStorageService.token.set('new_token');
-// Delete storage item
-appStorageService.token.remove();
-```
-
-#### 3. Image Picker
+#### 2. Image Picker
 
 > **_NOTE:_** Required dependencies: `expo-image-picker`
 
 `ImagePickerService` gives the application access to the camera and image gallery.
 
 Public methods:
+
 - `getImage` - initializes the application (camera or gallery) and returns a result containing an image.
 - `launchGallery` - launches the gallery application and returns a result containing the selected images.
 - `launchCamera` - launches the camera application and returns the taken photo.
@@ -249,14 +138,14 @@ const handlePickImage = async (source: ImagePickerSource) => {
 };
 ```
 
-#### 4. WebSocket
+#### 3. WebSocket
 
 > **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`
 
-`WebSocketService` manages WebSocket connections using [Pusher](https://pusher.com/) and can work in both web and mobile applications.
+`WebSocketService` manages WebSocket connections using [Pusher](https://pusher.com/) and can work in both web and mobile applications.  
 Doesn't support Expo Go.
 
-It's necessary to install [@pusher/pusher-websocket-react-native](https://github.com/pusher/pusher-websocket-react-native)
+It's necessary to install [@pusher/pusher-websocket-react-native](https://github.com/pusher/pusher-websocket-react-native)  
 for a mobile app and [pusher-js](https://github.com/pusher/pusher-js) for a web app.
 
 Options for `WebSocketService` constructor:
@@ -303,20 +192,27 @@ webSocketService.unsubscribeFromChannel('private-conversations.123', (event) => 
 
 ### Utils
 
-#### 1. `setupReactotron(projectName: string)`
+#### 1. `setupReactotron(projectName: string, plugins: Array<ReactotronPlugin>)`
 
-> **_NOTE:_** Required dependencies: `@reduxjs/toolkit`, `reactotron-react-native`, `reactotron-react-js`, `reactotron-redux`, `@react-native-async-storage/async-storage`
+> **_NOTE:_** Required dependencies: `@reduxjs/toolkit`, `reactotron-react-native`, `reactotron-react-js`, `reactotron-redux`
 
-Configures and initializes [Reactotron debugger](https://github.com/infinitered/reactotron) with [redux plugin](https://docs.infinite.red/reactotron/plugins/redux/) for development purposes.
+Configures and initializes [Reactotron debugger](https://github.com/infinitered/reactotron) with [redux plugin](https://docs.infinite.red/reactotron/plugins/redux/) for development purposes.  
 Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?q=reactotron-app&expanded=true) on your computer for use.
 
 **Example:**
 
 ```ts
-import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
 import { setupReactotron } from '@ronas-it/react-native-common-modules/src/data-access/store/utils/reactotron';
+import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
+import Reactotron from 'reactotron-react-native';
+import mmkvPlugin from 'reactotron-react-native-mmkv';
+import type { ReactotronReactNative } from 'reactotron-react-native';
+import { storage } from './mmkv/storage/instance/location'; // <--- update this to your mmkv instance.
 
-const reactotron = setupReactotron('your-app');
+const reactotron = setupReactotron('your-app', [
+  // You can add an array of Reactotron plugins here
+  (reactotron) => mmkvPlugin<ReactotronReactNative>({ storage })
+]);
 const enhancers = reactotron ? [reactotron.createEnhancer()] : [];
 
 const initStore = createStoreInitializer({
@@ -381,11 +277,10 @@ export default function RootLayout(): ReactElement | null {
 screen:
 
 ```ts
-import { AppPressable } from '@ronas-it/react-native-common-modules/src/ui/pressable';
 import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/safe-area-view';
 import { useTranslation } from '@ronas-it/react-native-common-modules/src/utils/i18n';
 import { ReactElement, useContext } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, Pressable } from 'react-native';
 import { LanguageContext } from './_layout';
 
 export default function RootScreen(): ReactElement {
@@ -401,14 +296,151 @@ export default function RootScreen(): ReactElement {
   return (
     <AppSafeAreaView edges={['bottom']} style={styles.safeAreaContainer}>
       <View style={styles.container}>
-        <AppPressable onPress={onPress} hitSlop={10}>
+        <Pressable onPress={onPress} hitSlop={10}>
         <Text>{translate('BUTTON_PRESS_ME')}</Text>
-        </AppPressable>
-        <AppPressable onPress={handleLanguageChange} hitSlop={10}>
+        </Pressable>
+        <Pressable onPress={handleLanguageChange} hitSlop={10}>
           <Text>{translate('BUTTON_LANGUAGE')}</Text>
-        </AppPressable>
+        </Pressable>
       </View>
     </AppSafeAreaView>
   );
 }
 ```
+
+### Features
+
+#### 1. Clerk
+
+> **_NOTE:_**   Required dependencies: `@clerk/clerk-expo`
+
+Hooks and helpers to create user authentication with [Clerk Expo SDK](https://clerk.com/docs/references/expo/overview).
+
+#### `useClerkResources`
+
+Hook, that provides access to essential Clerk methods and objects.
+
+Returned Object:
+
+- `signUp` - provides access to [SignUp](https://clerk.com/docs/references/javascript/sign-up) object.
+- `signIn` - provides access to [SignIn](https://clerk.com/docs/references/javascript/sign-in) object.
+- `setActive` - A function that sets the active session.
+- `signOut` - A function that signs out the current user.
+
+#### `useAuthWithIdentifier`
+
+Hook, that provides functionality to handle user sign-up and sign-in processes using an identifier such as an email, phone number, or username. It supports both OTP (One Time Password) and password-based authentication methods.
+
+Parameters:
+
+- `method`: Specifies the type of identifier used for authentication (e.g., 'emailAddress', 'phoneNumber', 'username').
+- `verifyBy`: Specifies the verification method ('otp' for one-time passwords or 'password').
+
+Returned Object:
+
+- `startSignUp`: Initiates a new user registration using the specified identifier and verification method.
+- `startSignIn`: Initiates authentication of an existing user using the specified identifier and verification method.
+- `startAuthorization`: Determines whether to initiate a sign-up or sign-in based on whether the user has been registered previously.
+- `verifyCode`: Verifies an OTP code if the verification method is 'otp'.
+- `isLoading`: Indicates whether an authentication request is in progress.
+- `isVerifying`: Indicates whether an OTP verification is in progress.
+
+**Example:**
+
+```ts
+import React, { useState } from 'react';
+import { View, TextInput, Button } from 'react-native';
+import { useAuthWithIdentifier } from '@ronas-it/react-native-common-modules/src/features/clerk';
+
+export const AuthWithIdentifierComponent = () => {
+  const [identifier, setIdentifier] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
+  const { startSignUp, verifyCode, isLoading, isVerifying } = useAuthWithIdentifier('emailAddress', 'otp');
+
+  const handleSignUp = async () => {
+    await startSignUp({ identifier });
+  };
+
+  const handleVerifyCode = async () => {
+    const result = await verifyCode({ code: verificationCode });
+    console.log(result.sessionToken)
+  };
+
+  return (
+    <View>
+      <TextInput
+        placeholder="Enter your email"
+        value={identifier}
+        onChangeText={setIdentifier}
+        keyboardType="email-address"
+      />
+      <TextInput
+        placeholder="Enter verification code"
+        value={verificationCode}
+        onChangeText={setVerificationCode}
+      />
+      <Button onPress={handleSignUp} title="Sign Up" disabled={isLoading || isVerifying} />
+      <Button onPress={handleVerifyCode} title="Verify code" disabled={isLoading || isVerifying} />
+    </View>
+  );
+};
+
+```
+
+#### `useAuthWithSSO`
+
+Hook provides functionality to handle [SSO](https://clerk.com/docs/references/expo/use-sso) authentication flows.
+
+Returned Object:
+
+- `startSSOFlow`: A function to initiate an SSO flow. It takes a strategy, redirectUrl, and optional tokenTemplate as parameters, starting the SSO authentication and returning session information or errors upon completion.
+- `isLoading`: A boolean indicating whether an SSO process is currently ongoing.
+
+#### `useAuthWithTicket`
+
+This hook is a utility that facilitates user authentication using a ticket-based strategy (ticket is a token generated from the Backend API).
+
+Returned Object:
+
+- `startAuthorization`: A function to initiate authentication with a ticket. It accepts an object with ticket and optional tokenTemplate parameters to kick off the authorization process and returns the session details.
+- `isLoading`: A boolean indicating whether the ticket-based authorization process is ongoing.
+
+#### `useGetSessionToken`
+
+This hook is a utility for getting session tokens.
+
+Returned Object:
+
+- `getSessionToken`: A function to retrieve the session token. It takes an optional [tokenTemplate](https://clerk.com/docs/backend-requests/jwt-templates) parameter to specify a template for the token.
+
+#### `useAddIdentifier`
+
+Hook provides functionality to add new email or phone number identifiers to a user's account and verify them using verification codes.
+
+Returned Object:
+
+- `createIdentifier`: A function to add a new email or phone number identifier to the user's account and prepare it for verification.
+- `verifyCode`: A function to verify a code sent to the identifier, completing the verification process.
+- `isCreating`: A boolean indicating whether an identifier is currently being added.
+- `isVerifying`: A boolean indicating whether a verification code is currently being processed.
+
+#### `useOtpVerification`
+
+Hook provides functionality for managing OTP (One Time Password) verification in user authentication workflows, supporting both sign-up and sign-in processes.
+
+Returned Object:
+
+- `sendOtpCode`: Sends an OTP code to the user's identifier (email or phone number) based on the specified strategy.
+- `verifyCode`: Verifies the OTP code provided by the user, completing the authentication process.
+- `isVerifying`: A boolean indicating whether a verification attempt is currently in progress.
+
+#### `useResetPassword`
+
+Hook provides methods to handle password reset functionality through email or phone-based OTP.
+
+Returned Object:
+
+- `startResetPassword`: A function to initiate the password reset process by sending a verification code to the user's email or phone number.
+- `resetPassword`: A function to reset the user's password by verifying the code and setting a new password.
+- `isCodeSending`: A boolean indicating if the verification code is being sent.
+- `isResetting`: A boolean indicating if the password is being reset.

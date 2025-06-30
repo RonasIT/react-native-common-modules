@@ -1,19 +1,13 @@
+import { ReactotronPlugin } from './types';
 import type { StoreEnhancer } from '@reduxjs/toolkit';
 import type { ReactotronReactNative } from 'reactotron-react-native';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 export const setupReactotron = (
-  projectName: string
+  projectName: string,
+  plugins: Array<ReactotronPlugin> = [],
 ): (ReactotronReactNative & { createEnhancer: () => StoreEnhancer }) | undefined => {
   if (__DEV__) {
-    const AsyncStorage = require('@react-native-async-storage/async-storage').default;
-
-    if (!AsyncStorage) {
-      throw new Error(
-        'AsyncStorage is undefined. Please ensure @react-native-async-storage/async-storage is properly installed.'
-      );
-    }
-
     const Reactotron: ReactotronReactNative = require('reactotron-react-native').default;
 
     if (!Reactotron) {
@@ -26,11 +20,12 @@ export const setupReactotron = (
       throw new Error('reactotronRedux is undefined. Please ensure reactotron-redux is properly installed.');
     }
 
-    return Reactotron.configure({ name: projectName })
-      .setAsyncStorageHandler(AsyncStorage)
-      .use(reactotronRedux())
-      .useReactNative({ log: true })
-      .connect() as ReactotronReactNative & { createEnhancer: () => StoreEnhancer };
+    let instance = Reactotron.configure({ name: projectName }).useReactNative({ log: true });
+
+    // Apply plugins
+    instance = plugins.reduce((inst, plugin) => inst.use(plugin(inst)), instance.use(reactotronRedux()));
+
+    return instance.connect() as ReactotronReactNative & { createEnhancer: () => StoreEnhancer };
   }
 
   return undefined;

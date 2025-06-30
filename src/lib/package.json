@@ -1,6 +1,6 @@
 {
   "name": "@ronas-it/react-native-common-modules",
-  "version": "0.7.1",
+  "version": "1.0.0",
   "description": "Common modules for React Native apps at Ronas IT",
   "license": "MIT",
   "author": "Ronas IT",
@@ -27,14 +27,12 @@
     "@nx/rollup": "21.2.0"
   },
   "peerDependencies": {
+    "@clerk/clerk-expo": "*",
     "@pusher/pusher-websocket-react-native": "*",
-    "@react-native-async-storage/async-storage": "*",
-    "expo-secure-store": "*",
     "pusher-js": "*",
     "react": "*",
     "react-native": "*",
     "@reduxjs/toolkit": "*",
-    "@shopify/flash-list": "*",
     "expo-constants": "*",
     "expo-device": "*",
     "expo-image-picker": "*",
@@ -50,19 +48,16 @@
     "reactotron-react-js": "*"
   },
   "peerDependenciesMeta": {
-    "@pusher/pusher-websocket-react-native": {
+    "@clerk/clerk-expo": {
       "optional": true
     },
-    "expo-secure-store": {
+    "@pusher/pusher-websocket-react-native": {
       "optional": true
     },
     "pusher-js": {
       "optional": true
     },
     "@reduxjs/toolkit": {
-      "optional": true
-    },
-    "@shopify/flash-list": {
       "optional": true
     },
     "expo-constants": {
