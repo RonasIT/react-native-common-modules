@@ -94,11 +94,7 @@ export interface UseAuthWithTicketReturn {
     tokenTemplate?: string;
   }) => Promise<StartAuthorizationWithTicketReturn>;
 
-  /**
-   * Indicates whether the authentication process with the ticket is currently in progress.
-   * 
-   * `true` if a request is ongoing, otherwise `false`.
-   */
+  /** Indicates whether the authentication process with the ticket is currently in progress. `true` or `false` */
   isLoading: boolean;
 }
 
@@ -110,17 +106,12 @@ export interface StartSSOArgs {
    */
   strategy: OAuthStrategy;
 
-  /**
-   * Optional URL to redirect the user to after successful authentication.
-   */
+  /** Optional URL to redirect the user to after successful authentication. */
   redirectUrl?: string;
 
-  /**
-   * Optional name of a token template to use for customizing the returned session token.
-   */
+  /** Optional name of a token template to use for customizing the returned session token. */
   tokenTemplate?: string;
 }
-
 
 /** Return type for useAuthWithSSO hook */
 export interface UseAuthWithSSOReturn {
@@ -140,19 +131,13 @@ export interface UseAuthWithSSOReturn {
    */
   startSSOFlow: (params: StartSSOArgs) => Promise<AuthorizationFinishedReturn>;
 
-  /**
-   * Indicates whether the SSO authentication flow is currently in progress.
-   *
-   * `true` if an SSO request is being processed, otherwise `false`.
-   */
+  /** Indicates whether the SSO authentication flow is currently in progress. `true` or `false` */
   isLoading: boolean;
 }
 
 // OTP verification types:
 
-/**
- * Provides functionality for sending and verifying OTP (one-time password) codes using email or phone.
- */
+/** Provides functionality for sending and verifying OTP (one-time password) codes using email or phone. */
 export interface UseOtpVerificationReturn {
   /**
    * Sends a one-time password (OTP) code to the user's identifier (email or phone number),
@@ -184,11 +169,7 @@ export interface UseOtpVerificationReturn {
     tokenTemplate?: string;
   }) => Promise<AuthorizationFinishedReturn>;
 
-  /**
-   * Indicates whether the OTP verification process is currently in progress.
-   *
-   * `true` if verification is ongoing, otherwise `false`.
-   */
+  /** Indicates whether the OTP verification process is currently in progress. `true` or `false` */
   isVerifying: boolean;
 }
 
@@ -241,21 +222,12 @@ export interface UseAddIdentifierReturn {
     }
   >;
 
-  /**
-   * Indicates whether an identifier is currently being added via `createIdentifier`.
-   *
-   * `true` if the creation request is in progress; otherwise `false`.
-   */
+  /** Indicates whether an identifier is currently being added via `createIdentifier`. `true` or `false` */
   isCreating: boolean;
 
-  /**
-   * Indicates whether a verification request is currently being processed via `verifyCode`.
-   *
-   * `true` if the verification request is in progress; otherwise `false`.
-   */
+  /** Indicates whether a verification request is currently being processed via `verifyCode`. `true` or `false` */
   isVerifying: boolean;
 }
-
 
 // Auth with identifier types:
 
@@ -304,9 +276,7 @@ export type StartAuthParams<VerifyBy extends AuthIdentifierVerifyBy> =
 export type StartSignInWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyBy> =
   VerifyBy extends 'password'
   ? StartSignInReturn & {
-    /**
-     * Optional session token returned upon successful password sign-in.
-     */
+    /** Optional session token returned upon successful password sign-in. */
     sessionToken?: string;
   }
   : StartSignInReturn;
@@ -320,9 +290,7 @@ export type StartSignInWithIdentifierReturn<VerifyBy extends AuthIdentifierVerif
 export type StartSignUpWithIdentifierReturn<Method extends AuthIdentifierMethod> =
   Method extends 'username'
   ? StartSignUpReturn & {
-    /**
-     * Optional session token returned upon successful username sign-up.
-     */
+    /** Optional session token returned upon successful username sign-up. */
     sessionToken?: string;
   }
   : StartSignUpReturn;
@@ -336,9 +304,7 @@ export type StartSignUpWithIdentifierReturn<Method extends AuthIdentifierMethod>
 export type StartAuthorizationWithIdentifierReturn<Method extends AuthIdentifierMethod> =
   Method extends 'username'
   ? StartAuthorizationReturn & {
-    /**
-     * Optional session token returned upon successful username authorization.
-     */
+    /** Optional session token returned upon successful username authorization. */
     sessionToken?: string;
   }
   : StartAuthorizationReturn;
@@ -408,7 +374,6 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
     params: StartAuthParams<VerifyBy>
   ) => Promise<StartSignUpWithIdentifierReturn<any>>;
 
-
   /**
    * Initiates a combined authorization flow (sign-up or sign-in) based on user existence.
    *
@@ -446,12 +411,7 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
     params: StartAuthParams<VerifyBy>
   ) => Promise<StartAuthorizationWithIdentifierReturn<any>>;
 
-
-  /**
-   * Indicates whether an authentication request is currently being processed.
-   *
-   * `true` if loading, `false` otherwise.
-   */
+  /** Indicates whether an authentication request is currently being processed. `true` or `false` */
   isLoading: boolean;
 }
 
@@ -480,9 +440,7 @@ type ConditionalUseAuthWithIdentifierReturn<
       code: string;
       tokenTemplate?: string;
     }) => Promise<AuthorizationFinishedReturn>;
-    /**
-     * Indicates whether OTP verification is currently in progress.
-     */
+    /** Indicates whether OTP verification is currently in progress. `true` or `false` */
     isVerifying: boolean;
   };
 
@@ -500,12 +458,9 @@ export type UseAuthWithIdentifierReturn<
   Method extends AuthIdentifierMethod,
 > = ConditionalUseAuthWithIdentifierReturn<VerifyBy, Method>;
 
-
 //Reset password types:
 
-/**
- * Return type for a hook that manages the password reset process.
- */
+/** Return type for a hook that manages the password reset process. */
 export interface UseResetPasswordReturn {
   /**
    * Initiates the password reset process for the given identifier.
@@ -542,18 +497,10 @@ export interface UseResetPasswordReturn {
     tokenTemplate?: string;
   }) => Promise<AuthorizationFinishedReturn>;
 
-  /**
-   * Indicates whether the password reset operation is currently in progress.
-   *
-   * `true` if `resetPassword` is being processed; otherwise `false`.
-   */
+  /** Indicates whether the password reset operation is currently in progress. `true` or `false` */
   isResetting: boolean;
 
-  /**
-   * Indicates whether the code for password reset is currently being sent.
-   *
-   * `true` if `startResetPassword` is in progress; otherwise `false`.
-   */
+  /** Indicates whether the code for password reset is currently being sent. `true` or `false` */
   isCodeSending: boolean;
 }
 
