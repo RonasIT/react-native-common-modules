@@ -1,6 +1,6 @@
 {
   "name": "@ronas-it/react-native-common-modules",
-  "version": "0.7.1",
+  "version": "1.0.0",
   "description": "Common modules for React Native apps at Ronas IT",
   "license": "MIT",
   "author": "Ronas IT",
@@ -33,7 +33,6 @@
     "react": "*",
     "react-native": "*",
     "@reduxjs/toolkit": "*",
-    "@shopify/flash-list": "*",
     "expo-constants": "*",
     "expo-device": "*",
     "expo-image-picker": "*",
@@ -59,9 +58,6 @@
       "optional": true
     },
     "@reduxjs/toolkit": {
-      "optional": true
-    },
-    "@shopify/flash-list": {
       "optional": true
     },
     "expo-constants": {
