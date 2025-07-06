@@ -3,8 +3,6 @@ import { Alert, Linking } from 'react-native';
 import { ImagePickerSource, ImagePickerError } from './enums';
 
 /**
- * **ImagePickerService**
- *
  * Gives the application access to the **camera** and **image gallery**.
  *
  * > Requires the `expo-image-picker`.

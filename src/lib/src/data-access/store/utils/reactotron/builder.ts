@@ -5,8 +5,6 @@ import type { ReactotronReactNative } from 'reactotron-react-native';
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 /**
- * **setupReactotron**
- *
  * Configures and initializes [Reactotron debugger](https://github.com/infinitered/reactotron) with [redux plugin](https://docs.infinite.red/reactotron/plugins/redux/) for development purposes in a React Native environment.
  *
  * Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?q=reactotron-app&expanded=true) on your computer for use.
