@@ -11,6 +11,18 @@ type ApiConfig = {
   method?: 'GET' | 'get' | 'POST' | 'post';
 };
 
+/**
+ * Arguments accepted by {@link usePushNotifications}.
+ *
+ * Contains:
+ * - `isAuthenticated` (required) – flag, that indicates whether the user is authenticated or not.
+ * - `onNotificationResponse` (optional) – callback when a notification is interacted with.
+ * - `subscribeDevice` (optional) – function for subscribing the device.
+ * - `unsubscribeDevice` (optional) – function for unsubscribing the device.
+ * - `apiConfig` (optional) – API configuration for subscribing and unsubscribing the device (when `subscribeDevice` and `unsubscribeDevice` are not provided).
+ * - `apiErrorHandler` (optional) – API error handler for subscribe/unsubscribe functions.
+ * - `getTokenErrorHandler` (optional) – handler for error that occur when attempting to obtain a push notifications token.
+ * */
 export type UsePushNotificationsArgs = ObtainPushNotificationsTokenArgs & {
   isAuthenticated: boolean;
   onNotificationResponse?: (notification: Notifications.Notification) => void;
@@ -28,6 +40,18 @@ export type UsePushNotificationsArgs = ObtainPushNotificationsTokenArgs & {
       }
   );
 
+/**
+ * **usePushNotifications**
+ *
+ * Hook, that automatically subscribes the device to receive push notifications when a user becomes authenticated,
+ * and unsubscribes when a user becomes non-authenticated.
+ * It supports custom subscription and unsubscription logic through provided functions or API configuration.
+ * Listens for [responses](https://docs.expo.dev/push-notifications/receiving-notifications/) to notifications and executes a callback, if provided, when a notification is interacted with.
+ * Used in the root App component.
+ *
+ * @param {UsePushNotificationsArgs} args Configuration object. See {@link UsePushNotificationsArgs} for a full description of each field.
+ * @returns {void}
+ */
 export const usePushNotifications = ({
   isAuthenticated,
   subscribeDevice,
@@ -113,9 +137,9 @@ export const usePushNotifications = ({
     };
   }, [pushToken, isAuthenticated]);
 
-  const handleNotification = (notification: Notifications.Notification): void  => {
+  const handleNotification = (notification: Notifications.Notification): void => {
     isNavigationReady && onNotificationResponse?.(notification);
-  }
+  };
 
   useEffect(() => {
     if (isAuthenticated && isRootNavigationStateReady && lastNotificationResponse?.notification) {
