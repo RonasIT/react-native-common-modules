@@ -1,5 +1,5 @@
-import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/safe-area-view';
-import { useTranslation } from '@ronas-it/react-native-common-modules/src/utils/i18n';
+import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/safe-area-view';
+import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useContext } from 'react';
 import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
 import { LanguageContext } from './_layout';

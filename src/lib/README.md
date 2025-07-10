@@ -25,7 +25,7 @@ A component for granular control of safe area edges on each screen. The differen
 **Example:**
 
 ```jsx
-import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/safe-area-view';
+import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/safe-area-view';
 
 <AppSafeAreaView edges={['top', 'bottom']} style={styles.container}>
   <Text>Content goes here</Text>
@@ -68,7 +68,7 @@ Used in the root `App` component.
 
 ```ts
 // Somewhere in a root component of your app:
-import { usePushNotifications } from '@ronas-it/react-native-common-modules/src/data-access/push-notifications';
+import { usePushNotifications } from '@ronas-it/react-native-common-modules/push-notifications';
 
 ...
 const authToken = useSelector(authSelectors.token);
@@ -104,7 +104,7 @@ Public methods:
 Pick image and send request:
 
 ```ts
-import { imagePickerService, ImagePickerSource } from '@ronas-it/react-native-common-modules/src/data-access/image-picker';
+import { imagePickerService, ImagePickerSource } from '@ronas-it/react-native-common-modules/image-picker';
 
 const handlePickImage = async (source: ImagePickerSource) => {
   const image = await imagePickerService.getImage(source);
@@ -149,7 +149,7 @@ Options for `WebSocketService` constructor:
 **Example:**
 
 ```ts
-import { WebSocketService } from '@ronas-it/react-native-common-modules/src/data-access/websocket';
+import { WebSocketService } from '@ronas-it/react-native-common-modules/websocket';
 
 // Create a service instance
 type ChannelName = `private-conversations.${number}` | `private-users.${number}`;
@@ -185,7 +185,7 @@ Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?
 **Example:**
 
 ```ts
-import { setupReactotron } from '@ronas-it/react-native-common-modules/src/data-access/store/utils/reactotron';
+import { setupReactotron } from '@ronas-it/react-native-common-modules/reactotron';
 import { createStoreInitializer } from '@ronas-it/rtkq-entity-api';
 import Reactotron from 'reactotron-react-native';
 import mmkvPlugin from 'reactotron-react-native-mmkv';
@@ -216,7 +216,7 @@ Provides functions to set language and use translations using [i18n-js](https://
 root layout:
 
 ```ts
-import { setLanguage } from '@ronas-it/react-native-common-modules/src/utils/i18n';
+import { setLanguage } from '@ronas-it/react-native-common-modules/i18n';
 
 const translations = {
   en: {
@@ -260,8 +260,8 @@ export default function RootLayout(): ReactElement | null {
 screen:
 
 ```ts
-import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/src/ui/safe-area-view';
-import { useTranslation } from '@ronas-it/react-native-common-modules/src/utils/i18n';
+import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/safe-area-view';
+import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useContext } from 'react';
 import { View, Text, Alert, Pressable } from 'react-native';
 import { LanguageContext } from './_layout';
@@ -333,7 +333,7 @@ Returned Object:
 ```ts
 import React, { useState } from 'react';
 import { View, TextInput, Button } from 'react-native';
-import { useAuthWithIdentifier } from '@ronas-it/react-native-common-modules/src/features/clerk';
+import { useAuthWithIdentifier } from '@ronas-it/react-native-common-modules/clerk';
 
 export const AuthWithIdentifierComponent = () => {
   const [identifier, setIdentifier] = useState('');
