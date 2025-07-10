@@ -1,6 +1,12 @@
 import { getClerkInstance } from '@clerk/clerk-expo';
 import { UseGetSessionTokenReturn } from '../types';
 
+/**
+ * Hook that provides functionality for getting session tokens.
+ * 
+ * @returns {UseGetSessionTokenReturn} Object containing:
+ * - `getSessionToken` - A function to retrieve the session token. It takes an optional tokenTemplate parameter to specify a template for the token
+ */
 export const useGetSessionToken = (): UseGetSessionTokenReturn => {
   const clerk = getClerkInstance();
 
