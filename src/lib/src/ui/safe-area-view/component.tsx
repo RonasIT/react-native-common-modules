@@ -7,8 +7,8 @@ import { Edge, useSafeAreaInsets } from 'react-native-safe-area-context';
  * Props for {@link AppSafeAreaView}.
  *
  * @property children Elements rendered inside the padded container.
- * @property An array indicating which edges of the screen to respect. Possible values are 'top', 'right', 'bottom', 'left'. Defaults to all edges.
- * @property Custom styles to apply to the view. Note that padding values will be adjusted to respect safe area insets.
+ * @property edges An array indicating which edges of the screen to respect. Possible values are 'top', 'right', 'bottom', 'left'. Defaults to all edges.
+ * @property style Custom styles to apply to the view. Note that padding values will be adjusted to respect safe area insets.
  * @property ...rest  All other {@link https://reactnative.dev/docs/view#props | ViewProps} are forwarded.
  */
 export interface AppSafeAreaViewProps extends ViewProps {
