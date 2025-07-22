@@ -296,13 +296,7 @@ export default function RootScreen(): ReactElement {
 
 #### 1. Clerk
 
-<<<<<<< HEAD
-
-> # **_NOTE:_** Required dependencies: `@clerk/clerk-expo`
->
 > **_NOTE:_** Required dependencies: `@clerk/clerk-expo`, `expo-web-browser`, `expo-auth-session`
->
-> > > > > > > 01e6e7a5a28e1f2957170427544ca3ead945169c
 
 Hooks and helpers to create user authentication with [Clerk Expo SDK](https://clerk.com/docs/references/expo/overview).
 
