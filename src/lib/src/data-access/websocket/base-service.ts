@@ -37,7 +37,7 @@ export abstract class BaseWebSocketService<TChannelName extends string> {
   }
 
   /**
-   * Removes an event listener and, if there is no listeners for a specified channel, unsubscribes from it.
+   * Removes an event listener and, if there are no listeners for a specified channel, unsubscribes from it.
    *
    * @param channelName Channel to unsubscribe to.
    * @param onEvent Callback executed for **every event** received on that channel.

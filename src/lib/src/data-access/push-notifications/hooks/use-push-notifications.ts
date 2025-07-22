@@ -14,28 +14,30 @@ type ApiConfig = {
 /**
  * Arguments accepted by {@link usePushNotifications}.
  *
- * Contains:
- * - `isAuthenticated` (required) – flag, that indicates whether the user is authenticated or not.
- * - `onNotificationResponse` (optional) – callback when a notification is interacted with.
- * - `subscribeDevice` (optional) – function for subscribing the device.
- * - `unsubscribeDevice` (optional) – function for unsubscribing the device.
- * - `apiConfig` (optional) – API configuration for subscribing and unsubscribing the device (when `subscribeDevice` and `unsubscribeDevice` are not provided).
- * - `apiErrorHandler` (optional) – API error handler for subscribe/unsubscribe functions.
- * - `getTokenErrorHandler` (optional) – handler for error that occur when attempting to obtain a push notifications token.
- * */
+ * This type extends {@link ObtainPushNotificationsTokenArgs}.
+ */
 export type UsePushNotificationsArgs = ObtainPushNotificationsTokenArgs & {
+  /** Flag, that indicates whether the user is authenticated or not. */
   isAuthenticated: boolean;
+  /** Callback when a notification is interacted with. */
   onNotificationResponse?: (notification: Notifications.Notification) => void;
+  /** API error handler for subscribe/unsubscribe functions. */
   apiErrorHandler?: (response: Response) => void;
 } & (
     | {
+        /** Custom function for subscribing the device. */
         subscribeDevice: ({ expoToken }: { expoToken: string }) => Promise<Response>;
+        /** Custom function for unsubscribing the device. */
         unsubscribeDevice: ({ expoToken }: { expoToken: string }) => Promise<Response>;
+        /** API configuration should not be provided when custom functions are used. */
         apiConfig?: undefined;
       }
     | {
+        /** API configuration for subscribing and unsubscribing the device */
         apiConfig: ApiConfig;
+        /** Custom subscribe function should not be provided when API config is used. */
         subscribeDevice?: undefined;
+        /** Custom unsubscribe function should not be provided when API config is used. */
         unsubscribeDevice?: undefined;
       }
   );

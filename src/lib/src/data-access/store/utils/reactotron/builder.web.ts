@@ -10,7 +10,7 @@ import { ReactotronPlugin } from './types';
  * > Required dependencies: `@reduxjs/toolkit`, `reactotron-react-js`, `reactotron-redux`,
  *
  * @param projectName Human‑readable name shown in the Reactotron UI.
- * @param plugins – Optional array of {@link ReactotronPlugin|plugins} to register **after** the core presets.
+ * @param plugins Optional array of {@link ReactotronPlugin|plugins} to register **after** the core presets.
  * @returns Connected Reactotron instance extended with `createEnhancer`, or `undefined` outside dev‑mode.
  */
 export const setupReactotron = (projectName: string, plugins: Array<ReactotronPlugin> = []) => {

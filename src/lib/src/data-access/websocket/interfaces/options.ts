@@ -1,21 +1,19 @@
 /**
+ * @interface WebSocketOptions
+ *
  * Constructor options for {@link WebSocketService}.
- *
- * **Required**
- * - `apiKey` – Your **APP_KEY** from the Pusher Channels dashboard.
- * - `cluster` – Your **APP_CLUSTER**.
- *
- * **Optional**
- * - `authURL` – Endpoint that returns the auth signature for *private* channels.
- * - `useTLS` – Whether to use secure WebSocket transport (default: `true`).
- * - `activityTimeout` – Time in **ms** before sending a ping when no messages have been sent.
- * - `pongTimeout` – Time in **ms** to wait for the pong response.
  */
 export interface WebSocketOptions {
+  /** Your **APP_KEY** from the Pusher Channels dashboard. */
   apiKey: string;
+  /** Your **APP_CLUSTER**. */
   cluster: string;
+  /** Whether to use secure WebSocket transport (default: `true`). */
   useTLS?: boolean;
-  activityTimeout?: number; // in ms
-  pongTimeout?: number; // in ms
+  /** Time in **ms** before sending a ping when no messages have been sent. */
+  activityTimeout?: number;
+  /** Time in **ms** to wait for the pong response. */
+  pongTimeout?: number;
+  /** Endpoint that returns the auth signature for *private* channels. */
   authURL?: string;
 }

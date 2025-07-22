@@ -5,6 +5,8 @@ import * as Notifications from 'expo-notifications';
 import { Alert, Linking, Platform } from 'react-native';
 
 /**
+ * @interface ObtainPushNotificationsTokenArgs
+ *
  * Arguments accepted by {@link PushNotificationsService.obtainPushNotificationsToken}.
  */
 export interface ObtainPushNotificationsTokenArgs {

@@ -6,14 +6,6 @@ import { ImagePickerSource, ImagePickerError } from './enums';
  * Gives the application access to the **camera** and **image gallery**.
  *
  * > Requires the `expo-image-picker`.
- *
- * @returns {ImagePickerService} Service instance exposing:
- * - `getImage` –  initializes the application (camera or gallery) and returns a result containing an image
- * - `launchGallery` – launches the gallery application and returns a result containing the selected images
- * - `launchCamera` – launches the camera application and returns the taken photo
- * - `requestGalleryAccess` – requests the application access to the gallery
- * - `requestCameraAccess` – requests the application access to the camera
- * - `getFormData` – creates a [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object with image.
  */
 export class ImagePickerService {
   /** Default options applied to every picker call unless overridden. */
