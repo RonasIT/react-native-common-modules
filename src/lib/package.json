@@ -1,6 +1,6 @@
 {
   "name": "@ronas-it/react-native-common-modules",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Common modules for React Native apps at Ronas IT",
   "license": "MIT",
   "author": "Ronas IT",
@@ -20,6 +20,15 @@
     "access": "public"
   },
   "main": "src/index.ts",
+  "exports": {
+    "./safe-area-view": "./src/ui/safe-area-view/index.ts",
+    "./push-notifications": "./src/data-access/push-notifications/index.ts",
+    "./image-picker": "./src/data-access/image-picker/index.ts",
+    "./websocket": "./src/data-access/websocket/index.ts",
+    "./reactotron": "./src/data-access/store/utils/reactotron/index.ts",
+    "./i18n": "./src/utils/i18n/index.ts",
+    "./clerk": "./src/features/clerk/index.ts"
+  },
   "files": [
     "src"
   ],
