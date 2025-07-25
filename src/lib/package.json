@@ -29,6 +29,17 @@
     "./i18n": "./src/utils/i18n/index.ts",
     "./clerk": "./src/features/clerk/index.ts"
   },
+  "typesVersions": {
+    "*": {
+      "safe-area-view": ["./src/ui/safe-area-view/index.ts"],
+      "push-notifications": ["./src/data-access/push-notifications/index.ts"],
+      "image-picker": ["./src/data-access/image-picker/index.ts"],
+      "websocket": ["./src/data-access/websocket/index.ts"],
+      "reactotron": ["./src/data-access/store/utils/reactotron/index.ts"],
+      "i18n": ["./src/utils/i18n/index.ts"],
+      "clerk": ["./src/features/clerk/index.ts"]
+    }
+  },
   "files": [
     "src"
   ],
