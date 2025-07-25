@@ -29,7 +29,7 @@ import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/safe-area
 
 <AppSafeAreaView edges={['top', 'bottom']} style={styles.container}>
   <Text>Content goes here</Text>
-</AppSafeAreaView>
+</AppSafeAreaView>;
 ```
 
 ### Services
@@ -92,6 +92,7 @@ usePushNotifications({
 `ImagePickerService` gives the application access to the camera and image gallery.
 
 Public methods:
+
 - `getImage` - initializes the application (camera or gallery) and returns a result containing an image.
 - `launchGallery` - launches the gallery application and returns a result containing the selected images.
 - `launchCamera` - launches the camera application and returns the taken photo.
@@ -144,7 +145,7 @@ Options for `WebSocketService` constructor:
 
 - `connect` initializes and connects the Pusher client. Optional authorization token is used for secure connections.
 - `subscribeToChannel` subscribes to a specified channel and registers an event listener for incoming messages on that channel.
-- `unsubscribeFromChannel` removes an event listener and, if there is no listeners for a specified channel, unsubscribes from it.
+- `unsubscribeFromChannel` removes an event listener and, if there are no listeners for a specified channel, unsubscribes from it.
 
 **Example:**
 
@@ -156,7 +157,7 @@ type ChannelName = `private-conversations.${number}` | `private-users.${number}`
 const webSocketService = new WebSocketService<ChannelName>({
   apiKey: '1234567890qwertyuiop',
   cluster: 'eu',
-  authURL: 'https://your-api.com/api/v1/broadcasting/auth'
+  authURL: 'https://your-api.com/api/v1/broadcasting/auth',
 });
 
 // Initialize Pusher, e.g. after an app initialization or successful authorization
@@ -194,7 +195,7 @@ import { storage } from './mmkv/storage/instance/location'; // <--- update this 
 
 const reactotron = setupReactotron('your-app', [
   // You can add an array of Reactotron plugins here
-  (reactotron) => mmkvPlugin<ReactotronReactNative>({ storage })
+  (reactotron) => mmkvPlugin<ReactotronReactNative>({ storage }),
 ]);
 const enhancers = reactotron ? [reactotron.createEnhancer()] : [];
 
@@ -295,7 +296,7 @@ export default function RootScreen(): ReactElement {
 
 #### 1. Clerk
 
-> **_NOTE:_**   Required dependencies: `@clerk/clerk-expo`, `expo-web-browser`,  `expo-auth-session`
+> **_NOTE:_** Required dependencies: `@clerk/clerk-expo`, `expo-web-browser`, `expo-auth-session`
 
 Hooks and helpers to create user authentication with [Clerk Expo SDK](https://clerk.com/docs/references/expo/overview).
 

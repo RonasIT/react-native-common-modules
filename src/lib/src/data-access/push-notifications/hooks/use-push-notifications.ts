@@ -11,23 +11,49 @@ type ApiConfig = {
   method?: 'GET' | 'get' | 'POST' | 'post';
 };
 
+/**
+ * Arguments accepted by {@link usePushNotifications}.
+ *
+ * This type extends {@link ObtainPushNotificationsTokenArgs}.
+ */
 export type UsePushNotificationsArgs = ObtainPushNotificationsTokenArgs & {
+  /** Flag, that indicates whether the user is authenticated or not. */
   isAuthenticated: boolean;
+  /** Callback when a notification is interacted with. */
   onNotificationResponse?: (notification: Notifications.Notification) => void;
+  /** API error handler for subscribe/unsubscribe functions. */
   apiErrorHandler?: (response: Response) => void;
 } & (
     | {
+        /** Custom function for subscribing the device. */
         subscribeDevice: ({ expoToken }: { expoToken: string }) => Promise<Response>;
+        /** Custom function for unsubscribing the device. */
         unsubscribeDevice: ({ expoToken }: { expoToken: string }) => Promise<Response>;
+        /** API configuration should not be provided when custom functions are used. */
         apiConfig?: undefined;
       }
     | {
+        /** API configuration for subscribing and unsubscribing the device */
         apiConfig: ApiConfig;
+        /** Custom subscribe function should not be provided when API config is used. */
         subscribeDevice?: undefined;
+        /** Custom unsubscribe function should not be provided when API config is used. */
         unsubscribeDevice?: undefined;
       }
   );
 
+/**
+ * **usePushNotifications**
+ *
+ * Hook, that automatically subscribes the device to receive push notifications when a user becomes authenticated,
+ * and unsubscribes when a user becomes non-authenticated.
+ * It supports custom subscription and unsubscription logic through provided functions or API configuration.
+ * Listens for [responses](https://docs.expo.dev/push-notifications/receiving-notifications/) to notifications and executes a callback, if provided, when a notification is interacted with.
+ * Used in the root App component.
+ *
+ * @param {UsePushNotificationsArgs} args Configuration object. See {@link UsePushNotificationsArgs} for a full description of each field.
+ * @returns {void}
+ */
 export const usePushNotifications = ({
   isAuthenticated,
   subscribeDevice,
@@ -113,9 +139,9 @@ export const usePushNotifications = ({
     };
   }, [pushToken, isAuthenticated]);
 
-  const handleNotification = (notification: Notifications.Notification): void  => {
+  const handleNotification = (notification: Notifications.Notification): void => {
     isNavigationReady && onNotificationResponse?.(notification);
-  }
+  };
 
   useEffect(() => {
     if (isAuthenticated && isRootNavigationStateReady && lastNotificationResponse?.notification) {

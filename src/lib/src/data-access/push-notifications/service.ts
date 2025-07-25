@@ -4,7 +4,13 @@ import { PermissionStatus } from 'expo-modules-core';
 import * as Notifications from 'expo-notifications';
 import { Alert, Linking, Platform } from 'react-native';
 
+/**
+ * @interface ObtainPushNotificationsTokenArgs
+ *
+ * Arguments accepted by {@link PushNotificationsService.obtainPushNotificationsToken}.
+ */
 export interface ObtainPushNotificationsTokenArgs {
+  /** Error handler invoked when the user denies notification permissions. */
   getTokenErrorHandler?: (permissionResponse: Notifications.PermissionResponse) => void;
 }
 
@@ -26,13 +32,35 @@ if (Platform.OS === 'android') {
   });
 }
 
+/**
+ * **PushNotificationsService**
+ *
+ * Service for integrating [Expo push notifications](https://docs.expo.dev/push-notifications/overview/) into apps.
+ * Requires [setup](https://docs.expo.dev/push-notifications/push-notifications-setup/) and [backend implementation](https://docs.expo.dev/push-notifications/sending-notifications/) for sending notifications.
+ *
+ * > Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `expo-notifications`, `expo-router`,
+ * > `expo-constants`, `expo-device`, `expo-modules-core`.
+ *
+ * Public methods:
+ * - `obtainPushNotificationsToken` – get an Expo token that can be used to send a push notification to the device using Expo's push notifications service.
+ * - `pushToken` – getter for retrieving the token if it was already obtained.
+ */
 class PushNotificationsService {
   private _pushToken?: string;
 
+  /**
+   * Cached Expo push token — *undefined* until {@link obtainPushNotificationsToken} succeeds.
+   */
   public get pushToken(): string | undefined {
     return this._pushToken;
   }
 
+  /**
+   * Obtain an Expo **push‑notifications token**. Runs the appropriate permission flow for iOS and Android.
+   *
+   * @param {ObtainPushNotificationsTokenArgs} args Optional callbacks.
+   * @returns {Promise<string | undefined>} Resolves with the Expo token string, or `undefined` when unavailable.
+   */
   public async obtainPushNotificationsToken({
     getTokenErrorHandler,
   }: ObtainPushNotificationsTokenArgs): Promise<string | undefined> {
@@ -49,18 +77,17 @@ class PushNotificationsService {
         }
       };
 
-      const requestPermissionsIOS = async (
-        settings: Notifications.NotificationPermissionsStatus
-      ): Promise<void> => {
+      const requestPermissionsIOS = async (settings: Notifications.NotificationPermissionsStatus): Promise<void> => {
         const permissionsGrantedStatuses = [
           Notifications.IosAuthorizationStatus.AUTHORIZED,
           Notifications.IosAuthorizationStatus.PROVISIONAL,
-          Notifications.IosAuthorizationStatus.EPHEMERAL
+          Notifications.IosAuthorizationStatus.EPHEMERAL,
         ];
-  
+
         if (settings.ios?.status === Notifications.IosAuthorizationStatus.NOT_DETERMINED) {
           const permissions = await Notifications.requestPermissionsAsync();
-          const arePermissionsGranted = !!permissions.ios && permissionsGrantedStatuses.includes(permissions.ios?.status);
+          const arePermissionsGranted =
+            !!permissions.ios && permissionsGrantedStatuses.includes(permissions.ios?.status);
 
           if (!arePermissionsGranted) {
             handlePermissionDeniedResponse(permissions);
@@ -68,16 +95,16 @@ class PushNotificationsService {
 
           return;
         }
-  
+
         const arePermissionsGranted = !!settings.ios && permissionsGrantedStatuses.includes(settings.ios?.status);
 
         if (!arePermissionsGranted) {
           handlePermissionDeniedResponse(settings);
         }
       };
-  
+
       const requestPermissionsAndroid = async (
-        settings: Notifications.NotificationPermissionsStatus
+        settings: Notifications.NotificationPermissionsStatus,
       ): Promise<void> => {
         if (settings.status !== PermissionStatus.GRANTED) {
           const permissions = await Notifications.requestPermissionsAsync();
@@ -89,7 +116,7 @@ class PushNotificationsService {
 
           return;
         }
-  
+
         const arePermissionsGranted = settings.status === PermissionStatus.GRANTED;
 
         if (!arePermissionsGranted) {
@@ -124,4 +151,7 @@ class PushNotificationsService {
   }
 }
 
+/**
+ * Ready‑to‑use singleton instance.
+ */
 export const pushNotificationsService = new PushNotificationsService();

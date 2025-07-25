@@ -2,7 +2,13 @@ import * as ImagePicker from 'expo-image-picker';
 import { Alert, Linking } from 'react-native';
 import { ImagePickerSource, ImagePickerError } from './enums';
 
+/**
+ * Gives the application access to the **camera** and **image gallery**.
+ *
+ * > Requires the `expo-image-picker`.
+ */
 export class ImagePickerService {
+  /** Default options applied to every picker call unless overridden. */
   public defaultOptions: ImagePicker.ImagePickerOptions = {
     mediaTypes: 'images',
     allowsEditing: true,
@@ -10,6 +16,13 @@ export class ImagePickerService {
     quality: 0.3,
   };
 
+  /**
+   * Build a [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object containing the image located at `uri`.
+   *
+   * @param {string} uri  Local file URI (e.g. `file:///path/to/image.jpg`).
+   * @param {string} [name="file"] Optional form field name.
+   * @returns {FormData} [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) ready to be sent via `multipart/form-data`.
+   */
   public getFormData(uri: string, name?: string): FormData {
     const formData = new FormData();
     const match = /\.(\w+)$/.exec(uri);
@@ -19,27 +32,68 @@ export class ImagePickerService {
     return formData;
   }
 
-  public getImage(source: ImagePickerSource, onPermissionDenied?: () => void): Promise<ImagePicker.ImagePickerResult | ImagePickerError> {
+  /**
+   * Opens the camera or image gallery based on the provided source.
+   * Handles all required permission checks internally.
+   *
+   * @param {ImagePickerSource} source - The image source. See {@link ImagePickerSource}.
+   * @param {() => void} [onPermissionDenied] - Optional callback called when permissions are permanently denied.
+   * @returns {Promise<ImagePicker.ImagePickerResult | ImagePickerError>} Resolves with the picker result or error. See {@link ImagePickerError}.
+   */
+  public getImage(
+    source: ImagePickerSource,
+    onPermissionDenied?: () => void,
+  ): Promise<ImagePicker.ImagePickerResult | ImagePickerError> {
     return this.pickImage(source, onPermissionDenied);
   }
 
+  /**
+   * Request **read access** to the device’s media library.
+   *
+   * @returns {Promise<ImagePicker.PermissionResponse>} Permission response.
+   */
   public requestGalleryAccess(): Promise<ImagePicker.PermissionResponse> {
     return ImagePicker.requestMediaLibraryPermissionsAsync();
   }
 
+  /**
+   * Open the **gallery** UI.
+   *
+   * @param {ImagePicker.ImagePickerOptions} [options] Additional picker options merged with {@link defaultOptions}.
+   * @returns {Promise<ImagePicker.ImagePickerResult>} Picker result.
+   */
   public launchGallery(options?: ImagePicker.ImagePickerOptions): Promise<ImagePicker.ImagePickerResult> {
     return ImagePicker.launchImageLibraryAsync({ ...this.defaultOptions, ...options });
   }
 
+  /**
+   * Request **camera** permission.
+   *
+   * @returns {Promise<ImagePicker.PermissionResponse>} Permission response.
+   */
   public requestCameraAccess(): Promise<ImagePicker.PermissionResponse> {
     return ImagePicker.requestCameraPermissionsAsync();
   }
 
+  /**
+   * Open the **camera** UI.
+   *
+   * @param {ImagePicker.ImagePickerOptions} [options] Additional picker options merged with {@link defaultOptions}.
+   * @returns {Promise<ImagePicker.ImagePickerResult>} Picker result.
+   */
   public launchCamera(options?: ImagePicker.ImagePickerOptions): Promise<ImagePicker.ImagePickerResult> {
     return ImagePicker.launchCameraAsync({ ...this.defaultOptions, ...options });
   }
 
-  private async pickImage(source: ImagePickerSource, onPermissionDenied?: () => void): Promise<ImagePicker.ImagePickerResult | ImagePickerError> {
+  /**
+   * Internal helper that performs permission checks and calls {@link launchCamera} or {@link launchGallery}.
+   *
+   * @internal
+   */
+  private async pickImage(
+    source: ImagePickerSource,
+    onPermissionDenied?: () => void,
+  ): Promise<ImagePicker.ImagePickerResult | ImagePickerError> {
     const isCamera = source === ImagePickerSource.CAMERA;
     const response = isCamera ? await this.requestCameraAccess() : await this.requestGalleryAccess();
 
@@ -70,4 +124,7 @@ export class ImagePickerService {
   }
 }
 
+/**
+ * Ready‑to‑use singleton instance.
+ */
 export const imagePickerService = new ImagePickerService();
