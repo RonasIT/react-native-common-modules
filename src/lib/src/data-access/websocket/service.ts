@@ -1,7 +1,8 @@
 import { Pusher, PusherEvent } from '@pusher/pusher-websocket-react-native';
 import { omit } from 'lodash-es';
 import { BaseWebSocketService } from './base-service';
-import { WebSocketOptions } from './interfaces';
+import { defaultPusherOptions } from './default-config';
+import { WebSocketHandlers, WebSocketOptions } from './interfaces';
 import { WebSocketListener } from './types';
 
 /**
@@ -12,7 +13,9 @@ import { WebSocketListener } from './types';
  * > Required dependencies: `@pusher/pusher-websocket-react-native`
  *
  * Public methods:
- * - {@link connect} — Initialize and connect client.
+ * - {@link init} — Initialize the Pusher client.
+ * - {@link connect} — Connect to the Pusher server.
+ * - {@link disconnect} — Disconnect from the Pusher server.
  * - {@link subscribeToChannel} — Subscribe and listen to channel events.
  * - {@link unsubscribeFromChannel} — Unsubscribe listener or entire channel.
  */
@@ -25,23 +28,35 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
   }
 
   /** @inheritdoc */
-  public async connect(authToken?: string): Promise<void> {
+  public async init(tokenGetter?: string | (() => string), handlers: WebSocketHandlers = {}): Promise<void> {
     const activityTimeout = this.options.activityTimeout;
     const pongTimeout = this.options.pongTimeout;
+    const authorizerTimeoutInSeconds = this.options.authorizerTimeoutInSeconds;
 
     await this.pusher.init({
-      ...omit(this.options, ['authURL', 'activityTimeout', 'pongTimeout']),
-      // RN Pusher accepts timeouts in seconds
-      activityTimeout: activityTimeout ? Math.round(activityTimeout) : undefined,
+      ...omit(this.options, ['authURL', 'activityTimeout', 'pongTimeout', 'authorizerTimeoutInSeconds']),
+      // RN Pusher accepts timeouts in milliseconds
+      activityTimeout: activityTimeout ? Math.round(activityTimeout) : defaultPusherOptions.activityTimeout,
       pongTimeout: pongTimeout ? Math.round(pongTimeout) : undefined,
+      authorizerTimeoutInSeconds: authorizerTimeoutInSeconds ?? defaultPusherOptions.authorizerTimeoutInSeconds,
       onSubscriptionError: (channelName) => this.addEventHandlerToPusher(channelName as TChannelName),
       onAuthorizer: this.options.authURL
         ? async (channelName: string, socketID: string) => {
-            return await this.authorize(channelName, socketID, authToken);
-          }
+          return await this.authorize(channelName, socketID, tokenGetter);
+        }
         : undefined,
+      ...handlers
     });
+  }
+
+  /** @inheritdoc */
+  public connect(): void {
     this.pusher.connect();
+  }
+
+  /** @inheritdoc */
+  public disconnect(): void {
+    this.pusher.disconnect();
   }
 
   /** @inheritdoc */

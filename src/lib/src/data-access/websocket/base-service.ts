@@ -1,6 +1,7 @@
 import { without } from 'lodash-es';
 import { ChannelAuthorizationData } from 'pusher-js/types/src/core/auth/options';
-import { WebSocketChannels, WebSocketOptions } from './interfaces';
+import { defaultPusherOptions } from './default-config';
+import { WebSocketChannels, WebSocketHandlers, WebSocketOptions } from './interfaces';
 import { WebSocketListener } from './types';
 
 /**
@@ -12,19 +13,37 @@ import { WebSocketListener } from './types';
 export abstract class BaseWebSocketService<TChannelName extends string> {
   protected channels: WebSocketChannels = {};
   protected options: WebSocketOptions;
+  private authAttempts: number;
 
   /**
    * @param options {@link WebSocketOptions Constructor options.}
    */
   constructor(options: WebSocketOptions) {
-    this.options = options;
+    this.options = { ...defaultPusherOptions, ...options };
+    this.authAttempts = 0;
   }
 
-  /** Initializes and connects the Pusher client. Optional authorization token is used for secure connections.
+  /**
+   * Initializes the Pusher client.
+   * Should be called only once before calling {@link connect}.
+   * If an authorization token is provided, it will be used for secure connections.
    *
-   * @param authToken Optional bearer token used for authenticating private channels.
+   * @param tokenGetter Optional function to get the authorization token or a string token.
+   * @param handlers Optional event handlers for the WebSocket connection. Defaults to an empty object.
    */
-  public abstract connect(authToken?: string): void;
+  public abstract init(tokenGetter?: string | (() => string), handlers?: WebSocketHandlers): void;
+
+  /**
+   * Connects the client to the Pusher server.
+   * Should be called after initializing the client using {@link init}.
+   */
+  public abstract connect(): void;
+
+  /**
+   * Disconnects the client from the Pusher server.
+   * Should be called when the client is no longer needed.
+   */
+  public abstract disconnect(): void;
 
   /**
    * Subscribes to a specified channel and registers an event listener for incoming messages on that channel.
@@ -55,19 +74,19 @@ export abstract class BaseWebSocketService<TChannelName extends string> {
    *
    * @param channelName – Channel for which auth is requested.
    * @param socketID – Pusher socket ID.
-   * @param authToken – Optional bearer token to send in the `Authorization` header.
+   * @param tokenGetter Optional function to get the authorization token or a string token.
    * @returns JSON with `auth` / `channel_data` fields expected by Pusher.
    */
-  protected async authorize(
-    channelName: string,
-    socketID: string,
-    authToken?: string,
-  ): Promise<ChannelAuthorizationData> {
+  protected authorize = async (channelName: string, socketID: string, tokenGetter?: string | (() => string)): Promise<ChannelAuthorizationData> => {
     const authURL = this.options.authURL;
+    const maxDelayMs = (this.options.authorizerTimeoutInSeconds || 60) * 1000;
 
-    if (!authURL || !authToken) {
-      throw new Error('Unable to connect to WebSocket, because auth url or token is missing');
+    if (!authURL || !tokenGetter) {
+      throw new Error('Unable to connect to WebSocket, because auth url or token getter is missing');
     }
+
+    const authToken = typeof tokenGetter === 'function' ? tokenGetter() : tokenGetter;
+    this.authAttempts++;
 
     const response = await fetch(authURL, {
       method: 'POST',
@@ -79,12 +98,29 @@ export abstract class BaseWebSocketService<TChannelName extends string> {
       }),
     });
 
+    if (!response.ok) {
+      const delayMs = 1000 * Math.pow(2, this.authAttempts - 1); // Exponential backoff
+
+      if (delayMs < maxDelayMs) {
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+
+        return this.authorize(channelName, socketID, tokenGetter);
+      } else {
+        this.authAttempts = 0;
+        throw new Error(`Failed to subscribe to channel ${channelName}. Authorizer response status ${response.status}`);
+      }
+    }
+
+    this.authAttempts = 0;
+
     return await response.json();
+
   }
 
   private getAuthHeaders(token?: string): HeadersInit {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
+      'Accept': 'application/json'
     };
 
     if (token) {
