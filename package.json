@@ -8,7 +8,8 @@
     "deps:sync": "npx syncpack fix-mismatches",
     "g:library": "npx nx g @nx/expo:lib --skipPackageJson --unitTestRunner=none",
     "g:component": "npx nx g @nx/expo:component component --export --flat --skipTests --directory=lib/${npm_config_name}",
-    "g:subcomponent": "npx nx g @nx/expo:component component --export=false --flat --skipTests --directory=lib/components/${npm_config_name}"
+    "g:subcomponent": "npx nx g @nx/expo:component component --export=false --flat --skipTests --directory=lib/components/${npm_config_name}",
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
@@ -74,6 +75,8 @@
     "eslint-plugin-react-hooks": "^7.0.0",
     "eslint-plugin-unused-imports": "^4.2.0",
     "globals": "^16.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "metro": "^0.83.1",
     "metro-react-native-babel-transformer": "^0.77.0",
     "nx": "21.6.4",
@@ -83,6 +86,7 @@
     "reactotron-redux": "^3.2.1",
     "rollup": "^4.52.4",
     "syncpack": "^13.0.4",
+    "tsc-files": "^1.1.4",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.46.0"
   },
