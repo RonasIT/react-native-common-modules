@@ -2,8 +2,7 @@ import { omit } from 'lodash-es';
 import Pusher, { ChannelAuthorizationCallback } from 'pusher-js';
 import { ChannelAuthorizationRequestParams } from 'pusher-js/types/src/core/auth/options';
 import { BaseWebSocketService } from './base-service';
-import { WebSocketHandlers } from './interfaces';
-import { WebSocketListener } from './types';
+import { WebSocketHandlers, WebSocketListener } from './types';
 
 /**
  * WebSocketService manages WebSocket connections using [Pusher](https://pusher.com/) for web applications.
@@ -29,19 +28,19 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
       cluster: this.options.cluster,
       channelAuthorization: authURL
         ? {
-          // workaround for https://github.com/pusher/pusher-js/issues/715
-          endpoint: '',
-          transport: 'ajax',
-          customHandler: async (
-            { socketId, channelName }: ChannelAuthorizationRequestParams,
-            callback: ChannelAuthorizationCallback,
-          ) => {
-            const authData = await this.authorize(channelName, socketId, tokenGetter);
-            callback(null, authData);
-          },
-        }
+            // workaround for https://github.com/pusher/pusher-js/issues/715
+            endpoint: '',
+            transport: 'ajax',
+            customHandler: async (
+              { socketId, channelName }: ChannelAuthorizationRequestParams,
+              callback: ChannelAuthorizationCallback,
+            ) => {
+              const authData = await this.authorize(channelName, socketId, tokenGetter);
+              callback(null, authData);
+            },
+          }
         : undefined,
-      ...handlers
+      ...handlers,
     });
   }
 
@@ -82,9 +81,7 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
   }
 
   private onSubscriptionError(channelName: string) {
-    this.pusher
-      ?.subscribe(channelName)
-      .bind_global(this.getEventHandler(channelName));
+    this.pusher?.subscribe(channelName).bind_global(this.getEventHandler(channelName));
   }
 
   private getEventHandler(channelName: string) {

@@ -1,8 +1,8 @@
 import { without } from 'lodash-es';
 import { ChannelAuthorizationData } from 'pusher-js/types/src/core/auth/options';
 import { defaultPusherOptions } from './default-config';
-import { WebSocketChannels, WebSocketHandlers, WebSocketOptions } from './interfaces';
-import { WebSocketListener } from './types';
+import { WebSocketChannels, WebSocketOptions } from './interfaces';
+import { WebSocketHandlers, WebSocketListener } from './types';
 
 /**
  * Base class containing shared logic for **Pusher‑powered** WebSocket communication.
@@ -77,7 +77,11 @@ export abstract class BaseWebSocketService<TChannelName extends string> {
    * @param tokenGetter Optional function to get the authorization token or a string token.
    * @returns JSON with `auth` / `channel_data` fields expected by Pusher.
    */
-  protected authorize = async (channelName: string, socketID: string, tokenGetter?: string | (() => string)): Promise<ChannelAuthorizationData> => {
+  protected authorize = async (
+    channelName: string,
+    socketID: string,
+    tokenGetter?: string | (() => string),
+  ): Promise<ChannelAuthorizationData> => {
     const authURL = this.options.authURL;
     const maxDelayMs = (this.options.authorizerTimeoutInSeconds || 60) * 1000;
 
@@ -102,7 +106,7 @@ export abstract class BaseWebSocketService<TChannelName extends string> {
       const delayMs = 1000 * Math.pow(2, this.authAttempts - 1); // Exponential backoff
 
       if (delayMs < maxDelayMs) {
-        await new Promise(resolve => setTimeout(resolve, delayMs));
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
 
         return this.authorize(channelName, socketID, tokenGetter);
       } else {
@@ -114,13 +118,12 @@ export abstract class BaseWebSocketService<TChannelName extends string> {
     this.authAttempts = 0;
 
     return await response.json();
-
-  }
+  };
 
   private getAuthHeaders(token?: string): HeadersInit {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      Accept: 'application/json',
     };
 
     if (token) {

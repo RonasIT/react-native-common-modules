@@ -2,8 +2,8 @@ import { Pusher, PusherEvent } from '@pusher/pusher-websocket-react-native';
 import { omit } from 'lodash-es';
 import { BaseWebSocketService } from './base-service';
 import { defaultPusherOptions } from './default-config';
-import { WebSocketHandlers, WebSocketOptions } from './interfaces';
-import { WebSocketListener } from './types';
+import { WebSocketOptions } from './interfaces';
+import { WebSocketHandlers, WebSocketListener } from './types';
 
 /**
  * WebSocketService manages WebSocket connections using [Pusher](https://pusher.com/) for mobile applications.
@@ -42,10 +42,10 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
       onSubscriptionError: (channelName) => this.addEventHandlerToPusher(channelName as TChannelName),
       onAuthorizer: this.options.authURL
         ? async (channelName: string, socketID: string) => {
-          return await this.authorize(channelName, socketID, tokenGetter);
-        }
+            return await this.authorize(channelName, socketID, tokenGetter);
+          }
         : undefined,
-      ...handlers
+      ...handlers,
     });
   }
 
