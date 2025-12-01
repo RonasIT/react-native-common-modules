@@ -58,8 +58,8 @@
     "src",
     "README.md"
   ],
-  "devDependencies": {
-    "@nx/rollup": "21.2.0"
+  "scripts": {
+    "prepack": "node -e \"require('fs').copyFileSync('../../README.md', './README.md')\""
   },
   "peerDependencies": {
     "@clerk/clerk-expo": "*",
