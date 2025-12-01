@@ -52,7 +52,7 @@ import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/safe-area
 
 #### 1. Push notifications
 
-> **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
+> **_NOTE:_** Required dependencies: `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
 
 ##### `PushNotificationsService`
 
@@ -150,10 +150,10 @@ for a mobile app and [pusher-js](https://github.com/pusher/pusher-js) for a web 
 
 Options for `WebSocketService` constructor:
 
-- `apiKey` (required) - Your **APP_KEY** from the Pusher Channels dashboard.
-- `cluster` (required) - Your **APP_CLUSTER**.
-- `authURL` (optional) - Endpoint that returns the auth signature for _private_ channels.
-- `useTLS` (optional) - Whether to use secure WebSocket transport (default: `true`).
+- `apiKey` (required) - `APP_KEY` from [Pusher Channels Dashboard](https://dashboard.pusher.com/).
+- `cluster` (required) - `APP_CLUSTER` from [Pusher Channels Dashboard](https://dashboard.pusher.com/).
+- `authURL` (optional) - a URL that returns the authentication signature needed for private channels.
+- `useTLS` (optional) - a flag that indicates whether TLS encrypted transport should be used. Default value is `true`.
 - `activityTimeout` (optional) - Time in **ms** before sending a ping when no messages have been sent. Default value is `30000`.
 - `pongTimeout` (optional) - Time in **ms** to wait for the pong response.
 - `authorizerTimeoutInSeconds` (optional) - Time in **seconds** to wait for the authorizer response. Default value is `60`.
@@ -181,7 +181,8 @@ const webSocketService = new WebSocketService<ChannelName>({
 
 // Initialize Pusher, e.g. after an app initialization or successful authorization
 const tokenGetter = () => authSelectors.token(getState()); // Always get actual token
-await webSocketService.init(tokenGetter);
+webSocketService.init(tokenGetter);
+// Connect to Pusher instance
 webSocketService.connect();
 
 // Subscribe to a channel when it's necessary
