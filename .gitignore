@@ -61,3 +61,6 @@ cache/
 .eslintcache
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
+
+# Generated files for npm publishing
+src/lib/README.md
