@@ -17,7 +17,7 @@
         "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "assets": [
           {
-            "glob": "src/lib/README.md",
+            "glob": "README.md",
             "input": ".",
             "output": "."
           }
