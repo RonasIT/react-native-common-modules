@@ -46,12 +46,12 @@ export class WebSocketService<TChannelName extends string = string> extends Base
 
   /** @inheritdoc */
   public connect(): void {
-    this.pusher?.connect();
+    return this.pusher?.connect();
   }
 
   /** @inheritdoc */
   public disconnect(): void {
-    this.pusher?.disconnect();
+    return this.pusher?.disconnect();
   }
 
   /** @inheritdoc */
@@ -80,7 +80,7 @@ export class WebSocketService<TChannelName extends string = string> extends Base
     }
   }
 
-  private onSubscriptionError(channelName: string) {
+  private onSubscriptionError(channelName: string): void {
     this.pusher?.subscribe(channelName).bind_global(this.getEventHandler(channelName));
   }
 
