@@ -1,6 +1,6 @@
 {
   "name": "@ronas-it/react-native-common-modules",
-  "version": "1.2.0",
+  "version": "1.2.0-alpha.4",
   "description": "Common modules for React Native apps at Ronas IT",
   "license": "MIT",
   "author": "Ronas IT",
@@ -55,7 +55,8 @@
     }
   },
   "files": [
-    "src"
+    "src",
+    "README.md"
   ],
   "devDependencies": {
     "@nx/rollup": "21.2.0"

@@ -5,9 +5,12 @@ module.exports = withNx(
     main: './src/index.ts',
     outputPath: '../../dist/src/lib',
     tsConfig: './tsconfig.lib.json',
-    compiler: 'babel',
-    format: ['esm'],
-    assets: [{ input: '.', output: '.', glob: '*.md' }],
+    assets: [
+      { input: '.', output: '.', glob: '*.md' },
+      { input: '.', output: '.', glob: 'README.md' },
+      { input: './src', output: './src', glob: '**/*.ts' },
+      { input: './src', output: './src', glob: '**/*.tsx' },
+    ],
   },
   {
     // Provide additional rollup configuration here. See: https://rollupjs.org/configuration-options
