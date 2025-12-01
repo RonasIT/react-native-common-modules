@@ -16,7 +16,7 @@ import { WebSocketHandlers, WebSocketListener } from './types';
  * - {@link subscribeToChannel} — Subscribe and listen to channel events.
  * - {@link unsubscribeFromChannel} — Unsubscribe listener or entire channel.
  */
-export class WebSocketService<TChannelName extends string> extends BaseWebSocketService<TChannelName> {
+export class WebSocketService<TChannelName extends string = string> extends BaseWebSocketService<TChannelName> {
   private pusher?: Pusher;
 
   /** @inheritdoc */
