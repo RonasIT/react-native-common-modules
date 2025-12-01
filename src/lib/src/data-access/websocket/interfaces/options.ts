@@ -10,10 +10,12 @@ export interface WebSocketOptions {
   cluster: string;
   /** Whether to use secure WebSocket transport (default: `true`). */
   useTLS?: boolean;
-  /** Time in **ms** before sending a ping when no messages have been sent. */
+  /** Time in **ms** before sending a ping when no messages have been sent. Default value is `30000`. */
   activityTimeout?: number;
   /** Time in **ms** to wait for the pong response. */
   pongTimeout?: number;
   /** Endpoint that returns the auth signature for *private* channels. */
   authURL?: string;
+  /** Time in **seconds** to wait for the authorizer response. Default value is `60`. */
+  authorizerTimeoutInSeconds?: number;
 }

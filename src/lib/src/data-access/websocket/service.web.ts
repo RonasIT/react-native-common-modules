@@ -2,7 +2,7 @@ import { omit } from 'lodash-es';
 import Pusher, { ChannelAuthorizationCallback } from 'pusher-js';
 import { ChannelAuthorizationRequestParams } from 'pusher-js/types/src/core/auth/options';
 import { BaseWebSocketService } from './base-service';
-import { WebSocketListener } from './types';
+import { WebSocketHandlers, WebSocketListener } from './types';
 
 /**
  * WebSocketService manages WebSocket connections using [Pusher](https://pusher.com/) for web applications.
@@ -10,7 +10,9 @@ import { WebSocketListener } from './types';
  * > Required dependencies: `pusher-js`
  *
  * Public methods:
- * - {@link connect} — Initialize and connect client.
+ * - {@link init} — Initialize the Pusher client.
+ * - {@link connect} — Connect to the Pusher server.
+ * - {@link disconnect} — Disconnect from the Pusher server.
  * - {@link subscribeToChannel} — Subscribe and listen to channel events.
  * - {@link unsubscribeFromChannel} — Unsubscribe listener or entire channel.
  */
@@ -18,7 +20,7 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
   private pusher?: Pusher;
 
   /** @inheritdoc */
-  public connect(authToken?: string): void {
+  public init(tokenGetter?: string | (() => string), handlers: WebSocketHandlers = {}): void {
     const authURL = this.options.authURL;
     this.pusher = new Pusher(this.options.apiKey, {
       ...omit(this.options, ['authURL', 'apiKey', 'useTLS']),
@@ -33,13 +35,23 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
               { socketId, channelName }: ChannelAuthorizationRequestParams,
               callback: ChannelAuthorizationCallback,
             ) => {
-              const authData = await this.authorize(channelName, socketId, authToken);
+              const authData = await this.authorize(channelName, socketId, tokenGetter);
               callback(null, authData);
             },
           }
         : undefined,
+      ...handlers,
     });
-    this.pusher.connect();
+  }
+
+  /** @inheritdoc */
+  public connect(): void {
+    this.pusher?.connect();
+  }
+
+  /** @inheritdoc */
+  public disconnect(): void {
+    this.pusher?.disconnect();
   }
 
   /** @inheritdoc */
