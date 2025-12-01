@@ -52,11 +52,11 @@ import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/safe-area
 
 #### 1. Push notifications
 
-> **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`, `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
+> **_NOTE:_** Required dependencies: `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
 
 ##### `PushNotificationsService`
 
-Service for integrating [Expo push notifications](https://docs.expo.dev/push-notifications/overview/) into apps.  
+Service for integrating [Expo push notifications](https://docs.expo.dev/push-notifications/overview/) into apps.
 Requires [setup](https://docs.expo.dev/push-notifications/push-notifications-setup/) and [backend implementation](https://docs.expo.dev/push-notifications/sending-notifications/) for sending notifications.
 
 `PushNotificationsService` public methods:
@@ -142,10 +142,10 @@ const handlePickImage = async (source: ImagePickerSource) => {
 
 > **_NOTE:_** Required dependencies: `@pusher/pusher-websocket-react-native`, `pusher-js`
 
-`WebSocketService` manages WebSocket connections using [Pusher](https://pusher.com/) and can work in both web and mobile applications.  
+`WebSocketService` manages WebSocket connections using [Pusher](https://pusher.com/) and can work in both web and mobile applications.
 Doesn't support Expo Go.
 
-It's necessary to install [@pusher/pusher-websocket-react-native](https://github.com/pusher/pusher-websocket-react-native)  
+It's necessary to install [@pusher/pusher-websocket-react-native](https://github.com/pusher/pusher-websocket-react-native)
 for a mobile app and [pusher-js](https://github.com/pusher/pusher-js) for a web app.
 
 Options for `WebSocketService` constructor:
@@ -154,12 +154,15 @@ Options for `WebSocketService` constructor:
 - `cluster` (required) - `APP_CLUSTER` from [Pusher Channels Dashboard](https://dashboard.pusher.com/).
 - `authURL` (optional) - a URL that returns the authentication signature needed for private channels.
 - `useTLS` (optional) - a flag that indicates whether TLS encrypted transport should be used. Default value is `true`.
-- `activityTimeout` (optional) - time in milliseconds to ping a server after last message.
-- `pongTimeout` (optional) - time in milliseconds to wait a response after a pinging request.
+- `activityTimeout` (optional) - Time in **ms** before sending a ping when no messages have been sent. Default value is `30000`.
+- `pongTimeout` (optional) - Time in **ms** to wait for the pong response.
+- `authorizerTimeoutInSeconds` (optional) - Time in **seconds** to wait for the authorizer response. Default value is `60`.
 
 `WebSocketService` public methods:
 
-- `connect` initializes and connects the Pusher client. Optional authorization token is used for secure connections.
+- `init(tokenGetter?, handlers?)` - Initializes the Pusher client. Should be called only once before calling `connect`. If an authorization token is provided, it will be used for secure connections.
+- `connect()` - Connects the client to the Pusher server. Should be called after initializing the client using `init`.
+- `disconnect()` - Disconnects the client from the Pusher server. Should be called when the client is no longer needed.
 - `subscribeToChannel` subscribes to a specified channel and registers an event listener for incoming messages on that channel.
 - `unsubscribeFromChannel` removes an event listener and, if there are no listeners for a specified channel, unsubscribes from it.
 
@@ -177,7 +180,10 @@ const webSocketService = new WebSocketService<ChannelName>({
 });
 
 // Initialize Pusher, e.g. after an app initialization or successful authorization
-await webSocketService.connect('your-auth-token');
+const tokenGetter = () => authSelectors.token(getState()); // Always get actual token
+webSocketService.init(tokenGetter);
+// Connect to Pusher instance
+webSocketService.connect();
 
 // Subscribe to a channel when it's necessary
 webSocketService.subscribeToChannel('private-conversations.123', (event) => {
@@ -190,13 +196,29 @@ webSocketService.unsubscribeFromChannel('private-conversations.123', (event) => 
 });
 ```
 
+##### `usePusherReactNative`
+
+Hook that automatically manages WebSocket connection lifecycle on Android devices. It reconnects the service when the app comes to the foreground and disconnects when the app goes to the background.
+
+> **_NOTE:_** Android can silently lose WebSocket connection when the app is put to background. This hook addresses this issue. See [GitHub issue #135](https://github.com/pusher/pusher-websocket-react-native/issues/135) for more details.
+
+**Example:**
+
+```ts
+import { usePusherReactNative } from '@ronas-it/react-native-common-modules/websocket';
+import { webSocketService } from '@your-app/mobile/data-access/websocket';
+
+// Use the hook in your root component
+usePusherReactNative(webSocketService);
+```
+
 ### Utils
 
 #### 1. `setupReactotron(projectName: string, plugins: Array<ReactotronPlugin>)`
 
 > **_NOTE:_** Required dependencies: `@reduxjs/toolkit`, `reactotron-react-native`, `reactotron-react-js`, `reactotron-redux`
 
-Configures and initializes [Reactotron debugger](https://github.com/infinitered/reactotron) with [redux plugin](https://docs.infinite.red/reactotron/plugins/redux/) for development purposes.  
+Configures and initializes [Reactotron debugger](https://github.com/infinitered/reactotron) with [redux plugin](https://docs.infinite.red/reactotron/plugins/redux/) for development purposes.
 Install the [Reactotron app](https://github.com/infinitered/reactotron/releases?q=reactotron-app&expanded=true) on your computer for use.
 
 **Example:**

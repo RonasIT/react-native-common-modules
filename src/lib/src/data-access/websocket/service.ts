@@ -19,7 +19,7 @@ import { WebSocketHandlers, WebSocketListener } from './types';
  * - {@link subscribeToChannel} — Subscribe and listen to channel events.
  * - {@link unsubscribeFromChannel} — Unsubscribe listener or entire channel.
  */
-export class WebSocketService<TChannelName extends string> extends BaseWebSocketService<TChannelName> {
+export class WebSocketService<TChannelName extends string = string> extends BaseWebSocketService<TChannelName> {
   private readonly pusher: Pusher;
 
   constructor(options: WebSocketOptions) {
@@ -28,12 +28,12 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
   }
 
   /** @inheritdoc */
-  public async init(tokenGetter?: string | (() => string), handlers: WebSocketHandlers = {}): Promise<void> {
+  public init(tokenGetter?: string | (() => string), handlers: WebSocketHandlers = {}): void {
     const activityTimeout = this.options.activityTimeout;
     const pongTimeout = this.options.pongTimeout;
     const authorizerTimeoutInSeconds = this.options.authorizerTimeoutInSeconds;
 
-    await this.pusher.init({
+    this.pusher.init({
       ...omit(this.options, ['authURL', 'activityTimeout', 'pongTimeout', 'authorizerTimeoutInSeconds']),
       // RN Pusher accepts timeouts in milliseconds
       activityTimeout: activityTimeout ? Math.round(activityTimeout) : defaultPusherOptions.activityTimeout,
@@ -50,13 +50,13 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
   }
 
   /** @inheritdoc */
-  public connect(): void {
-    this.pusher.connect();
+  public connect(): Promise<void> {
+    return this.pusher.connect();
   }
 
   /** @inheritdoc */
-  public disconnect(): void {
-    this.pusher.disconnect();
+  public disconnect(): Promise<void> {
+    return this.pusher.disconnect();
   }
 
   /** @inheritdoc */

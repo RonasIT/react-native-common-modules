@@ -16,7 +16,7 @@ import { WebSocketHandlers, WebSocketListener } from './types';
  * - {@link subscribeToChannel} — Subscribe and listen to channel events.
  * - {@link unsubscribeFromChannel} — Unsubscribe listener or entire channel.
  */
-export class WebSocketService<TChannelName extends string> extends BaseWebSocketService<TChannelName> {
+export class WebSocketService<TChannelName extends string = string> extends BaseWebSocketService<TChannelName> {
   private pusher?: Pusher;
 
   /** @inheritdoc */
@@ -46,12 +46,12 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
 
   /** @inheritdoc */
   public connect(): void {
-    this.pusher?.connect();
+    return this.pusher?.connect();
   }
 
   /** @inheritdoc */
   public disconnect(): void {
-    this.pusher?.disconnect();
+    return this.pusher?.disconnect();
   }
 
   /** @inheritdoc */
@@ -80,7 +80,7 @@ export class WebSocketService<TChannelName extends string> extends BaseWebSocket
     }
   }
 
-  private onSubscriptionError(channelName: string) {
+  private onSubscriptionError(channelName: string): void {
     this.pusher?.subscribe(channelName).bind_global(this.getEventHandler(channelName));
   }
 
