@@ -8,4 +8,4 @@ export enum ClerkApiError {
   FORM_IDENTIFIER_EXIST = 'form_identifier_exists',
   /** Error when the verification code is incorrect */
   FORM_CODE_INCORRECT = 'form_code_incorrect',
-};
+}

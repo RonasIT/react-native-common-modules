@@ -188,21 +188,14 @@ module.exports = [
         },
       ],
 
-      '@typescript-eslint/explicit-function-return-type': [
-        'warn',
-        {
-          allowExpressions: true,
-        },
-      ],
-
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
-      "@typescript-eslint/no-unused-expressions": [
-        "error",
+      '@typescript-eslint/no-unused-expressions': [
+        'error',
         {
           allowShortCircuit: true,
-          allowTernary: true
-        }
+          allowTernary: true,
+        },
       ],
 
       '@typescript-eslint/array-type': [
@@ -337,30 +330,6 @@ module.exports = [
     rules: {
       '@typescript-eslint/explicit-member-accessibility': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
-    },
-  },
-  {
-    files: ['**/*actions.ts'],
-
-    rules: {
-      '@stylistic/function-call-argument-newline': ['warn', 'always'],
-
-      '@stylistic/function-paren-newline': [
-        'warn',
-        {
-          minItems: 1,
-        },
-      ],
-    },
-  },
-  {
-    files: ['**/*selectors.ts'],
-
-    rules: {
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@stylistic/function-call-argument-newline': ['warn', 'always'],
-      '@stylistic/function-paren-newline': ['warn', 'multiline-arguments'],
     },
   },
 ];

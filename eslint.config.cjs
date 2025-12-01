@@ -5,7 +5,15 @@ const constraints = require('./eslint.constraints.json');
 
 module.exports = [
   {
-    ignores: ['**/node_modules', '**/dist', '**/*.js', '**/*.cjs', '**/*.mjs', 'apps/*/app.config.ts', 'src/lib/nx-generators.ts'],
+    ignores: [
+      '**/node_modules',
+      '**/dist',
+      '**/*.js',
+      '**/*.cjs',
+      '**/*.mjs',
+      'apps/*/app.config.ts',
+      'src/lib/nx-generators.ts',
+    ],
   },
   ...baseConfig,
   ...ronasitConfig,

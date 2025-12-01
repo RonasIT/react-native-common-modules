@@ -11,11 +11,11 @@ export const unstable_settings = {
 
 const translations = {
   en: {
-    ...require('i18n/example/en.json')
+    ...require('i18n/example/en.json'),
   },
   fr: {
-    ...require('i18n/example/fr.json')
-  }
+    ...require('i18n/example/fr.json'),
+  },
 };
 
 const useLanguage = setLanguage(translations, 'en');

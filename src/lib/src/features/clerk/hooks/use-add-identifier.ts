@@ -1,12 +1,12 @@
 import { isClerkAPIResponseError, useUser } from '@clerk/clerk-expo';
 import { EmailAddressResource, PhoneNumberResource } from '@clerk/types';
 import { useState } from 'react';
-import { UseAddIdentifierReturn } from '../types';
 import { ClerkApiError } from '../enums';
+import { UseAddIdentifierReturn } from '../types';
 
 /**
  * Hook that provides functionality to add new email or phone number identifiers to a user's account and verify them using verification codes.
- * 
+ *
  * @returns {UseAddIdentifierReturn} Object containing:
  * - `createIdentifier` - A function to add a new email or phone number identifier to the user's account and prepare it for verification
  * - `verifyCode` - A function to verify a code sent to the identifier, completing the verification process
@@ -55,7 +55,8 @@ export function useAddIdentifier(): UseAddIdentifierReturn {
   };
 
   const verifyCode: UseAddIdentifierReturn['verifyCode'] = async ({ code }) => {
-    setIsVerifying(true)
+    setIsVerifying(true);
+
     try {
       const verifyAttempt = await identifierResource?.attemptVerification({ code });
 

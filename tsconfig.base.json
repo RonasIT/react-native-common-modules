@@ -23,15 +23,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ronas-it/react-native-common-modules/image-picker": [
-        "src/lib/src/data-access/image-picker/index.ts"
-      ],
+      "@ronas-it/react-native-common-modules/image-picker": ["src/lib/src/data-access/image-picker/index.ts"],
       "@ronas-it/react-native-common-modules/push-notifications": [
         "src/lib/src/data-access/push-notifications/index.ts"
       ],
-      "@ronas-it/react-native-common-modules/reactotron": [
-        "src/lib/src/data-access/store/utils/reactotron/index.ts"
-      ],
+      "@ronas-it/react-native-common-modules/reactotron": ["src/lib/src/data-access/store/utils/reactotron/index.ts"],
       "@ronas-it/react-native-common-modules/websocket": ["src/lib/src/data-access/websocket/index.ts"],
       "@ronas-it/react-native-common-modules/safe-area-view": ["src/lib/src/ui/safe-area-view/index.ts"],
       "@ronas-it/react-native-common-modules/i18n": ["src/lib/src/utils/i18n/index.ts"],

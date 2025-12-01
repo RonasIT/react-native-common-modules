@@ -5,7 +5,7 @@ import { useGetSessionToken } from './use-get-session-token';
 
 /**
  * Hook that provides functionality to handle SSO authentication flows.
- * 
+ *
  * @returns {UseAuthWithSSOReturn} Object containing:
  * - `startSSOFlow` - A function to initiate an SSO flow. It takes a strategy, redirectUrl, and optional tokenTemplate as parameters, starting the SSO authentication and returning session information or errors upon completion
  * - `isLoading` - A boolean indicating whether an SSO process is currently ongoing
@@ -18,14 +18,14 @@ export function useAuthWithSSO(): UseAuthWithSSOReturn {
   const startSSOFlow: UseAuthWithSSOReturn['startSSOFlow'] = async ({
     strategy,
     redirectUrl,
-    tokenTemplate
+    tokenTemplate,
   }: StartSSOArgs) => {
     try {
       setIsLoading(true);
 
       const { createdSessionId, setActive, signIn, signUp } = await clerkStartSSOFlow({
         strategy,
-        redirectUrl
+        redirectUrl,
       });
 
       if (!createdSessionId) {
@@ -40,19 +40,19 @@ export function useAuthWithSSO(): UseAuthWithSSOReturn {
           sessionToken,
           signIn,
           signUp,
-          isSuccess: true
+          isSuccess: true,
         };
       }
 
       return {
         signIn,
         signUp,
-        isSuccess: false
+        isSuccess: false,
       };
     } catch (error) {
       return {
         error,
-        isSuccess: false
+        isSuccess: false,
       };
     } finally {
       setIsLoading(false);
