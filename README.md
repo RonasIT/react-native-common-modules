@@ -163,9 +163,18 @@ const webSocketService = new WebSocketService<ChannelName>({
   authURL: 'https://your-api.com/api/v1/broadcasting/auth',
 });
 
+// Callback to get your app auth token for private channels
+const tokenGetter = () => authSelectors.token(getState());
 // Initialize Pusher, e.g. after an app initialization or successful authorization
-const tokenGetter = () => authSelectors.token(getState()); // Always get actual token
-webSocketService.init(tokenGetter);
+webSocketService.init(
+  tokenGetter, // Always get actual token
+  {
+    // Optional handlers
+    onConnectionStateChange: (currentState) => {
+      // Do something with the connection state
+    },
+  },
+);
 // Connect to Pusher instance
 webSocketService.connect();
 
