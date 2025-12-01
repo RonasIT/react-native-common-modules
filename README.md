@@ -2,22 +2,6 @@
 
 Common components for Ronas IT projects.
 
-## Development
-
-### Use example app
-
-1. Install dependencies: `npm install`
-2. Start app for local development: `cd apps/example && npx expo start`
-3. Use [Expo Go](https://expo.dev/client) to run mobile version
-
-### Release
-
-To publish the package update to NPM, run:
-
-```sh
-npx nx run lib:nx-release-publish
-```
-
 ## Usage
 
 1. Install the package: `npm i @ronas-it/react-native-common-modules`
