@@ -3,7 +3,7 @@ import { UseGetSessionTokenReturn } from '../types';
 
 /**
  * Hook that provides functionality for getting session tokens.
- * 
+ *
  * @returns {UseGetSessionTokenReturn} Object containing:
  * - `getSessionToken` - A function to retrieve the session token. It takes an optional tokenTemplate parameter to specify a template for the token
  */
@@ -18,19 +18,19 @@ export const useGetSessionToken = (): UseGetSessionTokenReturn => {
       if (sessionToken) {
         return {
           sessionToken,
-          isSuccess: true
+          isSuccess: true,
         };
       } else {
         return {
           sessionToken: null,
-          isSuccess: false
+          isSuccess: false,
         };
       }
     } catch (error) {
       return {
         sessionToken: null,
         error,
-        isSuccess: false
+        isSuccess: false,
       };
     }
   };

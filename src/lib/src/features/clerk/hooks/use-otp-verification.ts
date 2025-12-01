@@ -1,12 +1,12 @@
 import { EmailCodeFactor, PhoneCodeFactor } from '@clerk/types';
 import { useState } from 'react';
+import { OtpStrategy, UseOtpVerificationReturn } from '../types/types';
 import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-session-token';
-import { OtpStrategy, UseOtpVerificationReturn } from '../types/types';
 
 /**
  * Hook that provides functionality for managing OTP (One Time Password) verification in user authentication workflows, supporting both sign-up and sign-in processes.
- * 
+ *
  * @returns {UseOtpVerificationReturn} Object containing:
  * - `sendOtpCode` - Sends an OTP code to the user's identifier (email or phone number) based on the specified strategy
  * - `verifyCode` - Verifies the OTP code provided by the user, completing the authentication process
@@ -114,7 +114,7 @@ export function useOtpVerification(): UseOtpVerificationReturn {
       return {
         signIn,
         signUp,
-        isSuccess: false
+        isSuccess: false,
       };
     } catch (error) {
       return {

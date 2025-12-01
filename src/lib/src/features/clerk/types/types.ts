@@ -1,4 +1,14 @@
-import { ClerkAPIError, EmailAddressResource, OAuthStrategy, PhoneNumberResource, SetActive, SignInResource, SignOut, SignUpResource, UserResource } from '@clerk/types';
+import {
+  ClerkAPIError,
+  EmailAddressResource,
+  OAuthStrategy,
+  PhoneNumberResource,
+  SetActive,
+  SignInResource,
+  SignOut,
+  SignUpResource,
+  UserResource,
+} from '@clerk/types';
 
 type BaseSuccessReturn = { isSuccess: true; error?: never };
 
@@ -53,9 +63,7 @@ export type UseClerkResourcesReturn = WithClerkReturn & {
  * - { isSuccess: true, sessionToken: string } on success
  * - { isSuccess: false, sessionToken: null, error } on failure
  */
-export type GetSessionTokenFn = (params: {
-  tokenTemplate?: string;
-}) => Promise<GetSessionTokenReturn>;
+export type GetSessionTokenFn = (params: { tokenTemplate?: string }) => Promise<GetSessionTokenReturn>;
 
 export interface UseGetSessionTokenReturn {
   /** Function to retrieve the session token */
@@ -71,18 +79,18 @@ export type StartAuthorizationWithTicketReturn = (WithTokenSuccessReturn | WithT
 export interface UseAuthWithTicketReturn {
   /**
    * Initiates authentication using a one-time ticket issued by the backend.
-   * 
+   *
    * @param params - Parameters required to start the ticket-based authentication flow.
    * @param params.ticket - A valid ticket string issued by Clerk or your backend.
    * @param params.tokenTemplate - (Optional) The name of a token template to use when retrieving the session token.
-   * 
+   *
    * @returns A Promise that resolves to a `StartAuthorizationWithTicketReturn` object, which can be either:
-   * 
+   *
    * On success:
    * - `isSuccess: true`
    * - `sessionToken: string` — A valid session token string.
    * - `signIn?: SignInResource` — (Optional) SignIn object, present if the user needs to complete additional steps.
-   * 
+   *
    * On failure:
    * - `isSuccess: false` or undefined
    * - `sessionToken: null`
@@ -191,9 +199,7 @@ export interface UseAddIdentifierReturn {
    * - On success: `BaseSuccessReturn` with optional `user`.
    * - On failure: `BaseFailureReturn` with optional `user`.
    */
-  createIdentifier: (params: {
-    identifier: string;
-  }) => Promise<
+  createIdentifier: (params: { identifier: string }) => Promise<
     (BaseSuccessReturn | BaseFailureReturn) & {
       user?: UserResource | null;
     }
@@ -209,14 +215,12 @@ export interface UseAddIdentifierReturn {
    * - On success: `BaseSuccessReturn` with optional `user`.
    * - On failure: `BaseFailureReturn` with optional `verifyAttempt` (email or phone resource) and `user`.
    */
-  verifyCode: (params: {
-    code: string;
-  }) => Promise<
+  verifyCode: (params: { code: string }) => Promise<
     (
       | BaseSuccessReturn
       | (BaseFailureReturn & {
-        verifyAttempt?: PhoneNumberResource | EmailAddressResource;
-      })
+          verifyAttempt?: PhoneNumberResource | EmailAddressResource;
+        })
     ) & {
       user?: UserResource | null;
     }
@@ -243,8 +247,9 @@ export type AuthIdentifierVerifyBy = 'otp' | 'password';
  * - For `'otp'`, only email and phone are allowed.
  * - For `'password'`, all methods are allowed.
  */
-export type IdentifierMethodFor<VerifyBy extends AuthIdentifierVerifyBy> =
-  VerifyBy extends 'otp' ? Exclude<AuthIdentifierMethod, 'username'> : AuthIdentifierMethod;
+export type IdentifierMethodFor<VerifyBy extends AuthIdentifierVerifyBy> = VerifyBy extends 'otp'
+  ? Exclude<AuthIdentifierMethod, 'username'>
+  : AuthIdentifierMethod;
 
 /**
  * Parameters for starting an authentication flow, based on the selected verification method.
@@ -252,20 +257,19 @@ export type IdentifierMethodFor<VerifyBy extends AuthIdentifierVerifyBy> =
  * - For `'otp'`: requires only an identifier (email or phone).
  * - For `'password'`: requires identifier and password, and optionally a token template.
  */
-export type StartAuthParams<VerifyBy extends AuthIdentifierVerifyBy> =
-  VerifyBy extends 'otp'
+export type StartAuthParams<VerifyBy extends AuthIdentifierVerifyBy> = VerifyBy extends 'otp'
   ? {
-    /** Identifier (email address or phone number). */
-    identifier: string;
-  }
+      /** Identifier (email address or phone number). */
+      identifier: string;
+    }
   : {
-    /** Identifier (email address, phone number, or username). */
-    identifier: string;
-    /** User's password. */
-    password: string;
-    /** Optional name of a token template for customizing the session token. */
-    tokenTemplate?: string;
-  };
+      /** Identifier (email address, phone number, or username). */
+      identifier: string;
+      /** User's password. */
+      password: string;
+      /** Optional name of a token template for customizing the session token. */
+      tokenTemplate?: string;
+    };
 
 /**
  * Return type for starting a sign-in flow.
@@ -273,12 +277,11 @@ export type StartAuthParams<VerifyBy extends AuthIdentifierVerifyBy> =
  * - For `'password'`: may include a `sessionToken`.
  * - For `'otp'`: standard return type.
  */
-export type StartSignInWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyBy> =
-  VerifyBy extends 'password'
+export type StartSignInWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyBy> = VerifyBy extends 'password'
   ? StartSignInReturn & {
-    /** Optional session token returned upon successful password sign-in. */
-    sessionToken?: string;
-  }
+      /** Optional session token returned upon successful password sign-in. */
+      sessionToken?: string;
+    }
   : StartSignInReturn;
 
 /**
@@ -287,12 +290,11 @@ export type StartSignInWithIdentifierReturn<VerifyBy extends AuthIdentifierVerif
  * - For `'username'`: may include a `sessionToken`.
  * - For others: standard return type.
  */
-export type StartSignUpWithIdentifierReturn<Method extends AuthIdentifierMethod> =
-  Method extends 'username'
+export type StartSignUpWithIdentifierReturn<Method extends AuthIdentifierMethod> = Method extends 'username'
   ? StartSignUpReturn & {
-    /** Optional session token returned upon successful username sign-up. */
-    sessionToken?: string;
-  }
+      /** Optional session token returned upon successful username sign-up. */
+      sessionToken?: string;
+    }
   : StartSignUpReturn;
 
 /**
@@ -301,12 +303,11 @@ export type StartSignUpWithIdentifierReturn<Method extends AuthIdentifierMethod>
  * - For `'username'`: may include a `sessionToken`.
  * - For others: standard return type.
  */
-export type StartAuthorizationWithIdentifierReturn<Method extends AuthIdentifierMethod> =
-  Method extends 'username'
+export type StartAuthorizationWithIdentifierReturn<Method extends AuthIdentifierMethod> = Method extends 'username'
   ? StartAuthorizationReturn & {
-    /** Optional session token returned upon successful username authorization. */
-    sessionToken?: string;
-  }
+      /** Optional session token returned upon successful username authorization. */
+      sessionToken?: string;
+    }
   : StartAuthorizationReturn;
 
 /**
@@ -334,9 +335,7 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
    *   identifier: '+1234567890'
    * });
    */
-  startSignIn: (
-    params: StartAuthParams<VerifyBy>
-  ) => Promise<StartSignInWithIdentifierReturn<VerifyBy>>;
+  startSignIn: (params: StartAuthParams<VerifyBy>) => Promise<StartSignInWithIdentifierReturn<VerifyBy>>;
   /**
    * Initiates the sign-up flow using the provided identifier and verification method.
    *
@@ -370,9 +369,7 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
    *   tokenTemplate: 'my_template'
    * });
    */
-  startSignUp: (
-    params: StartAuthParams<VerifyBy>
-  ) => Promise<StartSignUpWithIdentifierReturn<any>>;
+  startSignUp: (params: StartAuthParams<VerifyBy>) => Promise<StartSignUpWithIdentifierReturn<any>>;
 
   /**
    * Initiates a combined authorization flow (sign-up or sign-in) based on user existence.
@@ -407,9 +404,7 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
    *   tokenTemplate: 'my_template'
    * });
    */
-  startAuthorization: (
-    params: StartAuthParams<VerifyBy>
-  ) => Promise<StartAuthorizationWithIdentifierReturn<any>>;
+  startAuthorization: (params: StartAuthParams<VerifyBy>) => Promise<StartAuthorizationWithIdentifierReturn<any>>;
 
   /** Indicates whether an authentication request is currently being processed. `true` or `false` */
   isLoading: boolean;
@@ -427,22 +422,19 @@ type ConditionalUseAuthWithIdentifierReturn<
 > = Method extends 'username'
   ? BaseUseAuthWithIdentifierReturn<VerifyBy>
   : BaseUseAuthWithIdentifierReturn<VerifyBy> & {
-    /**
-     * Verifies the OTP code sent to the user.
-     *
-     * Only available when using `emailAddress` or `phoneNumber`.
-     *
-     * @param params.code - The one-time code entered by the user.
-     * @param params.tokenTemplate - (Optional) Token template to customize the session.
-     * @returns A Promise resolving to the final result of the authorization flow.
-     */
-    verifyCode: (params: {
-      code: string;
-      tokenTemplate?: string;
-    }) => Promise<AuthorizationFinishedReturn>;
-    /** Indicates whether OTP verification is currently in progress. `true` or `false` */
-    isVerifying: boolean;
-  };
+      /**
+       * Verifies the OTP code sent to the user.
+       *
+       * Only available when using `emailAddress` or `phoneNumber`.
+       *
+       * @param params.code - The one-time code entered by the user.
+       * @param params.tokenTemplate - (Optional) Token template to customize the session.
+       * @returns A Promise resolving to the final result of the authorization flow.
+       */
+      verifyCode: (params: { code: string; tokenTemplate?: string }) => Promise<AuthorizationFinishedReturn>;
+      /** Indicates whether OTP verification is currently in progress. `true` or `false` */
+      isVerifying: boolean;
+    };
 
 /**
  * Final return type of `useAuthWithIdentifier` hook.
@@ -503,5 +495,3 @@ export interface UseResetPasswordReturn {
   /** Indicates whether the code for password reset is currently being sent. `true` or `false` */
   isCodeSending: boolean;
 }
-
-

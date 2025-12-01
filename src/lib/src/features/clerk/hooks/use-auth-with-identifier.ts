@@ -1,4 +1,5 @@
 import { isClerkAPIResponseError } from '@clerk/clerk-expo';
+import { SignInResource } from '@clerk/types';
 import { useState } from 'react';
 import { ClerkApiError } from '../enums';
 import {
@@ -12,16 +13,15 @@ import {
 import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-session-token';
 import { useOtpVerification } from './use-otp-verification';
-import { SignInResource } from '@clerk/types';
 
 /**
  * Hook that provides functionality to handle user sign-up and sign-in processes using an identifier such as an email, phone number, or username. It supports both OTP (One Time Password) and password-based authentication methods.
- * 
+ *
  * @template {AuthIdentifierVerifyBy} TVerifyBy - The verification method type
  * @template {IdentifierMethodFor<TVerifyBy>} TMethod - The identifier method type
  * @param {TMethod} method - Specifies the type of identifier used for authentication (e.g., 'emailAddress', 'phoneNumber', 'username')
  * @param {TVerifyBy} verifyBy - Specifies the verification method ('otp' for one-time passwords or 'password')
- * 
+ *
  * @returns {UseAuthWithIdentifierReturn<TVerifyBy, TMethod>} Object containing:
  * - `startSignUp` - Initiates a new user registration using the specified identifier and verification method
  * - `startSignIn` - Initiates authentication of an existing user using the specified identifier and verification method
@@ -42,6 +42,7 @@ export function useAuthWithIdentifier<
 
   const handleSessionToken = async (tokenTemplate?: string): Promise<{ sessionToken?: string; error?: unknown }> => {
     const { sessionToken, error } = await getSessionToken({ tokenTemplate });
+
     return { sessionToken: sessionToken || undefined, error };
   };
 
@@ -125,6 +126,7 @@ export function useAuthWithIdentifier<
   const startSignUp: UseAuthWithIdentifierReturn<TVerifyBy, TMethod>['startSignUp'] = async (params) => {
     try {
       setIsLoading(true);
+
       return method === 'username'
         ? handleUsernameAuth(params as StartAuthParams<'password'>, true)
         : handleEmailPhoneAuth(params, true);
@@ -138,6 +140,7 @@ export function useAuthWithIdentifier<
   const startSignIn: UseAuthWithIdentifierReturn<TVerifyBy, TMethod>['startSignIn'] = async (params) => {
     try {
       setIsLoading(true);
+
       return method === 'username'
         ? handleUsernameAuth(params as StartAuthParams<'password'>, false)
         : handleEmailPhoneAuth(params, false);
@@ -155,6 +158,7 @@ export function useAuthWithIdentifier<
 
       if (result?.error && isClerkAPIResponseError(result.error)) {
         const error = result.error.errors[0];
+
         if (error?.code === ClerkApiError.FORM_IDENTIFIER_EXIST) {
           return await startSignIn(params);
         }

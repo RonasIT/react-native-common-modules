@@ -5,10 +5,10 @@ import { useGetSessionToken } from './use-get-session-token';
 
 /**
  * Hook that provides methods to handle password reset functionality through email or phone-based OTP.
- * 
+ *
  * @param {Object} params - Parameters for the hook
  * @param {OtpMethod} params.method - The method to use for OTP (emailAddress or phoneNumber)
- * 
+ *
  * @returns {UseResetPasswordReturn} Object containing:
  * - `startResetPassword` - A function to initiate the password reset process by sending a verification code to the user's email or phone number
  * - `resetPassword` - A function to reset the user's password by verifying the code and setting a new password
