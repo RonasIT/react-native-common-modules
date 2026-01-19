@@ -42,8 +42,8 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@clerk/clerk-expo": "^2.19.6",
-    "@clerk/types": "^4.101.3",
+    "@clerk/clerk-expo": "^2.19.18",
+    "@clerk/types": "^4.101.11",
     "@eslint/compat": "^1.4.0",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.37.0",

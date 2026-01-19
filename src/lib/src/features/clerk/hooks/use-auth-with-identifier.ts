@@ -128,8 +128,8 @@ export function useAuthWithIdentifier<
       setIsLoading(true);
 
       return method === 'username'
-        ? handleUsernameAuth(params as StartAuthParams<'password'>, true)
-        : handleEmailPhoneAuth(params, true);
+        ? await handleUsernameAuth(params as StartAuthParams<'password'>, true)
+        : await handleEmailPhoneAuth(params, true);
     } catch (error) {
       return { error, signUp, isSuccess: false } as StartSignUpWithIdentifierReturn<TMethod>;
     } finally {
@@ -142,8 +142,8 @@ export function useAuthWithIdentifier<
       setIsLoading(true);
 
       return method === 'username'
-        ? handleUsernameAuth(params as StartAuthParams<'password'>, false)
-        : handleEmailPhoneAuth(params, false);
+        ? await handleUsernameAuth(params as StartAuthParams<'password'>, false)
+        : await handleEmailPhoneAuth(params, false);
     } catch (error) {
       return { error, signIn, isSuccess: false } as StartSignInWithIdentifierReturn<TVerifyBy>;
     } finally {
