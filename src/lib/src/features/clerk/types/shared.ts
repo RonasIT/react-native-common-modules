@@ -5,11 +5,6 @@ import { ClerkAPIError } from '@clerk/types';
 export type AuthIdentifierMethod = 'emailAddress' | 'phoneNumber' | 'username';
 export type AuthIdentifierVerifyBy = 'otp' | 'password';
 
-/** Maps verification method to the allowed identifier methods. */
-export type IdentifierMethodFor<VerifyBy extends AuthIdentifierVerifyBy> = VerifyBy extends 'otp'
-  ? Exclude<AuthIdentifierMethod, 'username'>
-  : AuthIdentifierMethod;
-
 // --- Return Types ---
 
 export type BaseSuccessReturn = { isSuccess: true; error?: never };

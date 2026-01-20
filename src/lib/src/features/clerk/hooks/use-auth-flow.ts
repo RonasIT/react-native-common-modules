@@ -1,6 +1,6 @@
 import { isClerkAPIResponseError } from '@clerk/clerk-expo';
 import { ClerkApiError } from '../enums'; // Your existing enums
-import { AuthIdentifierVerifyBy, IdentifierMethodFor, AuthResult } from '../types/shared';
+import { AuthIdentifierVerifyBy, AuthIdentifierMethod, AuthResult } from '../types/shared';
 import { StartSignInParams } from '../types/sign-in';
 import { StartSignUpParams } from '../types/sign-up';
 import { useOtpVerification } from './use-otp-verification';
@@ -11,7 +11,7 @@ import { useSignUp } from './use-sign-up';
 type AuthFlowParams<VerifyBy extends AuthIdentifierVerifyBy> = StartSignUpParams<VerifyBy> &
   StartSignInParams<VerifyBy>;
 
-export function useAuthFlow<TVerifyBy extends AuthIdentifierVerifyBy, TMethod extends IdentifierMethodFor<TVerifyBy>>(
+export function useAuthFlow<TVerifyBy extends AuthIdentifierVerifyBy, TMethod extends AuthIdentifierMethod>(
   method: TMethod,
   verifyBy: TVerifyBy,
 ) {

@@ -1,12 +1,12 @@
 import { SignInResource } from '@clerk/types';
 import { useState } from 'react';
-import { AuthIdentifierVerifyBy, AuthResult, IdentifierMethodFor } from '../types/shared';
+import { AuthIdentifierVerifyBy, AuthResult, AuthIdentifierMethod } from '../types/shared';
 import { StartSignInParams, UseSignInReturn } from '../types/sign-in';
 import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-session-token';
 import { useOtpVerification } from './use-otp-verification';
 
-export function useSignIn<TVerifyBy extends AuthIdentifierVerifyBy, TMethod extends IdentifierMethodFor<TVerifyBy>>(
+export function useSignIn<TVerifyBy extends AuthIdentifierVerifyBy, TMethod extends AuthIdentifierMethod>(
   method: TMethod,
   verifyBy: TVerifyBy,
 ): UseSignInReturn<TVerifyBy> {

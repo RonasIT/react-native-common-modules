@@ -1,11 +1,11 @@
 import { SignUpResource } from '@clerk/types';
 import { useState } from 'react';
-import { AuthIdentifierVerifyBy, AuthResult, IdentifierMethodFor } from '../types/shared';
+import { AuthIdentifierVerifyBy, AuthResult, AuthIdentifierMethod } from '../types/shared';
 import { StartSignUpParams, UseSignUpReturn } from '../types/sign-up';
 import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-session-token';
 
-export function useSignUp<TVerifyBy extends AuthIdentifierVerifyBy, TMethod extends IdentifierMethodFor<TVerifyBy>>(
+export function useSignUp<TVerifyBy extends AuthIdentifierVerifyBy, TMethod extends AuthIdentifierMethod>(
   method: TMethod,
   verifyBy: TVerifyBy,
 ): UseSignUpReturn<TVerifyBy> {
@@ -14,7 +14,6 @@ export function useSignUp<TVerifyBy extends AuthIdentifierVerifyBy, TMethod exte
   const [isLoading, setIsLoading] = useState(false);
 
   const strategy = method === 'emailAddress' ? 'email_code' : 'phone_code';
-  const identifierKey = method === 'username' ? 'username' : method;
 
   const startSignUp = async (params: StartSignUpParams<TVerifyBy>): Promise<AuthResult<SignUpResource>> => {
     setIsLoading(true);
@@ -28,20 +27,20 @@ export function useSignUp<TVerifyBy extends AuthIdentifierVerifyBy, TMethod exte
       if (verifyBy === 'password') {
         const { password, ...restParams } = rest;
         attempt = await signUp?.create({
-          [identifierKey]: identifier,
+          [method]: identifier,
           password,
           ...restParams,
         });
       } else {
         // OTP Flow
         attempt = await signUp?.create({
-          [identifierKey]: identifier,
+          [method]: identifier,
           ...rest,
         });
-
-        // Prepare verification (send code)
-        await signUp?.prepareVerification({ strategy: strategy });
       }
+
+      // Prepare verification (send code)
+      await signUp?.prepareVerification({ strategy: strategy });
 
       // 2. Handle Completion (Password flow)
       let sessionToken: string | undefined;
