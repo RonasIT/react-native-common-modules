@@ -1,4 +1,3 @@
-import { useSignIn, useAuthWithIdentifier } from '@ronas-it/react-native-common-modules/clerk';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/safe-area-view';
 import { ReactElement, useContext } from 'react';
@@ -13,19 +12,6 @@ export default function RootScreen(): ReactElement {
 
   const handleLanguageChange = (): void => {
     onLanguageChange?.(language === 'en' ? 'fr' : 'en');
-  };
-
-  const { startSignIn, isLoading } = useSignIn('emailAddress', 'otp');
-  const { startSignIn: startSignInOld } = useAuthWithIdentifier('emailAddress', 'otp');
-
-  const testSignIn = async (): Promise<void> => {
-    const result = await startSignIn({ identifier: 'test@test.com' });
-    // result.
-  };
-
-  const testSignInOld = async (): Promise<void> => {
-    const result = await startSignInOld({ identifier: 'test@test.com' });
-    // result.
   };
 
   return (
