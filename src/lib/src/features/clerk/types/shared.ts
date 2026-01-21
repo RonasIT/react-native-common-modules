@@ -2,7 +2,7 @@ import { ClerkAPIError } from '@clerk/types';
 
 // --- Configuration Types ---
 
-export type AuthIdentifierMethod = 'emailAddress' | 'phoneNumber' | 'username';
+export type AuthIdentifierMethod = 'emailAddress' | 'phoneNumber';
 export type AuthIdentifierVerifyBy = 'otp' | 'password';
 
 // --- Return Types ---
@@ -18,7 +18,7 @@ export type AuthResult<Resource> = (BaseSuccessReturn | BaseFailureReturn) & {
 
 // --- Param Helpers ---
 
-export type HookManagedFields = 'identifier' | 'password' | 'emailAddress' | 'phoneNumber' | 'username';
+export type HookManagedFields = 'identifier' | 'password' | 'emailAddress' | 'phoneNumber';
 
 /** Base parameters required for password-based auth */
 export interface PasswordAuthParams {

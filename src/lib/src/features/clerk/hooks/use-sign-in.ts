@@ -6,6 +6,19 @@ import { useClerkResources } from './use-clerk-resources';
 import { useGetSessionToken } from './use-get-session-token';
 import { useOtpVerification } from './use-otp-verification';
 
+/**
+ * Hook that provides functionality to handle user sign-in processes using an identifier such as an email, phone number, or username.
+ *
+ * @template {AuthIdentifierVerifyBy} TVerifyBy - The verification method type
+ * @template {AuthIdentifierMethod} TMethod - The identifier method type
+ * @param {TMethod} method - Specifies the type of identifier used for authentication (e.g., 'emailAddress', 'phoneNumber', 'username')
+ * @param {TVerifyBy} verifyBy - Specifies the verification method ('otp' for one-time passwords or 'password')
+ *
+ * @returns {UseSignInReturn<TVerifyBy>} Object containing:
+ * - `startSignIn` - Initiates authentication of an existing user using the specified identifier and verification method.
+ * - `isLoading` - Indicates whether the sign-in request is currently in progress.
+ * - `signIn` - The Clerk SignIn resource object, which contains the current state of the sign-in attempt.
+ */
 export function useSignIn<TVerifyBy extends AuthIdentifierVerifyBy, TMethod extends AuthIdentifierMethod>(
   method: TMethod,
   verifyBy: TVerifyBy,
@@ -22,7 +35,7 @@ export function useSignIn<TVerifyBy extends AuthIdentifierVerifyBy, TMethod exte
     setIsLoading(true);
 
     try {
-      const { identifier, ...rest } = params as any; // Cast to access dynamic props safely
+      const { identifier, ...rest } = params as any;
 
       // 1. Create the Sign In Attempt
       let attempt;
