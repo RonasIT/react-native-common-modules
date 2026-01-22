@@ -6,5 +6,3 @@ export * from './use-otp-verification';
 export * from './use-auth-with-identifier';
 export * from './use-add-identifier';
 export * from './use-reset-password';
-export * from './use-sign-in';
-export * from './use-sign-up';
