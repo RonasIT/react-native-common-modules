@@ -352,14 +352,14 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
    * @example
    * // Example for email + password
    * await startSignIn({
-   * identifier: 'user@example.com',
-   * password: 'securePassword123'
+   *  identifier: 'user@example.com',
+   *  password: 'securePassword123'
    * });
    *
    * @example
    * // Example for phone + OTP
    * await startSignIn({
-   * identifier: '+1234567890'
+   *  identifier: '+1234567890'
    * });
    */
   startSignIn: (params: StartAuthParams<VerifyBy>) => Promise<StartSignInWithIdentifierReturn<VerifyBy>>;
@@ -372,28 +372,28 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
    * @example
    * // Example 1: Sign up with email + OTP
    * await startSignUp({
-   * identifier: 'user@example.com',
+   *  identifier: 'user@example.com',
    * });
    *
    * @example
    * // Example 2: Sign up with phone + OTP
    * await startSignUp({
-   * identifier: '+1234567890',
+   *  identifier: '+1234567890',
    * });
    *
    * @example
    * // Example 3: Sign up with username + password
    * await startSignUp({
-   * identifier: 'username',
-   * password: 'password!'
+   *  identifier: 'username',
+   *  password: 'password!'
    * });
    *
    * @example
    * // Example 4: Sign up with email + password + custom token template
    * await startSignUp({
-   * identifier: 'user@example.com',
-   * password: 'password',
-   * tokenTemplate: 'my_template'
+   *  identifier: 'user@example.com',
+   *  password: 'password',
+   *  tokenTemplate: 'my_template'
    * });
    */
   startSignUp: (params: StartSignUpParams<VerifyBy>) => Promise<StartSignUpWithIdentifierReturn<any>>;
@@ -407,28 +407,28 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
    * @example
    * // Example 1: Authorize with email + OTP (sign-in or sign-up automatically)
    * await startAuthorization({
-   * identifier: 'user@example.com',
+   *  identifier: 'user@example.com',
    * });
    *
    * @example
    * // Example 2: Authorize with phone + OTP
    * await startAuthorization({
-   * identifier: '+1234567890',
+   *  identifier: '+1234567890',
    * });
    *
    * @example
    * // Example 3: Authorize with username + password
    * await startAuthorization({
-   * identifier: 'username',
-   * password: 'password'
+   *  identifier: 'username',
+   *  password: 'password'
    * });
    *
    * @example
    * // Example 4: Authorize with email + password + token template
    * await startAuthorization({
-   * identifier: 'user@example.com',
-   * password: 'password',
-   * tokenTemplate: 'my_template'
+   *  identifier: 'user@example.com',
+   *  password: 'password',
+   *  tokenTemplate: 'my_template'
    * });
    */
   startAuthorization: (params: StartAuthParams<VerifyBy>) => Promise<StartAuthorizationWithIdentifierReturn<any>>;
