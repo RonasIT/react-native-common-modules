@@ -1,3 +1,4 @@
+import { useAuthWithIdentifier } from '@ronas-it/react-native-common-modules/clerk';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/safe-area-view';
 import { ReactElement, useContext } from 'react';
@@ -12,6 +13,13 @@ export default function RootScreen(): ReactElement {
 
   const handleLanguageChange = (): void => {
     onLanguageChange?.(language === 'en' ? 'fr' : 'en');
+  };
+
+  const { startAuthorization, startSignIn, startSignUp } = useAuthWithIdentifier('emailAddress', 'otp');
+
+  const handleAuth = (): void => {
+    startAuthorization({ identifier: 'fdf' });
+    startSignUp({ identifier: '', firstName: 'Mikhail' });
   };
 
   return (
