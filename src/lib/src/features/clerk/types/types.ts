@@ -6,9 +6,12 @@ import {
   SetActive,
   SignInResource,
   SignOut,
+  SignUpCreateParams,
   SignUpResource,
   UserResource,
 } from '@clerk/types';
+
+// #region --- BASE & UTILITY TYPES ---
 
 type BaseSuccessReturn = { isSuccess: true; error?: never };
 
@@ -44,14 +47,22 @@ export type OtpMethod = 'emailAddress' | 'phoneNumber';
 /** Type for OTP strategies (email code or phone code) */
 export type OtpStrategy = 'email_code' | 'phone_code';
 
+/** Type for extra params during SignUp process */
+export type SignUpParams = Pick<
+  SignUpCreateParams,
+  'firstName' | 'lastName' | 'locale' | 'unsafeMetadata' | 'username'
+>;
+
+// #endregion
+
+// #region --- CORE RESOURCES & SESSION ---
+
 export type UseClerkResourcesReturn = WithClerkReturn & {
   /** A function that sets the active session */
   setActive: SetActive;
   /** A function that signs out the current user */
   signOut: SignOut;
 };
-
-// Get token types
 
 /**
  * Retrieves the session token for the currently authenticated user.
@@ -72,7 +83,9 @@ export interface UseGetSessionTokenReturn {
 
 export type GetSessionTokenReturn = WithTokenSuccessReturn | WithTokenFailureReturn;
 
-// Ticket types:
+// #endregion
+
+// #region --- TICKET AUTHENTICATION ---
 
 export type StartAuthorizationWithTicketReturn = (WithTokenSuccessReturn | WithTokenFailureReturn) & WithSignInReturn;
 
@@ -105,6 +118,10 @@ export interface UseAuthWithTicketReturn {
   /** Indicates whether the authentication process with the ticket is currently in progress. `true` or `false` */
   isLoading: boolean;
 }
+
+// #endregion
+
+// #region --- SSO FLOW ---
 
 /** Parameters for SSO flow */
 export interface StartSSOArgs {
@@ -143,7 +160,9 @@ export interface UseAuthWithSSOReturn {
   isLoading: boolean;
 }
 
-// OTP verification types:
+// #endregion
+
+// #region --- OTP VERIFICATION ---
 
 /** Provides functionality for sending and verifying OTP (one-time password) codes using email or phone. */
 export interface UseOtpVerificationReturn {
@@ -152,8 +171,8 @@ export interface UseOtpVerificationReturn {
    * using the selected strategy.
    *
    * @param strategy - The delivery method for the OTP code.
-   *   - `'email_code'` – send code via email
-   *   - `'phone_code'` – send code via SMS
+   * - `'email_code'` – send code via email
+   * - `'phone_code'` – send code via SMS
    *
    * @returns A Promise that resolves once the OTP has been successfully sent, or rejects if sending fails.
    */
@@ -180,6 +199,10 @@ export interface UseOtpVerificationReturn {
   /** Indicates whether the OTP verification process is currently in progress. `true` or `false` */
   isVerifying: boolean;
 }
+
+// #endregion
+
+// #region --- IDENTIFIER MANAGEMENT ---
 
 /**
  * Return type for a hook that manages adding a new authentication identifier
@@ -233,7 +256,9 @@ export interface UseAddIdentifierReturn {
   isVerifying: boolean;
 }
 
-// Auth with identifier types:
+// #endregion
+
+// #region --- AUTH WITH IDENTIFIER ---
 
 /** Type for authentication identifier methods */
 export type AuthIdentifierMethod = 'emailAddress' | 'phoneNumber' | 'username';
@@ -310,6 +335,8 @@ export type StartAuthorizationWithIdentifierReturn<Method extends AuthIdentifier
     }
   : StartAuthorizationReturn;
 
+export type StartSignUpParams<VerifyBy extends AuthIdentifierVerifyBy> = StartAuthParams<VerifyBy> & SignUpParams;
+
 /**
  * Base return type for useAuthWithIdentifier hook.
  *
@@ -325,14 +352,14 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
    * @example
    * // Example for email + password
    * await startSignIn({
-   *   identifier: 'user@example.com',
-   *   password: 'securePassword123'
+   *  identifier: 'user@example.com',
+   *  password: 'securePassword123'
    * });
    *
    * @example
    * // Example for phone + OTP
    * await startSignIn({
-   *   identifier: '+1234567890'
+   *  identifier: '+1234567890'
    * });
    */
   startSignIn: (params: StartAuthParams<VerifyBy>) => Promise<StartSignInWithIdentifierReturn<VerifyBy>>;
@@ -345,31 +372,31 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
    * @example
    * // Example 1: Sign up with email + OTP
    * await startSignUp({
-   *   identifier: 'user@example.com',
+   *  identifier: 'user@example.com',
    * });
    *
    * @example
    * // Example 2: Sign up with phone + OTP
    * await startSignUp({
-   *   identifier: '+1234567890',
+   *  identifier: '+1234567890',
    * });
    *
    * @example
    * // Example 3: Sign up with username + password
    * await startSignUp({
-   *   identifier: 'username',
-   *   password: 'password!'
+   *  identifier: 'username',
+   *  password: 'password!'
    * });
    *
    * @example
    * // Example 4: Sign up with email + password + custom token template
    * await startSignUp({
-   *   identifier: 'user@example.com',
-   *   password: 'password',
-   *   tokenTemplate: 'my_template'
+   *  identifier: 'user@example.com',
+   *  password: 'password',
+   *  tokenTemplate: 'my_template'
    * });
    */
-  startSignUp: (params: StartAuthParams<VerifyBy>) => Promise<StartSignUpWithIdentifierReturn<any>>;
+  startSignUp: (params: StartSignUpParams<VerifyBy>) => Promise<StartSignUpWithIdentifierReturn<any>>;
 
   /**
    * Initiates a combined authorization flow (sign-up or sign-in) based on user existence.
@@ -380,28 +407,28 @@ interface BaseUseAuthWithIdentifierReturn<VerifyBy extends AuthIdentifierVerifyB
    * @example
    * // Example 1: Authorize with email + OTP (sign-in or sign-up automatically)
    * await startAuthorization({
-   *   identifier: 'user@example.com',
+   *  identifier: 'user@example.com',
    * });
    *
    * @example
    * // Example 2: Authorize with phone + OTP
    * await startAuthorization({
-   *   identifier: '+1234567890',
+   *  identifier: '+1234567890',
    * });
    *
    * @example
    * // Example 3: Authorize with username + password
    * await startAuthorization({
-   *   identifier: 'username',
-   *   password: 'password'
+   *  identifier: 'username',
+   *  password: 'password'
    * });
    *
    * @example
    * // Example 4: Authorize with email + password + token template
    * await startAuthorization({
-   *   identifier: 'user@example.com',
-   *   password: 'password',
-   *   tokenTemplate: 'my_template'
+   *  identifier: 'user@example.com',
+   *  password: 'password',
+   *  tokenTemplate: 'my_template'
    * });
    */
   startAuthorization: (params: StartAuthParams<VerifyBy>) => Promise<StartAuthorizationWithIdentifierReturn<any>>;
@@ -450,7 +477,9 @@ export type UseAuthWithIdentifierReturn<
   Method extends AuthIdentifierMethod,
 > = ConditionalUseAuthWithIdentifierReturn<VerifyBy, Method>;
 
-//Reset password types:
+// #endregion
+
+// #region --- PASSWORD RESET FLOW ---
 
 /** Return type for a hook that manages the password reset process. */
 export interface UseResetPasswordReturn {
@@ -495,3 +524,5 @@ export interface UseResetPasswordReturn {
   /** Indicates whether the code for password reset is currently being sent. `true` or `false` */
   isCodeSending: boolean;
 }
+
+// #endregion

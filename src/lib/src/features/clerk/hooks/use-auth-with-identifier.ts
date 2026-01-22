@@ -7,6 +7,7 @@ import {
   IdentifierMethodFor,
   StartAuthParams,
   StartSignInWithIdentifierReturn,
+  StartSignUpParams,
   StartSignUpWithIdentifierReturn,
   UseAuthWithIdentifierReturn,
 } from '../types';
@@ -154,7 +155,7 @@ export function useAuthWithIdentifier<
   const startAuthorization: UseAuthWithIdentifierReturn<TVerifyBy, TMethod>['startAuthorization'] = async (params) => {
     try {
       setIsLoading(true);
-      const result = await startSignUp(params);
+      const result = await startSignUp(params as StartSignUpParams<TVerifyBy>);
 
       if (result?.error && isClerkAPIResponseError(result.error)) {
         const error = result.error.errors[0];
