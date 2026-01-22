@@ -8,6 +8,7 @@ import {
   SignOut,
   SignUpCreateParams,
   SignUpResource,
+  UpdateUserPasswordParams,
   UserResource,
 } from '@clerk/types';
 
@@ -479,7 +480,7 @@ export type UseAuthWithIdentifierReturn<
 
 // #endregion
 
-// #region --- PASSWORD RESET FLOW ---
+// #region --- PASSWORD FLOW ---
 
 /** Return type for a hook that manages the password reset process. */
 export interface UseResetPasswordReturn {
@@ -523,6 +524,20 @@ export interface UseResetPasswordReturn {
 
   /** Indicates whether the code for password reset is currently being sent. `true` or `false` */
   isCodeSending: boolean;
+}
+
+export interface useUpdatePasswordReturn {
+  /**
+   * Initiates the password reset process for the given identifier.
+   *
+   * @returns A Promise resolving to a result object:
+   * - On success: `BaseSuccessReturn` with sign-in context via `WithSignInReturn`.
+   * - On failure: `BaseFailureReturn` with possible error information.
+   */
+  updatePassword: (params: UpdateUserPasswordParams) => Promise<BaseSuccessReturn | BaseFailureReturn>;
+
+  /** Indicates whether the code for password reset is currently being sent. `true` or `false` */
+  isPasswordUpdating: boolean;
 }
 
 // #endregion
