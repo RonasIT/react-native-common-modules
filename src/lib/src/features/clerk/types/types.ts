@@ -204,6 +204,8 @@ export interface UseOtpVerificationReturn {
 
 // #region --- IDENTIFIER MANAGEMENT ---
 
+export type IdentifierType = 'email' | 'phone';
+
 /**
  * Return type for a hook that manages adding a new authentication identifier
  * (such as an email address or phone number) to the currently signed-in user's account.
@@ -254,6 +256,15 @@ export interface UseAddIdentifierReturn {
 
   /** Indicates whether a verification request is currently being processed via `verifyCode`. `true` or `false` */
   isVerifying: boolean;
+}
+
+/**
+ * Return type for a hook that manages updating a new authentication identifier
+ * (such as an email address or phone number) to the currently signed-in user's account.
+ */
+export interface UseUpdateIdentifierReturn extends UseAddIdentifierReturn {
+  /** Indicates whether a update identifier request is currently being processed. `true` or `false` */
+  isUpdating: boolean;
 }
 
 // #endregion
