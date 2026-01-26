@@ -43,7 +43,7 @@ export function useOtpVerification(): UseOtpVerificationReturn {
   };
 
   const sendOtpCode: UseOtpVerificationReturn['sendOtpCode'] = async (strategy) => {
-    const isSignIn = !!signIn?.id;
+    const isSignIn = !!signIn?.id && !!signIn.identifier;
 
     if (isSignIn) {
       await sendSignInOtpCode(strategy);
@@ -55,7 +55,8 @@ export function useOtpVerification(): UseOtpVerificationReturn {
   const verifyCode: UseOtpVerificationReturn['verifyCode'] = async ({ code, strategy, tokenTemplate }) => {
     try {
       setIsVerifying(true);
-      const isSignIn = !!signIn?.id;
+
+      const isSignIn = !!signIn?.id && !!signIn.identifier;
 
       if (isSignIn) {
         const completeSignIn = await signIn.attemptFirstFactor({
