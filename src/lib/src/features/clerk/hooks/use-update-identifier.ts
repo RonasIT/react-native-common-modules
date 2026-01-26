@@ -91,6 +91,9 @@ export function useUpdateIdentifier(type: IdentifierType): UseUpdateIdentifierRe
 
     const result = await verifyAddIdentifierCode({ code });
 
+    // Important to reload user model after adding new fields
+    await user?.reload();
+
     if (!result.isSuccess) {
       setIsUpdating(false);
 
