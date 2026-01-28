@@ -1,6 +1,6 @@
 import { useUser } from '@clerk/clerk-expo';
 import { EmailAddressResource, PhoneNumberResource } from '@clerk/types';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { IdentifierType, UseUpdateIdentifierReturn } from '../types';
 import { useAddIdentifier } from './use-add-identifier';
 
@@ -37,26 +37,18 @@ export function useUpdateIdentifier(type: IdentifierType): UseUpdateIdentifierRe
   const { user } = useUser();
   const isEmail = type === 'email';
 
-  const {
-    createIdentifier: addIdentifier,
-    verifyCode: verifyAddIdentifierCode,
-    isCreating,
-    isVerifying,
-  } = useAddIdentifier(type);
+  const { createIdentifier, verifyCode: verifyAddIdentifierCode, isCreating, isVerifying } = useAddIdentifier(type);
 
-  const pendingIdentifier = useRef<string | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const getIdentifierResource = (): EmailAddressResource | PhoneNumberResource | undefined => {
-    if (!pendingIdentifier.current) return;
-
+  const getIdentifierResource = (identifier: string): EmailAddressResource | PhoneNumberResource | undefined => {
     return isEmail
-      ? user?.emailAddresses?.find((a) => a.emailAddress === pendingIdentifier.current)
-      : user?.phoneNumbers?.find((a) => a.phoneNumber === pendingIdentifier.current);
+      ? user?.emailAddresses?.find((a) => a.emailAddress === identifier)
+      : user?.phoneNumbers?.find((a) => a.phoneNumber === identifier);
   };
 
-  const swapPrimaryIdentifier = async () => {
-    const newResource = getIdentifierResource();
+  const swapPrimaryIdentifier = async (identifier: string) => {
+    const newResource = getIdentifierResource(identifier);
 
     if (!newResource || newResource.verification?.status !== 'verified') {
       throw new Error('Identifier not found or not verified');
@@ -80,13 +72,7 @@ export function useUpdateIdentifier(type: IdentifierType): UseUpdateIdentifierRe
     await user?.reload();
   };
 
-  const createIdentifier: UseUpdateIdentifierReturn['createIdentifier'] = async ({ identifier }) => {
-    pendingIdentifier.current = identifier;
-
-    return addIdentifier({ identifier });
-  };
-
-  const verifyCode: UseUpdateIdentifierReturn['verifyCode'] = async ({ code }) => {
+  const verifyCode: UseUpdateIdentifierReturn['verifyCode'] = async ({ code, identifier }) => {
     setIsUpdating(true);
 
     const result = await verifyAddIdentifierCode({ code });
@@ -101,7 +87,7 @@ export function useUpdateIdentifier(type: IdentifierType): UseUpdateIdentifierRe
     }
 
     try {
-      await swapPrimaryIdentifier();
+      await swapPrimaryIdentifier(identifier);
 
       return { isSuccess: true, user };
     } catch (error) {

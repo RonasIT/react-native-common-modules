@@ -1,7 +1,6 @@
 import { isClerkAPIResponseError, useUser } from '@clerk/clerk-expo';
 import { EmailAddressResource, PhoneNumberResource } from '@clerk/types';
 import { useState } from 'react';
-import { ClerkApiError } from '../enums';
 import { IdentifierType, UseAddIdentifierReturn } from '../types';
 
 /**
@@ -27,31 +26,30 @@ export function useAddIdentifier(type: IdentifierType): UseAddIdentifierReturn {
     setIsCreating(true);
 
     try {
-      isEmail
-        ? await user?.createEmailAddress({ email: identifier })
-        : await user?.createPhoneNumber({ phoneNumber: identifier });
+      let resource = isEmail
+        ? user?.emailAddresses.find((a) => a.emailAddress === identifier)
+        : user?.phoneNumbers.find((a) => a.phoneNumber === identifier);
 
-      await user?.reload();
+      // If the resource already exists, re-creating it will cause an error,
+      // so skip the creation step and go to the send verification code flow.
+      if (!resource) {
+        resource = isEmail
+          ? await user?.createEmailAddress({ email: identifier })
+          : await user?.createPhoneNumber({ phoneNumber: identifier });
 
-      await prepareVerification({ identifier, isEmail });
+        await user?.reload();
+      }
+      await prepareVerification({ isEmail, identifier });
+
+      setIdentifierResource(resource);
 
       return { isSuccess: true, user };
     } catch (e) {
       if (isClerkAPIResponseError(e)) {
-        const error = e.errors[0];
-
-        if (error?.code === ClerkApiError.FORM_IDENTIFIER_EXIST && !getIdentifierVerified({ identifier, isEmail })) {
-          await prepareVerification({ identifier, isEmail });
-
-          await user?.reload();
-
-          return { isSuccess: true, user };
-        } else {
-          return { error: e, user };
-        }
+        return { error: e, user };
       }
 
-      return { user, isSuccess: false };
+      return { isSuccess: false, user };
     } finally {
       setIsCreating(false);
     }
@@ -83,14 +81,6 @@ export function useAddIdentifier(type: IdentifierType): UseAddIdentifierReturn {
       ? emailResource?.prepareVerification({ strategy: 'email_code' })
       : phoneResource?.prepareVerification());
     setIdentifierResource(isEmail ? emailResource : phoneResource);
-  };
-
-  const getIdentifierVerified = ({ identifier, isEmail }: { identifier: string; isEmail: boolean }): boolean => {
-    const identifierResource = isEmail
-      ? user?.emailAddresses?.find((a) => a.emailAddress === identifier)
-      : user?.phoneNumbers?.find((a) => a.phoneNumber === identifier);
-
-    return identifierResource?.verification?.status === 'verified';
   };
 
   return { createIdentifier, verifyCode, isCreating, isVerifying };
