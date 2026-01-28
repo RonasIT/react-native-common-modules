@@ -38,6 +38,8 @@ export function useAuthWithIdentifier<
   const { signUp, signIn, setActive } = useClerkResources();
   const { sendOtpCode, verifyCode: verifyOtpCode, isVerifying } = useOtpVerification();
   const { getSessionToken } = useGetSessionToken();
+
+  const [isAuthorizing, setIsAuthorizing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const strategy = method === 'emailAddress' ? 'email_code' : 'phone_code';
 
@@ -78,6 +80,7 @@ export function useAuthWithIdentifier<
   ): Promise<StartSignInWithIdentifierReturn<TVerifyBy> | StartSignUpWithIdentifierReturn<TMethod>> => {
     const { identifier, password, tokenTemplate } = params;
     const authMethod = isSignUp ? signUp : signIn;
+
     const authAttempt = await authMethod?.create({ username: identifier, password });
 
     if (authAttempt?.status === 'complete' && 'createdSessionId' in authAttempt) {
@@ -154,14 +157,17 @@ export function useAuthWithIdentifier<
 
   const startAuthorization: UseAuthWithIdentifierReturn<TVerifyBy, TMethod>['startAuthorization'] = async (params) => {
     try {
-      setIsLoading(true);
+      setIsAuthorizing(true);
+
       const result = await startSignUp(params as StartSignUpParams<TVerifyBy>);
 
       if (result?.error && isClerkAPIResponseError(result.error)) {
         const error = result.error.errors[0];
 
         if (error?.code === ClerkApiError.FORM_IDENTIFIER_EXIST) {
-          return await startSignIn(params);
+          const signInResult = await startSignIn(params);
+
+          return { ...signInResult, isSignUp: false };
         }
       }
 
@@ -169,12 +175,18 @@ export function useAuthWithIdentifier<
     } catch (error) {
       return { error, signIn, signUp, isSuccess: false } as StartSignInWithIdentifierReturn<TVerifyBy>;
     } finally {
-      setIsLoading(false);
+      setIsAuthorizing(false);
     }
   };
 
   const verifyCode = async ({ code, tokenTemplate }: { code: string; tokenTemplate?: string }) => {
-    return verifyOtpCode({ code, strategy, tokenTemplate });
+    setIsLoading(true);
+
+    try {
+      return await verifyOtpCode({ code, strategy, tokenTemplate });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (method === 'username') {
@@ -182,14 +194,14 @@ export function useAuthWithIdentifier<
       startSignIn,
       startSignUp,
       startAuthorization,
-      isLoading,
+      isLoading: isAuthorizing || isLoading,
     } as UseAuthWithIdentifierReturn<TVerifyBy, TMethod>;
   } else {
     return {
       startSignIn,
       startSignUp,
       startAuthorization,
-      isLoading,
+      isLoading: isAuthorizing || isLoading,
       verifyCode,
       isVerifying,
     } as UseAuthWithIdentifierReturn<TVerifyBy, TMethod>;
