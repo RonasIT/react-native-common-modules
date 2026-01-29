@@ -20,8 +20,7 @@ import { useAddIdentifier } from './use-add-identifier';
  * 2. `verifyCode` — verifies the received code and, if successful, updates the
  *    user's primary identifier
  *
- * All method signatures and return types are inherited from
- * `useUpdateIdentifier`, ensuring full compatibility with `useAddIdentifier`.
+ * All basic method signatures and return types are inherited from `useAddIdentifier`, ensuring full compatibility
  *
  * @param {IdentifierType} type - Specifies the type of identifier (e.g., 'phone', 'email')
  *
