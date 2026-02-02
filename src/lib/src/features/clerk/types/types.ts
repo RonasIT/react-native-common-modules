@@ -205,6 +205,8 @@ export interface UseOtpVerificationReturn {
 
 // #region --- IDENTIFIER MANAGEMENT ---
 
+export type IdentifierType = 'email' | 'phone';
+
 /**
  * Return type for a hook that manages adding a new authentication identifier
  * (such as an email address or phone number) to the currently signed-in user's account.
@@ -255,6 +257,37 @@ export interface UseAddIdentifierReturn {
 
   /** Indicates whether a verification request is currently being processed via `verifyCode`. `true` or `false` */
   isVerifying: boolean;
+}
+
+/**
+ * Return type for a hook that manages updating a new authentication identifier
+ * (such as an email address or phone number) to the currently signed-in user's account.
+ */
+export interface UseUpdateIdentifierReturn extends Omit<UseAddIdentifierReturn, 'verifyCode'> {
+  /**
+   * Verifies the code and select the provided identifier as primary.
+   *
+   * @param params - Parameters for verification.
+   * @param params.code - The one-time code sent to the identifier.
+   * @param params.identifier - The one-time code sent to the identifier.
+   *
+   * @returns A Promise resolving to a result object:
+   * - On success: `BaseSuccessReturn` with optional `user`.
+   * - On failure: `BaseFailureReturn` with optional `verifyAttempt` (email or phone resource) and `user`.
+   */
+  verifyCode: (params: { code: string; identifier: string }) => Promise<
+    (
+      | BaseSuccessReturn
+      | (BaseFailureReturn & {
+          verifyAttempt?: PhoneNumberResource | EmailAddressResource;
+        })
+    ) & {
+      user?: UserResource | null;
+    }
+  >;
+
+  /** Indicates whether a update identifier request is currently being processed. `true` or `false` */
+  isUpdating: boolean;
 }
 
 // #endregion
