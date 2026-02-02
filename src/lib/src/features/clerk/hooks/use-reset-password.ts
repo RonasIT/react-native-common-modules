@@ -1,7 +1,13 @@
-import { EmailCodeFactor, PhoneCodeFactor } from '@clerk/types';
+import {
+  EmailCodeFactor,
+  PhoneCodeFactor,
+  ResetPasswordEmailCodeStrategy,
+  ResetPasswordPhoneCodeStrategy,
+} from '@clerk/types';
 import { useState } from 'react';
 import { OtpMethod, UseResetPasswordReturn } from '../types';
 import { useClerkResources } from './use-clerk-resources';
+import { useGetSessionToken } from './use-get-session-token';
 
 /**
  * Hook that provides methods to handle password reset functionality through email or phone-based OTP.
@@ -19,6 +25,7 @@ import { useClerkResources } from './use-clerk-resources';
  */
 export function useResetPassword({ method }: { method: OtpMethod }): UseResetPasswordReturn {
   const { signIn, setActive } = useClerkResources();
+  const { getSessionToken } = useGetSessionToken();
 
   const [isCodeSending, setIsCodeSending] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -44,12 +51,12 @@ export function useResetPassword({ method }: { method: OtpMethod }): UseResetPas
 
       if ('emailAddressId' in codeFactor) {
         await signIn?.prepareFirstFactor({
-          strategy: 'reset_password_email_code',
+          strategy: strategy as ResetPasswordEmailCodeStrategy,
           emailAddressId: codeFactor.emailAddressId,
         });
       } else if ('phoneNumberId' in codeFactor) {
         await signIn?.prepareFirstFactor({
-          strategy: 'reset_password_phone_code',
+          strategy: strategy as ResetPasswordPhoneCodeStrategy,
           phoneNumberId: codeFactor.phoneNumberId,
         });
       } else {
@@ -81,7 +88,7 @@ export function useResetPassword({ method }: { method: OtpMethod }): UseResetPas
     }
   };
 
-  const resetPassword: UseResetPasswordReturn['resetPassword'] = async ({ password }) => {
+  const resetPassword: UseResetPasswordReturn['resetPassword'] = async ({ password, tokenTemplate }) => {
     setIsResetting(true);
 
     try {
@@ -89,11 +96,23 @@ export function useResetPassword({ method }: { method: OtpMethod }): UseResetPas
         password,
       });
 
-      if (result?.status === 'complete') {
-        setActive({ session: result.createdSessionId });
-      }
+      await setActive({ session: result?.createdSessionId });
 
-      return { isSuccess: true, signIn };
+      const { sessionToken, error } = await getSessionToken({ tokenTemplate });
+
+      if (sessionToken) {
+        return {
+          isSuccess: true,
+          signIn,
+          sessionToken: sessionToken,
+        };
+      } else {
+        return {
+          signIn,
+          error,
+          isSuccess: false,
+        };
+      }
     } catch (error) {
       return { isSuccess: false, signIn, error };
     } finally {

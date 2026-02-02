@@ -553,16 +553,18 @@ export interface UseResetPasswordReturn {
    * Completes the password reset process using the provided verification code and new password.
    *
    * @param params - Parameters required to reset the password.
-   * @param params.code - The verification code sent to the user.
    * @param params.password - The new password to be set.
    * @param params.tokenTemplate - (Optional) A token template name to use when creating the session token.
    *
    * @returns A Promise resolving to an `AuthorizationFinishedReturn`, which includes:
    * - `isSuccess`: Indicates whether the password reset was successful.
    * - `sessionToken`: A session token if authentication is completed.
-   * - `signIn` and/or `signUp`: Additional context, depending on flow state.
    */
-  resetPassword: (params: { password: string }) => Promise<BaseSuccessReturn | BaseFailureReturn>;
+  resetPassword: (params: { password: string; tokenTemplate?: string }) => Promise<
+    StartSignInReturn & {
+      sessionToken?: string;
+    }
+  >;
 
   /** Indicates whether the password reset operation is currently in progress. `true` or `false` */
   isResetting: boolean;
