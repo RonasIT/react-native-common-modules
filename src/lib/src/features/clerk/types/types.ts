@@ -534,32 +534,49 @@ export interface UseResetPasswordReturn {
   }) => Promise<(BaseSuccessReturn | BaseFailureReturn) & WithSignInReturn>;
 
   /**
+   * Verifies the code sent to the newly added identifier.
+   *
+   * @param params - Parameters for verification.
+   * @param params.code - The one-time code sent to the identifier.
+   *
+   * @returns A Promise resolving to a result object:
+   * - On success: `BaseSuccessReturn` with optional `user`.
+   * - On failure: `BaseFailureReturn` with optional `verifyAttempt` (email or phone resource) and `user`.
+   */
+  verifyCode: (params: { code: string }) => Promise<
+    | BaseSuccessReturn
+    | (BaseFailureReturn & {
+        verifyAttempt?: PhoneNumberResource | EmailAddressResource;
+      })
+  >;
+  /**
    * Completes the password reset process using the provided verification code and new password.
    *
    * @param params - Parameters required to reset the password.
-   * @param params.code - The verification code sent to the user.
    * @param params.password - The new password to be set.
    * @param params.tokenTemplate - (Optional) A token template name to use when creating the session token.
    *
    * @returns A Promise resolving to an `AuthorizationFinishedReturn`, which includes:
    * - `isSuccess`: Indicates whether the password reset was successful.
    * - `sessionToken`: A session token if authentication is completed.
-   * - `signIn` and/or `signUp`: Additional context, depending on flow state.
    */
-  resetPassword: (params: {
-    code: string;
-    password: string;
-    tokenTemplate?: string;
-  }) => Promise<AuthorizationFinishedReturn>;
+  resetPassword: (params: { password: string; tokenTemplate?: string }) => Promise<
+    StartSignInReturn & {
+      sessionToken?: string;
+    }
+  >;
 
   /** Indicates whether the password reset operation is currently in progress. `true` or `false` */
   isResetting: boolean;
 
   /** Indicates whether the code for password reset is currently being sent. `true` or `false` */
   isCodeSending: boolean;
+
+  /** Indicates whether a verification request is currently being processed via `verifyCode`. `true` or `false` */
+  isVerifying: boolean;
 }
 
-export interface useUpdatePasswordReturn {
+export interface UseUpdatePasswordReturn {
   /**
    * Initiates the password reset process for the given identifier.
    *
