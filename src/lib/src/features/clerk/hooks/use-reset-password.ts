@@ -34,22 +34,27 @@ export function useResetPassword({ method }: { method: OtpMethod }): UseResetPas
         identifier,
       });
 
-      const factor = attempt?.supportedFirstFactors?.find((f) => f.strategy === strategy) as
-        | EmailCodeFactor
-        | PhoneCodeFactor
-        | undefined;
+      const codeFactor = attempt?.supportedFirstFactors?.find(
+        (factor): factor is EmailCodeFactor | PhoneCodeFactor => factor.strategy === strategy,
+      );
 
-      if (!factor) {
+      if (!codeFactor) {
         throw new Error('Password reset unavailable for this method.');
       }
 
-      const { emailAddressId, phoneNumberId } = factor as any;
-
-      await signIn?.prepareFirstFactor({
-        strategy,
-        emailAddressId,
-        phoneNumberId,
-      });
+      if ('emailAddressId' in codeFactor) {
+        await signIn?.prepareFirstFactor({
+          strategy: 'reset_password_email_code',
+          emailAddressId: codeFactor.emailAddressId,
+        });
+      } else if ('phoneNumberId' in codeFactor) {
+        await signIn?.prepareFirstFactor({
+          strategy: 'reset_password_phone_code',
+          phoneNumberId: codeFactor.phoneNumberId,
+        });
+      } else {
+        throw new Error('No code factor found for strategy: ' + strategy);
+      }
 
       return { isSuccess: true, signIn };
     } catch (error) {
