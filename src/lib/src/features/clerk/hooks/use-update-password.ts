@@ -1,12 +1,12 @@
 import { useUser } from '@clerk/clerk-expo';
 import { useState } from 'react';
-import { useUpdatePasswordReturn } from '../types';
+import { UseUpdatePasswordReturn } from '../types';
 
-export const useChangePassword = (): useUpdatePasswordReturn => {
+export const useChangePassword = (): UseUpdatePasswordReturn => {
   const { user } = useUser();
   const [isPasswordUpdating, setIsPasswordUpdating] = useState(false);
 
-  const updatePassword: useUpdatePasswordReturn['updatePassword'] = async (params) => {
+  const updatePassword: UseUpdatePasswordReturn['updatePassword'] = async (params) => {
     const { newPassword, currentPassword } = params;
 
     try {
