@@ -1,9 +1,5 @@
-import {
-  EmailCodeFactor,
-  PhoneCodeFactor,
-  ResetPasswordEmailCodeStrategy,
-  ResetPasswordPhoneCodeStrategy,
-} from '@clerk/types';
+
+
 import { useState } from 'react';
 import { OtpMethod, UseResetPasswordReturn } from '../types';
 import { useClerkResources } from './use-clerk-resources';
@@ -37,31 +33,10 @@ export function useResetPassword({ method }: { method: OtpMethod }): UseResetPas
     setIsCodeSending(true);
 
     try {
-      const attempt = await signIn?.create({
+      await signIn?.create({
+        strategy,
         identifier,
       });
-
-      const codeFactor = attempt?.supportedFirstFactors?.find(
-        (factor): factor is EmailCodeFactor | PhoneCodeFactor => factor.strategy === strategy,
-      );
-
-      if (!codeFactor) {
-        throw new Error('Password reset unavailable for this method.');
-      }
-
-      if ('emailAddressId' in codeFactor) {
-        await signIn?.prepareFirstFactor({
-          strategy: strategy as ResetPasswordEmailCodeStrategy,
-          emailAddressId: codeFactor.emailAddressId,
-        });
-      } else if ('phoneNumberId' in codeFactor) {
-        await signIn?.prepareFirstFactor({
-          strategy: strategy as ResetPasswordPhoneCodeStrategy,
-          phoneNumberId: codeFactor.phoneNumberId,
-        });
-      } else {
-        throw new Error('No code factor found for strategy: ' + strategy);
-      }
 
       return { isSuccess: true, signIn };
     } catch (error) {
