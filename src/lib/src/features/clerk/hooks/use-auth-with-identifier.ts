@@ -115,7 +115,7 @@ export function useAuthWithIdentifier<
     } else if (verifyBy === 'otp') {
       try {
         await authMethod?.create({ [identifierFieldName]: identifier });
-        await sendOtpCode(strategy);
+        await sendOtpCode({ strategy, isSignUp });
       } catch (error) {
         return { error, signIn, signUp };
       }
@@ -179,11 +179,19 @@ export function useAuthWithIdentifier<
     }
   };
 
-  const verifyCode = async ({ code, tokenTemplate }: { code: string; tokenTemplate?: string }) => {
+  const verifyCode = async ({
+    code,
+    isSignUp,
+    tokenTemplate,
+  }: {
+    code: string;
+    isSignUp: boolean;
+    tokenTemplate?: string;
+  }) => {
     setIsLoading(true);
 
     try {
-      return await verifyOtpCode({ code, strategy, tokenTemplate });
+      return await verifyOtpCode({ code, strategy, tokenTemplate, isSignUp });
     } finally {
       setIsLoading(false);
     }
