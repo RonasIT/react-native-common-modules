@@ -42,7 +42,7 @@ export function useOtpVerification(): UseOtpVerificationReturn {
     await signUp.prepareVerification({ strategy });
   };
 
-  const sendOtpCode: UseOtpVerificationReturn['sendOtpCode'] = async (strategy, isSignUp) => {
+  const sendOtpCode: UseOtpVerificationReturn['sendOtpCode'] = async ({ strategy, isSignUp }) => {
     if (isSignUp) {
       await sendSignUpOtpCode(strategy);
     } else {

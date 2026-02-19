@@ -174,12 +174,11 @@ export interface UseOtpVerificationReturn {
    * @param strategy - The delivery method for the OTP code.
    * - `'email_code'` – send code via email
    * - `'phone_code'` – send code via SMS
-   *
    * @param isSignUp - Indicates whether the OTP flow is used for sign-up (true) or sign-in (false)
    *
    * @returns A Promise that resolves once the OTP has been successfully sent, or rejects if sending fails.
    */
-  sendOtpCode: (strategy: OtpStrategy, isSignUp: boolean) => Promise<void>;
+  sendOtpCode: (params: { strategy: OtpStrategy; isSignUp: boolean }) => Promise<void>;
 
   /**
    * Verifies the OTP code entered by the user.
