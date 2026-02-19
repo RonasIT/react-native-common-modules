@@ -42,49 +42,19 @@ export function useOtpVerification(): UseOtpVerificationReturn {
     await signUp.prepareVerification({ strategy });
   };
 
-  const sendOtpCode: UseOtpVerificationReturn['sendOtpCode'] = async (strategy) => {
-    const isSignIn = !!signIn?.id && !!signIn.identifier;
-
-    if (isSignIn) {
-      await sendSignInOtpCode(strategy);
-    } else {
+  const sendOtpCode: UseOtpVerificationReturn['sendOtpCode'] = async (strategy, isSignUp) => {
+    if (isSignUp) {
       await sendSignUpOtpCode(strategy);
+    } else {
+      await sendSignInOtpCode(strategy);
     }
   };
 
-  const verifyCode: UseOtpVerificationReturn['verifyCode'] = async ({ code, strategy, tokenTemplate }) => {
+  const verifyCode: UseOtpVerificationReturn['verifyCode'] = async ({ code, strategy, tokenTemplate, isSignUp }) => {
     try {
       setIsVerifying(true);
 
-      const isSignIn = !!signIn?.id && !!signIn.identifier;
-
-      if (isSignIn) {
-        const completeSignIn = await signIn.attemptFirstFactor({
-          strategy,
-          code,
-        });
-
-        if (completeSignIn?.status === 'complete') {
-          await setActive?.({ session: completeSignIn.createdSessionId });
-          const sessionToken = (await getSessionToken({ tokenTemplate })).sessionToken;
-
-          if (sessionToken) {
-            return {
-              sessionToken,
-              signIn,
-              signUp,
-              isSuccess: true,
-            };
-          }
-
-          return {
-            sessionToken: null,
-            signIn,
-            signUp,
-            isSuccess: false,
-          };
-        }
-      } else {
+      if (isSignUp) {
         const completeSignUp = await signUp?.attemptVerification({
           strategy,
           code,
@@ -107,6 +77,32 @@ export function useOtpVerification(): UseOtpVerificationReturn {
             signIn,
             signUp,
             error,
+            isSuccess: false,
+          };
+        }
+      } else {
+        const completeSignIn = await signIn?.attemptFirstFactor({
+          strategy,
+          code,
+        });
+
+        if (completeSignIn?.status === 'complete') {
+          await setActive?.({ session: completeSignIn.createdSessionId });
+          const sessionToken = (await getSessionToken({ tokenTemplate })).sessionToken;
+
+          if (sessionToken) {
+            return {
+              sessionToken,
+              signIn,
+              signUp,
+              isSuccess: true,
+            };
+          }
+
+          return {
+            sessionToken: null,
+            signIn,
+            signUp,
             isSuccess: false,
           };
         }
