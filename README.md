@@ -439,6 +439,14 @@ Returned Object:
 - `isCreating`: A boolean indicating whether an identifier is currently being added.
 - `isVerifying`: A boolean indicating whether a verification code is currently being processed.
 
+#### `useUpdateIdentifier`
+
+Hook to update the user's primary identifier (email or phone): add and verify a new one, then set it as primary and remove the old one.
+
+Returned Object:
+
+- `createIdentifier`, `verifyCode`, `isCreating`, `isVerifying`, `isUpdating` — see JSDoc.
+
 #### `useOtpVerification`
 
 Hook provides functionality for managing OTP (One Time Password) verification in user authentication workflows, supporting both sign-up and sign-in processes.
@@ -459,3 +467,11 @@ Returned Object:
 - `resetPassword`: A function to reset the user's password by verifying the code and setting a new password.
 - `isCodeSending`: A boolean indicating if the verification code is being sent.
 - `isResetting`: A boolean indicating if the password is being reset.
+
+#### `useChangePassword`
+
+Hook to update the current user's password (requires current and new password).
+
+Returned Object:
+
+- `updatePassword`, `isPasswordUpdating` — see JSDoc.

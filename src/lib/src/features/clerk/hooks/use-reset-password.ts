@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import { OtpMethod, UseResetPasswordReturn } from '../types';
 import { useClerkResources } from './use-clerk-resources';
