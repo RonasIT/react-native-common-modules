@@ -178,6 +178,7 @@ export interface UseOtpVerificationReturn {
    * - `'email_code'` – send code via email
    * - `'phone_code'` – send code via SMS
    * @param isSignUp - Indicates whether the OTP flow is used for sign-up (true) or sign-in (false)
+   * @param isSecondFactor - (Optional) Indicates whether the OTP flow is used for a second factor verification (true) or not (false)
    *
    * @returns A Promise that resolves once the OTP has been successfully sent, or rejects if sending fails.
    */
@@ -191,7 +192,7 @@ export interface UseOtpVerificationReturn {
    * @param params.strategy - The strategy used to send the code (`'email_code'` or `'phone_code'`).
    * @param params.tokenTemplate - (Optional) The name of the token template to use when retrieving the session token.
    * @param isSignUp - Indicates whether the OTP flow is used for sign-up (true) or sign-in (false)
-   * @param isSecondFactor - Indicates whether the OTP flow is used for a second factor verification (true) or not (false)
+   * @param isSecondFactor - (Optional) Indicates whether the OTP flow is used for a second factor verification (true) or not (false)
    *
    * @returns A Promise that resolves to:
    * - `{ isSuccess: true, sessionToken: string, signIn?, signUp? }` on success
