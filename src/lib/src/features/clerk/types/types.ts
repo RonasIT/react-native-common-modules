@@ -5,6 +5,7 @@ import {
   PhoneNumberResource,
   SetActive,
   SignInResource,
+  SignInStatus,
   SignOut,
   SignUpCreateParams,
   SignUpResource,
@@ -25,6 +26,8 @@ type WithTokenFailureReturn = BaseFailureReturn & { sessionToken?: null };
 type WithSignInReturn = {
   /** Provides access to SignIn object: https://clerk.com/docs/references/javascript/sign-in */
   signIn?: SignInResource;
+  /** The current status of the sign-in. */
+  status?: SignInStatus;
 };
 
 type WithSignUpReturn = {
@@ -175,10 +178,11 @@ export interface UseOtpVerificationReturn {
    * - `'email_code'` – send code via email
    * - `'phone_code'` – send code via SMS
    * @param isSignUp - Indicates whether the OTP flow is used for sign-up (true) or sign-in (false)
+   * @param isSecondFactor - (Optional) Indicates whether the OTP flow is used for a second factor verification (true) or not (false)
    *
    * @returns A Promise that resolves once the OTP has been successfully sent, or rejects if sending fails.
    */
-  sendOtpCode: (params: { strategy: OtpStrategy; isSignUp: boolean }) => Promise<void>;
+  sendOtpCode: (params: { strategy: OtpStrategy; isSignUp: boolean; isSecondFactor?: boolean }) => Promise<void>;
 
   /**
    * Verifies the OTP code entered by the user.
@@ -188,6 +192,7 @@ export interface UseOtpVerificationReturn {
    * @param params.strategy - The strategy used to send the code (`'email_code'` or `'phone_code'`).
    * @param params.tokenTemplate - (Optional) The name of the token template to use when retrieving the session token.
    * @param isSignUp - Indicates whether the OTP flow is used for sign-up (true) or sign-in (false)
+   * @param isSecondFactor - (Optional) Indicates whether the OTP flow is used for a second factor verification (true) or not (false)
    *
    * @returns A Promise that resolves to:
    * - `{ isSuccess: true, sessionToken: string, signIn?, signUp? }` on success
@@ -198,6 +203,7 @@ export interface UseOtpVerificationReturn {
     strategy: OtpStrategy;
     isSignUp: boolean;
     tokenTemplate?: string;
+    isSecondFactor?: boolean;
   }) => Promise<AuthorizationFinishedReturn>;
 
   /** Indicates whether the OTP verification process is currently in progress. `true` or `false` */
