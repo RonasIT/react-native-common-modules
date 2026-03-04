@@ -108,6 +108,8 @@ export function useAuthWithIdentifier<
 
         if (authAttempt?.status === 'complete' && 'createdSessionId' in authAttempt) {
           return handleSignInWithPassword(authAttempt as SignInResource, isSignUp, tokenTemplate);
+        } else {
+          return { isSuccess: false, signIn, signUp, status: authAttempt?.status, error: null };
         }
       } catch (error) {
         return { error, signIn, signUp };

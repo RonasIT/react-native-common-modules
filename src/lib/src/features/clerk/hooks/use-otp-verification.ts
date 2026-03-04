@@ -17,23 +17,19 @@ export function useOtpVerification(): UseOtpVerificationReturn {
   const { getSessionToken } = useGetSessionToken();
   const [isVerifying, setIsVerifying] = useState(false);
 
-  const sendSignInOtpCode = async (strategy: OtpStrategy): Promise<void> => {
-    const codeFactor = signIn?.supportedFirstFactors?.find(
+  const sendSignInOtpCode = async (strategy: OtpStrategy, isSecondFactor: boolean = false): Promise<void> => {
+    const codeFactors = isSecondFactor ? signIn?.supportedSecondFactors : signIn?.supportedFirstFactors;
+    const prepareFactor = isSecondFactor ? signIn?.prepareSecondFactor : signIn?.prepareFirstFactor;
+    const codeFactor = codeFactors?.find(
       (factor): factor is EmailCodeFactor | PhoneCodeFactor => factor.strategy === strategy,
     );
 
     if (codeFactor && 'emailAddressId' in codeFactor) {
-      await signIn?.prepareFirstFactor({
-        strategy: 'email_code',
-        emailAddressId: codeFactor.emailAddressId,
-      });
+      await prepareFactor?.({ strategy: 'email_code', emailAddressId: codeFactor.emailAddressId });
     } else if (codeFactor && 'phoneNumberId' in codeFactor) {
-      await signIn?.prepareFirstFactor({
-        strategy: 'phone_code',
-        phoneNumberId: codeFactor.phoneNumberId,
-      });
+      await prepareFactor?.({ strategy: 'phone_code', phoneNumberId: codeFactor.phoneNumberId });
     } else {
-      throw new Error('No code factor found for strategy: ' + strategy);
+      throw new Error(`No ${isSecondFactor ? 'second ' : ''}factor found for strategy: ${strategy}`);
     }
   };
 
@@ -42,15 +38,21 @@ export function useOtpVerification(): UseOtpVerificationReturn {
     await signUp.prepareVerification({ strategy });
   };
 
-  const sendOtpCode: UseOtpVerificationReturn['sendOtpCode'] = async ({ strategy, isSignUp }) => {
+  const sendOtpCode: UseOtpVerificationReturn['sendOtpCode'] = async ({ strategy, isSignUp, isSecondFactor }) => {
     if (isSignUp) {
       await sendSignUpOtpCode(strategy);
     } else {
-      await sendSignInOtpCode(strategy);
+      await sendSignInOtpCode(strategy, !!isSecondFactor);
     }
   };
 
-  const verifyCode: UseOtpVerificationReturn['verifyCode'] = async ({ code, strategy, tokenTemplate, isSignUp }) => {
+  const verifyCode: UseOtpVerificationReturn['verifyCode'] = async ({
+    code,
+    strategy,
+    tokenTemplate,
+    isSignUp,
+    isSecondFactor,
+  }) => {
     try {
       setIsVerifying(true);
 
@@ -81,30 +83,18 @@ export function useOtpVerification(): UseOtpVerificationReturn {
           };
         }
       } else {
-        const completeSignIn = await signIn?.attemptFirstFactor({
-          strategy,
-          code,
-        });
+        const attemptSignIn = isSecondFactor ? signIn?.attemptSecondFactor : signIn?.attemptFirstFactor;
+        const completeSignIn = await attemptSignIn?.({ strategy, code });
 
         if (completeSignIn?.status === 'complete') {
           await setActive?.({ session: completeSignIn.createdSessionId });
           const sessionToken = (await getSessionToken({ tokenTemplate })).sessionToken;
 
           if (sessionToken) {
-            return {
-              sessionToken,
-              signIn,
-              signUp,
-              isSuccess: true,
-            };
+            return { sessionToken, signIn, signUp, isSuccess: true };
           }
 
-          return {
-            sessionToken: null,
-            signIn,
-            signUp,
-            isSuccess: false,
-          };
+          return { sessionToken: null, signIn, signUp, isSuccess: false };
         }
       }
 
