@@ -60,13 +60,13 @@ export class WebSocketService<TChannelName extends string = string> extends Base
   }
 
   /** @inheritdoc */
-  public subscribeToChannel(channelName: TChannelName, onEvent: WebSocketListener): void {
+  public override subscribeToChannel(channelName: TChannelName, onEvent: WebSocketListener): void {
     super.subscribeToChannel(channelName, onEvent);
     this.addEventHandlerToPusher(channelName);
   }
 
   /** @inheritdoc */
-  public async unsubscribeFromChannel(channelName: TChannelName, onEvent: WebSocketListener): Promise<void> {
+  public override async unsubscribeFromChannel(channelName: TChannelName, onEvent: WebSocketListener): Promise<void> {
     super.unsubscribeFromChannel(channelName, onEvent);
 
     if (!this.channels[channelName] || this.channels[channelName].length === 0) {
