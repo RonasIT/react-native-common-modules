@@ -16,7 +16,6 @@ import { IdentifierType, UseAddIdentifierReturn } from '../types';
  */
 export function useAddIdentifier(type: IdentifierType): UseAddIdentifierReturn {
   const { user } = useUser();
-  const [identifierResource, setIdentifierResource] = useState<PhoneNumberResource | EmailAddressResource>();
   const [isCreating, setIsCreating] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
@@ -26,9 +25,7 @@ export function useAddIdentifier(type: IdentifierType): UseAddIdentifierReturn {
     setIsCreating(true);
 
     try {
-      let resource = isEmail
-        ? user?.emailAddresses.find((a) => a.emailAddress === identifier)
-        : user?.phoneNumbers.find((a) => a.phoneNumber === identifier);
+      let resource = getIdentifierResource(identifier);
 
       // If the resource already exists, re-creating it will cause an error,
       // so skip the creation step and go to the send verification code flow.
@@ -40,8 +37,6 @@ export function useAddIdentifier(type: IdentifierType): UseAddIdentifierReturn {
         await user?.reload();
       }
       await prepareVerification({ isEmail, identifier });
-
-      setIdentifierResource(resource);
 
       return { isSuccess: true, user };
     } catch (e) {
@@ -55,11 +50,13 @@ export function useAddIdentifier(type: IdentifierType): UseAddIdentifierReturn {
     }
   };
 
-  const verifyCode: UseAddIdentifierReturn['verifyCode'] = async ({ code }) => {
+  const verifyCode: UseAddIdentifierReturn['verifyCode'] = async ({ code, identifier }) => {
     setIsVerifying(true);
 
     try {
-      const verifyAttempt = await identifierResource?.attemptVerification({ code });
+      const resource = getIdentifierResource(identifier);
+
+      const verifyAttempt = await resource?.attemptVerification({ code });
 
       if (verifyAttempt?.verification?.status === 'verified') {
         return { isSuccess: true, user };
@@ -80,7 +77,12 @@ export function useAddIdentifier(type: IdentifierType): UseAddIdentifierReturn {
     await (isEmail
       ? emailResource?.prepareVerification({ strategy: 'email_code' })
       : phoneResource?.prepareVerification());
-    setIdentifierResource(isEmail ? emailResource : phoneResource);
+  };
+
+  const getIdentifierResource = (identifier: string): EmailAddressResource | PhoneNumberResource | undefined => {
+    return isEmail
+      ? user?.emailAddresses.find((a) => a.emailAddress === identifier)
+      : user?.phoneNumbers.find((a) => a.phoneNumber === identifier);
   };
 
   return { createIdentifier, verifyCode, isCreating, isVerifying };

@@ -250,7 +250,7 @@ export interface UseAddIdentifierReturn {
    * - On success: `BaseSuccessReturn` with optional `user`.
    * - On failure: `BaseFailureReturn` with optional `verifyAttempt` (email or phone resource) and `user`.
    */
-  verifyCode: (params: { code: string }) => Promise<
+  verifyCode: (params: { code: string; identifier: string }) => Promise<
     (
       | BaseSuccessReturn
       | (BaseFailureReturn & {
