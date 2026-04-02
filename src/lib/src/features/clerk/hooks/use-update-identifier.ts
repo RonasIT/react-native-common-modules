@@ -74,7 +74,7 @@ export function useUpdateIdentifier(type: IdentifierType): UseUpdateIdentifierRe
   const verifyCode: UseUpdateIdentifierReturn['verifyCode'] = async ({ code, identifier }) => {
     setIsUpdating(true);
 
-    const result = await verifyAddIdentifierCode({ code });
+    const result = await verifyAddIdentifierCode({ code, identifier });
 
     // Important to reload user model after adding new fields
     await user?.reload();
