@@ -30,8 +30,7 @@
       "@ronas-it/react-native-common-modules/reactotron": ["src/lib/src/data-access/store/utils/reactotron/index.ts"],
       "@ronas-it/react-native-common-modules/websocket": ["src/lib/src/data-access/websocket/index.ts"],
       "@ronas-it/react-native-common-modules/safe-area-view": ["src/lib/src/ui/safe-area-view/index.ts"],
-      "@ronas-it/react-native-common-modules/i18n": ["src/lib/src/utils/i18n/index.ts"],
-      "@ronas-it/react-native-common-modules/clerk": ["src/lib/src/features/clerk/index.ts"]
+      "@ronas-it/react-native-common-modules/i18n": ["src/lib/src/utils/i18n/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -26,8 +26,7 @@
     "./image-picker": "./src/data-access/image-picker/index.ts",
     "./websocket": "./src/data-access/websocket/index.ts",
     "./reactotron": "./src/data-access/store/utils/reactotron/index.ts",
-    "./i18n": "./src/utils/i18n/index.ts",
-    "./clerk": "./src/features/clerk/index.ts"
+    "./i18n": "./src/utils/i18n/index.ts"
   },
   "typesVersions": {
     "*": {
@@ -48,9 +47,6 @@
       ],
       "i18n": [
         "./src/utils/i18n/index.ts"
-      ],
-      "clerk": [
-        "./src/features/clerk/index.ts"
       ]
     }
   },
@@ -62,7 +58,6 @@
     "prepack": "node -e \"require('fs').copyFileSync('../../README.md', './README.md')\""
   },
   "peerDependencies": {
-    "@clerk/clerk-expo": "*",
     "@pusher/pusher-websocket-react-native": "*",
     "pusher-js": "*",
     "react": "*",
@@ -83,9 +78,6 @@
     "reactotron-react-js": "*"
   },
   "peerDependenciesMeta": {
-    "@clerk/clerk-expo": {
-      "optional": true
-    },
     "@pusher/pusher-websocket-react-native": {
       "optional": true
     },
