@@ -36,7 +36,7 @@ import { AppSafeAreaView } from '@ronas-it/react-native-common-modules/safe-area
 
 #### 1. Push notifications
 
-> **_NOTE:_** Required dependencies: `expo-notifications`, `expo-router`, `expo-constants`, `expo-device`, `expo-modules-core`
+> **_NOTE:_** Required dependencies: `expo-notifications`, `expo-router`, `expo-constants`, `expo-modules-core`
 
 ##### `PushNotificationsService`
 

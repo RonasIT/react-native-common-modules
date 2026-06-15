@@ -64,7 +64,6 @@
     "react-native": "*",
     "@reduxjs/toolkit": "*",
     "expo-constants": "*",
-    "expo-device": "*",
     "expo-image-picker": "*",
     "expo-localization": "*",
     "expo-modules-core": "*",
@@ -88,9 +87,6 @@
       "optional": true
     },
     "expo-constants": {
-      "optional": true
-    },
-    "expo-device": {
       "optional": true
     },
     "expo-image-picker": {
